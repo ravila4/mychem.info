@@ -76,7 +76,7 @@ def unlist(d):
 
 def boolean_convert(d, added_keys=[]):
     """convert into boolean, add converting 
-       keys in added_list""'
+       keys in added_list"""
     for key, val in d.items():
         if isinstance(val, dict):
             boolean_convert(val, added_keys)
