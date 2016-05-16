@@ -14,8 +14,7 @@ def load_data(xml_file):
     with open(xml_file) as f:
         xmltodict.parse(f.read(),item_depth=2,item_callback=handle)           
     f.close()
-    for drug in drug_list:
-        yield drug  
+    return drug_list  
 
 def restructure_dict(dictionary):
     restr_dict = dict()
