@@ -100,6 +100,6 @@ def merge(src, target, step=10000, confirm=True):
     if not (confirm and ask('Continue to update {} docs from "{}" into "{}"?'.format(cnt, src.name, target.name)) == 'Y'):
         return
 
-    for doc in doc_feeder(src, step=step):
-        _id = doc['_id']
+    for doc in doc_feeder(src, step=step):        
+        _id = doc[src]['inchi_key']
         target.update_one({"_id": _id}, {'$set': doc}, upsert=True)
