@@ -49,8 +49,8 @@ def get_mapping():
                     "type":"string"                    
                 },
                 "topical": {  
-                    "type":"string",
-                    "analyzer":"string_lowercase"
+                    "type":"boolean"
+                    
                 },
                 "prodrug":{  
                     "type":"integer"
@@ -77,12 +77,10 @@ def get_mapping():
                     "type":"integer"
                 },
                 "oral": {  
-                    "type":"string",
-                    "analyzer":"string_lowercase"
+                    "type":"boolean"                    
                 },
                 "parenteral": { 
-                    "type":"string",
-                    "analyzer":"string_lowercase"
+                    "type":"boolean"                    
                 },
                 "dosed_ingredient": { 
                     "type":"string",
@@ -92,12 +90,10 @@ def get_mapping():
                     "type":"integer"
                 },
                 "polymer_flag": {  
-                    "type":"string",
-                    "analyzer":"string_lowercase"
+                    "type":"boolean"                    
                 },
                 "therapeutic_flag": {
-                    "type":"string",
-                    "analyzer":"string_lowercase"
+                    "type":"boolean"                    
                 },
                 "structure_type": {  
                     "type":"string",
@@ -107,18 +103,48 @@ def get_mapping():
                     "type":"string"
                 },
                 "biotherapeutic": {
-                    "type":"string"                    
+                    "properties" : {
+                        "biocomponents" : {
+                            "properties" : {
+                                "component_id": {
+                                    "type":"integer"
+                                    },
+                                "description" : {
+                                   "type":"string"
+                                   },
+                                "component_type" : {
+                                    "type":"string"
+                                    },
+                                "sequence" : {
+                                    "type":"string"
+                                    },
+                                "organism" : {
+                                    "type":"string"
+                                    },
+                                "tax_id" : {
+                                   "type":"integer"
+                                   }
+                                }
+                            },
+                        "helm_notation" : {
+                            "type":"string"
+                            },
+                        "molecule_chembl_id" : {
+                            "type":"string"
+                            },
+                        "description" : {
+                            "type":"string"
+                            }
+                        }                         
                 },
                 "black_box_warning": { 
-                    "type":"string",
-                    "analyzer":"string_lowercase"                   
+                    "type":"boolean"                                       
                 },
                 "availability_type": { 
                     "type":"integer"
                 },
                 "inorganic_flag": { 
-                    "type":"string",
-                    "analyzer":"string_lowercase"
+                    "type":"boolean"                    
                 },
                 "indication_class": {
                     "type":"string",
