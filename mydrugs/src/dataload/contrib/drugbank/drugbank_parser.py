@@ -294,7 +294,7 @@ def restructure_dict(dictionary):
                         k = k.lower()
                         k = k.replace(' ','_')
                         k = k.replace('-','_')
-                        pred_properties_dict = y['value']                      
+                        pred_properties_dict[k] = y['value']                      
                         if y['kind'] == "IUPAC Name":
                             d1.update({'iupac':y['value']})                            
                         elif y['kind'] == "SMILES":
