@@ -12,8 +12,8 @@ def load_data():
     drugbank_data = _load_data(DRUGBANK_INPUT_FILE)
     return drugbank_data
     
-def get_mapping():    
-    mapping = {
+def get_mapping():       
+    mapping = {        
         "drugbank": {
             "properties": {
                 "name": {
@@ -41,10 +41,11 @@ def get_mapping():
                     "type":"string"
                 },
                 "dpd": {
-                    "type":"string"
+                    "type":"string"                    
                 },
                 "groups": {
-                    "type":"string"
+                    "type":"string",
+                    "analyzer":"string_lowercase"
                 },
                 "fasta_sequences": { 
                     "type":"string"
@@ -67,10 +68,10 @@ def get_mapping():
                 "iupac": {
                     "type":"string"
                 },
-                "synonyms": {  
-                    "type":"string"
-                },
-                "weight": {
+                "synonyms": {                                             
+                    "type":"string"                    
+                },               
+               "weight": {
                     "properties": {
                         "average": {
                             "type":"float"                            
@@ -82,7 +83,7 @@ def get_mapping():
                 },
                 "accession_number": {  
                     "type":"string",
-                    "analyzer":"string_lowercase"
+                    "analyzer":"string_lowercase"                    
                 },
                 "formula": {  
                     "type":"string",
@@ -102,10 +103,11 @@ def get_mapping():
                             "analyzer":"string_lowercase"
                         }
                     }
-                },
-                "food_interaction": {  
-                    "type":"string"                                        
-                } ,             
+                }, 
+
+                "food_interaction": {
+                    "type":"string"             
+                },        
                 "pharmacology": {
                     "properties": {
                         "toxicity": {
@@ -148,7 +150,8 @@ def get_mapping():
                             "type":"string"
                         }                       
                     }
-                },
+                },      
+
                 "experimental_properties": {
                     "properties": {
                         "melting_point": {  
@@ -167,7 +170,7 @@ def get_mapping():
                             "type":"float"
                         },
                         "pka": {
-                            "type":"float"
+                            "type":"string"
                         },
                         "water_solubility": {
                             "type":"string"
@@ -183,7 +186,7 @@ def get_mapping():
                 "predicted_properties": {
                     "properties": {
                         "mddr_like_rule": {  
-                            "type":"string"                            
+                            "type":"boolean"                            
                         },
                         "logs": {
                             "type":"float"                            
@@ -195,7 +198,7 @@ def get_mapping():
                             "type":"integer"
                         },
                         "ghose_filter": {  
-                            "type":"string"
+                            "type":"boolean"
                         },
                         "h_bond_donor_count": {
                             "type":"integer"
@@ -220,15 +223,14 @@ def get_mapping():
                         },
                         "smiles": { 
                             "type":"string",
-                            "analyzer":"string_lowercase"
-                            
+                            "analyzer":"string_lowercase"                            
                         },
                         "inchikey": { 
                             "type":"string" ,
                             "analyzer":"string_lowercase"
                         },
                         "bioavailability": {  
-                            "type":"string"
+                            "type":"boolean"
                         },
                         "physiological_charge": {
                             "type":"float"
@@ -244,7 +246,7 @@ def get_mapping():
                             "type":"float"
                         },
                         "rule_of_five": {  
-                            "type":"string"
+                            "type":"boolean"
                         },
                         "refractivity": {
                             "type":"float"
@@ -267,7 +269,8 @@ def get_mapping():
                 "taxonomy": {
                     "properties": {
                         "kingdom": {
-                            "type":"string"                            
+                            "type":"string"  ,
+                            "analyzer":"string_lowercase"                          
                         },
                         "description": {
                             "type":"string"                            
@@ -276,10 +279,10 @@ def get_mapping():
                             "type":"string"                            
                         },
                         "substituent": {  
-                            "type":"string"                           
+                            "type":"string"                            
                         },
                         "alternative_parent": {  
-                            "type":"string"                           
+                            "type":"string"                                    
                         },
                         "superclass": {
                             "type":"string"                            
@@ -292,14 +295,14 @@ def get_mapping():
                         }
                     }
                 }, 
-                "packagers": {  
-                    "type":"string"                    
+                "packagers": { 
+                    "type":"string"                   
                 },
-                "manufacturers": {  
-                    "type":"string"                                        
+                "manufacturers": { 
+                    "type":"string"                                                            
                 },              
-                "categories": {  
-                    "type":"string"                                       
+                "categories": {                    
+                    "type":"string"                   
                 },                
                 "products": {
                     "properties": {
@@ -326,9 +329,9 @@ def get_mapping():
                         }                        
                     }
                 }
+
             }
         }
-    }
+    }  
+    
     return mapping
-
-
