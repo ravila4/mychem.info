@@ -101,5 +101,9 @@ def merge(src, target, step=10000, confirm=True):
         return
 
     for doc in doc_feeder(src, step=step):        
-        _id = doc[src]['inchi_key']
+        try:
+	    _id = doc[src]['inchi_key']
+	except:
+	    _id = doc['_id']
+        doc.update({'_id':_id,src=doc[src]})
         target.update_one({"_id": _id}, {'$set': doc}, upsert=True)
