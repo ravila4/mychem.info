@@ -105,5 +105,5 @@ def merge(src, target, step=10000, confirm=True):
 	    _id = doc[src]['inchi_key']
 	except:
 	    _id = doc['_id']
-        doc.update({'_id':_id,src=doc[src]})
+        doc.update({'_id':_id,src:doc[src]})
         target.update_one({"_id": _id}, {'$set': doc}, upsert=True)
