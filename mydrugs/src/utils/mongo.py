@@ -5,7 +5,7 @@ try:
 except:
     from pymongo import MongoClient as Connection
 from config import (DATA_SRC_SERVER, DATA_SRC_PORT, DATA_SRC_DATABASE,
-                    DATA_SRC_DUMP_COLLECTION, DATA_SERVER_USERNAME, DATA_SERVER_PASSWORD)
+                    DATA_SERVER_USERNAME, DATA_SERVER_PASSWORD)
 from utils.common import timesofar, ask
 
 def get_conn(server, port):
