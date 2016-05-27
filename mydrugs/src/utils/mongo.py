@@ -46,8 +46,8 @@ def doc_feeder(collection, step=1000, s=None, e=None, inbatch=False, query=None,
        batch_callback is a callback function as fn(cnt, t), called after every batch
        fields is optional parameter passed to find to restrict fields to return.
     '''
-    src = get_src_db()
-    cur = src[collection].find()
+    #src = get_src_db()
+    cur = collection.find()
     n = cur.count()
     s = s or 0
     e = e or n
@@ -96,14 +96,18 @@ def doc_feeder(collection, step=1000, s=None, e=None, inbatch=False, query=None,
 
 def merge(src, target, step=10000, confirm=True):
     """Merging docs from src collection into target collection."""
-    cnt = src.count()
-    if not (confirm and ask('Continue to update {} docs from "{}" into "{}"?'.format(cnt, src.name, target.name)) == 'Y'):
+    db = get_src_db()
+    src_coll = db[src]
+    target_coll = db[target]
+    cnt = src_coll.count()
+    if not (confirm and ask('Continue to update {} docs from "{}" into "{}"?'.format(cnt, src_coll.name, target_coll.name)) == 'Y'):
         return
 
-    for doc in doc_feeder(src, step=step):        
+    for doc in doc_feeder(src_coll, step=step):        
+        d = {}
         try:
 	    _id = doc[src]['inchi_key']
 	except:
 	    _id = doc['_id']
-        doc.update({'_id':_id,src:doc[src]})
-        target.update_one({"_id": _id}, {'$set': doc}, upsert=True)
+        d.update({'_id':_id,src:doc[src]})
+        target_coll.update_one({"_id": _id}, {'$set': d}, upsert=True)
