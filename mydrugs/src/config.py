@@ -3,11 +3,11 @@
 # Elasticsearch variables
 # *****************************************************************************
 # elasticsearch server transport url
-ES_HOST = 'localhost:9200'
+ES_HOST = 'su03:9200'
 # elasticsearch index name
 ES_INDEX_NAME = 'mydrugs_current'
 # elasticsearch document type
-ES_DOC_TYPE = 'drugs'
+ES_DOC_TYPE = 'drug'
 # Only these options are passed to the elasticsearch query from kwargs
 ALLOWED_OPTIONS = ['_source', 'start', 'from_', 'size', 'fields',
                    'sort', 'explain', 'version', 'facets', 'fetch_all']
@@ -38,7 +38,7 @@ GA_TRACKER_URL = 'MyDrugs.info'
 # URL settings
 # *****************************************************************************
 # For URL stuff
-ANNOTATION_ENDPOINT = 'drugs'
+ANNOTATION_ENDPOINT = 'drug'
 QUERY_ENDPOINT = 'query'
 API_VERSION = 'v1'
 # TODO Fill in a status id here

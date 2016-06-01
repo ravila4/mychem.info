@@ -32,8 +32,8 @@ def return_applist():
         ret += [
             (r"/" + biothing_settings._api_version + "/metadata", MetaDataHandler),
             (r"/" + biothing_settings._api_version + "/metadata/fields", FieldsHandler),
-            (r"/" + biothing_settings._api_version + "/drugs/(.+)/?", DrugsHandler),
-            (r"/" + biothing_settings._api_version + "/drugs/?$", DrugsHandler),
+            (r"/" + biothing_settings._api_version + "/drug/(.+)/?", DrugsHandler),
+            (r"/" + biothing_settings._api_version + "/drug/?$", DrugsHandler),
             (r"/" + biothing_settings._api_version + "/query/?", QueryHandler),
         ]
     else:
