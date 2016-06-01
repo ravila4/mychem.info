@@ -9,10 +9,13 @@ ES_INDEX_NAME = 'mydrugs_current'
 # elasticsearch document type
 ES_DOC_TYPE = 'drugs'
 # Only these options are passed to the elasticsearch query from kwargs
-ALLOWED_OPTIONS = ['_source', 'start', 'from_', 'size',
-                   'sort', 'explain', 'version', 'facets', 'fetch_all', 'host']
+ALLOWED_OPTIONS = ['_source', 'start', 'from_', 'size', 'fields',
+                   'sort', 'explain', 'version', 'facets', 'fetch_all']
 ES_SCROLL_TIME = '1m'
 ES_SCROLL_SIZE = 1000
+ES_SIZE_CAP = 1000
+# This is the module for loading the esq variable in handlers
+ES_QUERY_MODULE = 'api.es'
 
 # *****************************************************************************
 # Google Analytics Settings
@@ -42,4 +45,5 @@ API_VERSION = 'v1'
 STATUS_CHECK_ID = ''
 # Path to a file containing a json object with information about elasticsearch fields
 FIELD_NOTES_PATH = ''
-
+# Path to a file containing a json object with the json-ld context information
+JSONLD_CONTEXT_PATH = ''

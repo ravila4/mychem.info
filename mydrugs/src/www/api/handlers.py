@@ -8,24 +8,19 @@ biothing_settings = BiothingSettings()
 
 class DrugsHandler(BiothingHandler):
     ''' This class is for the /drugs endpoint. '''
-    esq = ESQuery()
 
 class QueryHandler(QueryHandler):
     ''' This class is for the /query endpoint. '''
-    esq = ESQuery()
 
 class StatusHandler(StatusHandler):
     ''' This class is for the /status endpoint. '''
-    esq = ESQuery()
 
 class FieldsHandler(FieldsHandler):
     ''' This class is for the /metadata/fields endpoint. '''
-    esq = ESQuery()
 
 class MetaDataHandler(MetaDataHandler):
     ''' This class is for the /metadata endpoint. '''
-    esq = ESQuery()
-
+    disable_caching = True
 
 def return_applist():
     ret = [
