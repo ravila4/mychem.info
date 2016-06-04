@@ -53,9 +53,6 @@ def restructure_dict(dictionary):
         elif key == 'description':            
             d1.update({'pharmacology':{key:value}})         
             
-        elif key == 'cas-number':
-            d1['cas'] = value
-            
         elif key == 'groups':
             for i,j in value.iteritems():
                 d1[key] = j
