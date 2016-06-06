@@ -97,8 +97,7 @@ def restructure_dict(dictionary):
 
         elif key == 'classification' and value:
             for m,n in value.iteritems():
-                m = m.lower()
-                m = m.replace('-','_')
+                m = m.lower().replace('-','_')
                 d1.update({'taxonomy':value})                    
         
         elif key == 'salts'and value:
@@ -223,8 +222,8 @@ def restructure_dict(dictionary):
                     d1.update({key:y})                      
         
         elif key == 'drug-interactions' and value:
-            key = key.lower()
-            key = key.replace('-','_')            
+            key = key.lower().replace('-','_')
+            #key = key.replace('-','_')            
             for x,y in value.iteritems():
                 d1.update({key:y})               
 
@@ -243,17 +242,13 @@ def restructure_dict(dictionary):
                     for m in y:
                         for i in m:
                             k1 = m['kind']
-                            k1 = k1.lower()
-                            k1 = k1.replace(' ','_')
-                            k1 = k1.replace('-','_')
+                            k1 = k1.lower().replace(' ','_').replace('-','_')
                             d1_exp_properties[k1] = m['value']  
                             d1.update({key:d1_exp_properties})                                                 
                 if isinstance(y,dict) or isinstance(y,collections.OrderedDict):
                     for i,j in y.iteritems():
                         k1 = y['kind']
-                        k1 = k1.lower()
-                        k1 = k1.replace(' ','_')
-                        k1 = k1.replace('-','_')
+                        k1 = k1.lower().replace(' ','_').replace('-','_')
                         d1_exp_properties[k1] = y['value'] 
                         d1.update({key:d1_exp_properties})                      
                         
@@ -263,9 +258,7 @@ def restructure_dict(dictionary):
                     for m in y:
                         for i in m:  #m is the dictionary  
                             k = m['kind']
-                            k = k.lower()
-                            k = k.replace(' ','_')
-                            k = k.replace('-','_')
+                            k = k.lower().replace(' ','_').replace('-','_')
                             pred_properties_dict[k] = m['value']                                                                                                                 
                             if m['kind'] == "IUPAC Name":
                                 d1.update({'iupac':m['value']})                                
@@ -288,9 +281,7 @@ def restructure_dict(dictionary):
                 if isinstance(y,dict) or isinstance(y,collections.OrderedDict):
                     for i,j in y.iteritems():
                         k = y['kind']
-                        k = k.lower()
-                        k = k.replace(' ','_')
-                        k = k.replace('-','_')
+                        k = k.lower().replace(' ','_').replace('-','_')
                         pred_properties_dict[k] = y['value']                      
                         if y['kind'] == "IUPAC Name":
                             d1.update({'iupac':y['value']})                            
