@@ -2,7 +2,8 @@ from __future__ import print_function
 import urllib2
 import json
 import collections
-from utils.dataload import dict_sweep, unlist, value_convert, boolean_convert
+from biothings.utils.dataload import dict_sweep, unlist, value_convert, boolean_convert
+from utils.dataload import boolean_convert
 
 def load_data(path):
     molecules_list = []      
