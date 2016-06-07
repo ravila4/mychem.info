@@ -4,6 +4,7 @@ import urllib2
 import re
 import gzip
 import os
+from biothings.utils.dataload import value_convert
 
 def load_source(url):
     compound_list = []   
