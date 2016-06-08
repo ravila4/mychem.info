@@ -2,7 +2,6 @@ from __future__ import print_function
 import xmltodict
 import json
 import collections
-import urllib2
 from utils.dataload import dict_sweep, unlist, value_convert, boolean_convert  
     
 def load_data(xml_file):
@@ -16,13 +15,42 @@ def load_data(xml_file):
     f.close()
     return drug_list  
 
+def restr_protein_dict(dictionary):        
+    _li1 = ['id', 'name', 'organism']
+    _dict = {}
+    for x,y in dictionary.iteritems():
+        if x in _li1:                
+            _dict.update({x:y})                      
+        elif x == 'actions' and y:
+            for z in y:
+                _dict.update({x:y[z]})                
+        elif x == 'known-action':
+            x = x.replace('-','_')
+            _dict.update({x:dictionary['known-action']})
+        elif x == 'polypeptide':                
+            _li2 = ['general-function','specific-function']                
+            for i in y:
+                if i ==  "@id":
+                    _dict.update({'uniprot':y[i]})
+                elif i == "@source":
+                    _dict.update({'source':y[i]})                                                             
+                elif i in _li2:
+                    j = i.replace('-','_')
+                    _dict.update({j:y[i]})                    
+    return _dict
+
 def restructure_dict(dictionary):
     restr_dict = dict()
-    d1 = dict()       
-    products_list = [] 
-    categories_list = []    
-    pred_properties_dict = {}
-
+    d1 = dict()   
+    pred_properties_dict = {} 
+    products_list = []
+    categories_list = []
+    enzymes_list = []
+    targets_list = []  
+    carriers_list = [] 
+    transporters_list = []
+    atccode_list = []
+    
     for key,value in dictionary.iteritems():
         if key == 'name' and value:
             d1[key] = value
@@ -38,20 +66,24 @@ def restructure_dict(dictionary):
                                 id_list.append(y)
                                 d1.update({'accession_number':id_list})                                
                                 restr_dict['_id'] = y
+                                
                     if isinstance(ele,unicode):
                         key = key.replace('-','_')
                         id_list.append(ele)
-                        d1.update({'accession_number':id_list})                        
+                        d1.update({'accession_number':id_list}) 
+                        
             elif isinstance(value,dict) or isinstance(value,collections.OrderedDict):
                 for x,y in value.iteritems():
                     if x == '#text':
                         key = key.replace('-','_')
                         id_list.append(y)
                         d1.update({key:id_list})                        
-                        restr_dict['_id'] = y             
-                        
+                        restr_dict['_id'] = y
+            else:
+                print value 
+                
         elif key == 'description':            
-            d1.update({'pharmacology':{key:value}})         
+            d1.update({'pharmacology':{key:value}})      
             
         elif key == 'groups':
             for i,j in value.iteritems():
@@ -97,68 +129,59 @@ def restructure_dict(dictionary):
 
         elif key == 'classification' and value:
             for m,n in value.iteritems():
-                m = m.lower().replace('-','_')
+                m = m.lower().replace('-','_')                
                 d1.update({'taxonomy':value})                    
         
         elif key == 'salts'and value:
-            salts_list = []
+            salts_list = [] 
+            
             for m,n in value.iteritems():
                 if isinstance(n,list):
                     for ele in n:
                         for k in ele:
                             if k == 'name':
                                 salts_list.append(ele[k])
-                                d1.update({key:salts_list})                            
+                                d1.update({key:salts_list})       
+                                
                 elif isinstance(n,dict) or isinstance(n,collections.OrderedDict):
-                    d1.update({key:n['name']})
-            
+                    d1.update({key:n['name']}) 
+                               
         elif key == 'synonyms' and value:
-            synonym_list = []            
+            synonym_list = []                          
             if isinstance(value,collections.OrderedDict):
-                for k,l in value.iteritems():
-                    for e in l:
-                        for g in e:
-                            if g == '#text':
-                                synonym_list.append(e[g])                                
-                                d1.update({key:synonym_list})
-
-        elif key == 'products'and value:
-            products_dict = {}  
-                     
-            for d,f in value.iteritems():
-                if isinstance(f,dict) or isinstance(f,collections.OrderedDict):                    
-                    for p in f:                
-                        if p == 'name':
-                            products_dict[p] = f[p]                            
-                        if p == 'dosage-form':
-                            products_dict['dosage_form'] = f[p]                           
-                        if p == 'strength':
-                            products_dict[p] = f[p]                            
-                        if p == 'route':
-                            products_dict[p] = f[p]                            
-                        if p == 'over-the-counter':
-                            products_dict['otc'] = f[p]                            
-                        if p == 'generic':
-                            products_dict[p] = f[p]
-                    products_list.append(products_dict)
-                    products_dict = {}                                                    
-                if isinstance(f,list):
-                    for p in f:
-                        for i,j in p.iteritems():
-                            if i == 'name':
-                                products_dict[i] = j                                
-                            if i == 'dosage-form':
-                                products_dict['dosage_form'] = j                                
-                            if i == 'strength':
-                                products_dict[i] = j                                
-                            if i == 'route':
-                                products_dict[i] = j                                
-                            if i == 'over-the-counter':
-                                products_dict['otc'] = j                                
-                            if i == 'generic':
-                                products_dict[i] = j
-                        products_list.append(products_dict)
-                        products_dict = {}           
+                for x,y in value.iteritems():
+                    for ele in y:
+                        for name in ele:
+                            if name == '#text':
+                                synonym_list.append(ele[name])                                
+                                d1.update({key:synonym_list})                              
+         
+        elif key == 'products'and value: 
+            def restr_product_dict(dictionary):
+                products_dict = {}
+                for x in dictionary:                
+                    if x == 'name':
+                        products_dict[x] = dictionary[x]                            
+                    if x == 'dosage-form':
+                        products_dict['dosage_form'] = dictionary[x]                           
+                    if x == 'strength':
+                        products_dict[x] = dictionary[x]                            
+                    if x == 'route':
+                        products_dict[x] = dictionary[x]                            
+                    if x == 'over-the-counter':
+                        products_dict['otc'] = dictionary[x]                            
+                    if x == 'generic':
+                        products_dict[x] = dictionary[x]
+                return products_dict
+                
+            for x,y in value.iteritems():
+                if isinstance(y,dict) or isinstance(y,collections.OrderedDict):                    
+                    _d = restr_product_dict(y)
+                    products_list.append(_d)                        
+                    
+                elif isinstance(y,list):
+                    for _d in y:                        
+                        products_list.append(restr_product_dict(_d))                                  
 
         elif key == 'packagers' and value:
             pack_list = []
@@ -176,27 +199,24 @@ def restructure_dict(dictionary):
                     for i in y:
                         if i == '#text':                            
                             manuf_list.append(y[i]) 
-                            d1.update({key:manuf_list})     
+                            d1.update({key:manuf_list})   
                      
                 if isinstance(y,list):
                     for i in y:
                         for m,n in i.iteritems():
                             if m == '#text':                                 
                                 manuf_list.append(n)
-                                d1.update({key:manuf_list})                                              
+                                d1.update({key:manuf_list})                                  
                              
         elif key == 'categories' and value:
             for x,y in value.iteritems():
-                for i in y:
-                    for m in i:
-                        if m == 'category':
-                            categories_list.append(i[m]) 
-
+                d1.update({key:y}) 
+            
         elif key == "snp-effects" and value:            
             key = key.replace('-','_')
             d1['pharmacology'].update({key:value})           
                              
-        elif key == "snp-adverse-drug-reactions" and value:                    
+        elif key == "snp-adverse-drug-reactions" and value:                       
             key = key.replace('-','_')
             d1['pharmacology'].update({key:value})
                 
@@ -222,115 +242,192 @@ def restructure_dict(dictionary):
                     d1.update({key:y})                      
         
         elif key == 'drug-interactions' and value:
-            key = key.lower().replace('-','_')
-            #key = key.replace('-','_')            
+            key = key.replace('-','_')            
             for x,y in value.iteritems():
-                d1.update({key:y})               
+                d1.update({key:y})                
 
         elif key == 'sequences'and value:
             for x,y in value.iteritems():
                 for i in y:
                     if i == '@format':
                         str1 = y[i]+'_sequences'
-                        d1[str1] = y['#text']
+                        d1[str1] = y['#text'].replace('\n',' ')
         
         elif key == 'experimental-properties' and value:
-            d1_exp_properties = {}
-            for x,y in value.iteritems():
+            d1_exp_properties = {}            
+            def restr_properties_dict(dictionary):
+                for x,y in dictionary.iteritems():
+                    k1 = dictionary['kind']
+                    k1 = k1.lower().replace(' ','_').replace('-','_')                        
+                    d1_exp_properties[k1] = dictionary['value'] 
+                return d1_exp_properties
+                                        
+            for ele in value:
                 key = key.replace('-','_')
-                if isinstance(y,list):
-                    for m in y:
-                        for i in m:
-                            k1 = m['kind']
-                            k1 = k1.lower().replace(' ','_').replace('-','_')
-                            d1_exp_properties[k1] = m['value']  
-                            d1.update({key:d1_exp_properties})                                                 
-                if isinstance(y,dict) or isinstance(y,collections.OrderedDict):
-                    for i,j in y.iteritems():
-                        k1 = y['kind']
-                        k1 = k1.lower().replace(' ','_').replace('-','_')
-                        d1_exp_properties[k1] = y['value'] 
-                        d1.update({key:d1_exp_properties})                      
+                if isinstance(value[ele],list):
+                    for _d in value[ele]:
+                        _d = restr_properties_dict(_d)                        
+                        d1.update({key:_d})    
                         
+                if isinstance(value[ele],dict) or isinstance(value[ele],collections.OrderedDict):
+                    _d = restr_properties_dict(value[ele]) 
+                    d1.update({key:_d})                       
+                       
         elif key == 'calculated-properties' and value:           
+            def restr_properties_dict(dictionary):
+                for x in dictionary:
+                    k = dictionary['kind']
+                    k = k.lower().replace(' ','_').replace('-','_')
+                    pred_properties_dict[k] = dictionary['value']                               
+                       
+                    if dictionary['kind'] == "IUPAC Name":
+                        d1.update({'iupac':dictionary['value']})                            
+                    elif dictionary['kind'] == "SMILES":
+                        d1.update({'smiles':dictionary['value']})                            
+                    elif dictionary['kind'] == "Molecular Formula":
+                        d1.update({'formula':dictionary['value']})                            
+                    elif dictionary['kind'] == "InChI":
+                        d1.update({'inchi':dictionary['value']})                            
+                    elif dictionary['kind'] == "InChIKey":
+                        if dictionary['value'][0:9] == 'InChIKey=':    
+                            d1.update({'inchi_key':dictionary['value'][9:]})                                
+                        else:
+                            d1.update({'inchi_key':dictionary['value']})                                 
+                    elif dictionary['kind'] == "Molecular Weight":                            
+                        d1.update({'weight':{'average':dictionary['value']}})                           
+                    elif dictionary['kind'] == "Monoisotopic Weight":
+                        d1['weight'].update({'monoisotopic':dictionary['value']})  
+                
             for x,y in value.iteritems():
                 if isinstance(y,list):
-                    for m in y:
-                        for i in m:  #m is the dictionary  
-                            k = m['kind']
-                            k = k.lower().replace(' ','_').replace('-','_')
-                            pred_properties_dict[k] = m['value']                                                                                                                 
-                            if m['kind'] == "IUPAC Name":
-                                d1.update({'iupac':m['value']})                                
-                            elif m['kind'] == "SMILES":                                
-                                d1.update({'smiles':m['value']})
-                            elif m['kind'] == "Molecular Formula":
-                                d1.update({'formula':m['value']})                                
-                            elif m['kind'] == "InChI":
-                                d1.update({'inchi':m['value']})                                
-                            elif m['kind'] == "InChIKey":                                
-                                if m['value'][0:9] == 'InChIKey=':
-                                    d1.update({'inchi_key':m['value'][9:]})                                    
-                                else:
-                                    d1.update({'inchi_key':m['value']})                                    
-                            elif m['kind'] == "Molecular Weight":                                   
-                                d1.update({'weight':{'average':m['value']}})                             
-                            elif m['kind'] == "Monoisotopic Weight":                                  
-                                d1['weight'].update({'monoisotopic':m['value']})                           
-                                
+                    for _d in y:
+                        _d = restr_properties_dict(_d)
+                        
                 if isinstance(y,dict) or isinstance(y,collections.OrderedDict):
-                    for i,j in y.iteritems():
-                        k = y['kind']
-                        k = k.lower().replace(' ','_').replace('-','_')
-                        pred_properties_dict[k] = y['value']                      
-                        if y['kind'] == "IUPAC Name":
-                            d1.update({'iupac':y['value']})                            
-                        elif y['kind'] == "SMILES":
-                            d1.update({'smiles':y['value']})                            
-                        elif y['kind'] == "Molecular Formula":
-                            d1.update({'formula':y['value']})                            
-                        elif y['kind'] == "InChI":
-                            d1.update({'inchi':y['value']})                            
-                        elif y['kind'] == "InChIKey":
-                            if y['value'][0:9] == 'InChIKey=':    
-                                d1.update({'inchi_key':y['value'][9:]})                               
-                            else:
-                                d1.update({'inchi_key':y['value']})                                
-                        elif y['kind'] == "Molecular Weight":                            
-                            d1.update({'weight':{'average':y['value']}})                           
-                        elif y['kind'] == "Monoisotopic Weight":
-                            d1['weight'].update({'monoisotopic':y['value']})                                                                        
+                    _d = restr_properties_dict(y)                                                                                          
                             
         elif key == 'external-identifiers' and value:
-            for x,y in value.iteritems():
-                for m in y:
-                    for i in m:
-                        if i == 'resource':
-                            if m[i] == "Drugs Product Database (DPD)":
-                                d1['dpd'] = m['identifier']
-                            if m[i] == "KEGG Drug":
-                                d1['kegg'] = m['identifier']
-                            if m[i] == "National Drug Code Directory":
-                                d1['ndc_directory'] = m['identifier']
-                            if m[i] == "PharmGKB":
-                                d1['pharmgkb'] = m['identifier']
-                            if m[i] == "UniProtKB":
-                                d1['uniprotkb'] = m['identifier']
-                            if m[i] == "Wikipedia":
-                                d1['wikipedia'] = m['identifier']  
+            for ele in value['external-identifier']:
+                for x in ele:
+                    if x == 'resource':
+                        if ele[x] == "Drugs Product Database (DPD)":
+                            d1['dpd'] = ele['identifier']
+                        elif ele[x] == "KEGG Drug":
+                            d1['kegg'] = ele['identifier']
+                        elif ele[x] == "National Drug Code Directory":
+                            d1['ndc_directory'] = ele['identifier']
+                        elif ele[x] == "PharmGKB":
+                            d1['pharmgkb'] = ele['identifier']
+                        elif ele[x] == "UniProtKB":
+                            d1['uniprotkb'] = ele['identifier']
+                        elif ele[x] == "Wikipedia":
+                                d1['wikipedia'] = ele['identifier']            
 
         elif key == 'patents'and value:           
             if isinstance(value,dict):                
                 for x in value:
-                    d1.update({key:value[x]})     
-    
-    d1['categories'] = categories_list
+                    d1.update({key:value[x]})   
+                    
+        elif key == 'international-brands' and value:
+            key = key.lower().replace('-','_')
+            d1.update({key:value['international-brand']})
+            
+        elif key == 'mixtures' and value:            
+            d1.update({key:value['mixture']})  
+         
+        elif key == 'pathways' and value:
+            _li = []               
+            def restr_pathway_dict(dictionary):
+                _dict = {}
+                for x,y in dictionary.iteritems():
+                    if x == 'smpdb-id':
+                        _dict.update({'smpdb_id':y})
+                    elif x == 'name':
+                        _dict.update({x:y})
+                    elif x == 'drugs':
+                        _dict.update({x:y['drug']})
+                    elif x == 'enzymes':
+                        _dict.update({x:y}) 
+                return _dict
+
+            if isinstance(value['pathway'],list):
+                for ele in value['pathway']:
+                    _dict = restr_pathway_dict(ele)
+                    _li.append(_dict)
+                    d1.update({key:_li})
+                
+            elif isinstance(value['pathway'],dict) or isinstance(value['pathway'],OrderedDict):
+                _dict = restr_pathway_dict(value['pathway'])
+                d1.update({key:_dict})    
+           
+        elif key == 'targets' and value:                           
+            if isinstance(value['target'],list):        
+                for dictionary in value['target']:
+                    _dict = restr_protein_dict(dictionary)
+                    targets_list.append(_dict)                    
+                                
+            elif isinstance(value['target'],dict) or isinstance(value['target'],OrderedDict):
+                _dict = restr_protein_dict(value['target'])
+                targets_list.append(_dict)          
+        
+        elif key == 'enzymes' and value:                           
+            if isinstance(value['enzyme'],list):        
+                for dictionary in value['enzyme']:
+                    _dict = restr_protein_dict(dictionary)
+                    enzymes_list.append(_dict)                    
+                                
+            elif isinstance(value['enzyme'],dict) or isinstance(value['enzyme'],OrderedDict):
+                _dict = restr_protein_dict(value['enzyme'])
+                enzymes_list.append(_dict)         
+        
+        elif key == 'transporters' and value:                        
+            if isinstance(value['transporter'],list):        
+                for dictionary in value['transporter']:
+                    _dict = restr_protein_dict(dictionary)
+                    transporters_list.append(_dict)                    
+                                
+            elif isinstance(value['transporter'],dict) or isinstance(value['transporter'],OrderedDict):
+                _dict = restr_protein_dict(value['transporter'])
+                transporters_list.append(_dict)                    
+        
+        elif key == 'carriers' and value:                           
+            if isinstance(value['carrier'],list):        
+                for dictionary in value['carrier']:
+                    _dict = restr_protein_dict(dictionary)
+                    carriers_list.append(_dict)                  
+                                
+            elif isinstance(value['carrier'],dict) or isinstance(value['carrier'],OrderedDict):
+                _dict = restr_protein_dict(value['carrier'])
+                carriers_list.append(_dict)              
+        
+        elif key == 'atc-codes' and value:                        
+            def restr_atccode_dict(dictionary):               
+                for x in dictionary:                    
+                    if x == '@code':
+                        atccode_list.append(dictionary[x])                        
+                return atccode_list                       
+                    
+            if isinstance(value['atc-code'], list):
+                for _d in value['atc-code']:                    
+                    restr_atccode_dict(_d)  
+                    
+            elif isinstance(value['atc-code'], dict) or isinstance(value['atc-code'], OrderedDict):                
+                restr_atccode_dict(value['atc-code'])
+                
+       
+    d1['atc_codes'] = atccode_list
+    d1['targets'] = targets_list
+    d1['carriers'] = carriers_list
+    d1['enzymes'] = enzymes_list
+    d1['transporters'] = transporters_list    
     d1['predicted_properties'] = pred_properties_dict  
     d1['products'] = products_list            
     restr_dict['drugbank'] = d1     
-    restr_dict = value_convert(dict_sweep(unlist(restr_dict)), skipped_keys=["dpd"])        
-    restr_dict = boolean_convert(restr_dict,added_keys=["mddr_like_rule","bioavailability","ghose_filter","rule_of_five"])        
-    return restr_dict         
+    restr_dict = unlist(restr_dict) 
+    restr_dict = dict_sweep(restr_dict)      
+    restr_dict = boolean_convert(restr_dict)
+    restr_dict = value_convert(restr_dict)    
+    return restr_dict       
 
 
     
