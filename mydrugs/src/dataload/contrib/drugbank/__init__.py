@@ -107,7 +107,251 @@ def get_mapping():
 
                 "food_interaction": {
                     "type":"string"             
-                },        
+                },
+                "international_brands" : {
+                    "properties" : {
+                        "company" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"                            
+                            },
+                        "name" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            }
+                        }
+                    },
+                "targets" : {
+                    "properties" : {
+                        "organism" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "id" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "name" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "uniprot" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "source" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "specific_function" : {
+                            "type":"string"                             
+                            },
+                        "general_function" : {
+                            "type":"string" 
+                            },
+                        "actions" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "known_action" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            }
+                        }
+                    },
+                "transporters" : {
+                    "properties" : {
+                        "organism" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "id" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "name" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "uniprot" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "source" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "specific_function" : {
+                            "type":"string"                             
+                            },
+                        "general_function" : {
+                            "type":"string" 
+                            },
+                        "actions" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "known_action" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            }
+                        }
+                    },
+                "enzymes" : {
+                    "properties" : {
+                        "organism" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "id" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "name" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "uniprot" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "source" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "specific_function" : {
+                            "type":"string"                             
+                            },
+                        "general_function" : {
+                            "type":"string" 
+                            },
+                        "actions" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "known_action" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            }
+                        }
+                    },
+                "carriers" : {
+                    "properties" : {
+                        "organism" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "id" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "name" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "uniprot" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "source" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "specific_function" : {
+                            "type":"string"                             
+                            },
+                        "general_function" : {
+                            "type":"string" 
+                            },
+                        "actions" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "known_action" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            }
+                        }
+                    },
+                "mixtures" : {
+                    "properties" : {
+                        "name" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"                           
+                            },
+                        "ingredients" : {
+                            "type":"string"                             
+                            }
+                        }
+                    },
+                "pathways" : {
+                    "properties" : {
+                        "drugs" : {
+                            "properties" : {
+                                "drugbank-id" : {
+                                    "type":"string" ,
+                                    "analyzer":"string_lowercase"
+                                    },
+                                "name" : {
+                                    "type":"string" ,
+                                    "analyzer":"string_lowercase"
+                                    }
+                                }
+                            },
+                        "enzymes" : {
+                            "properties" : {
+                                "uniprot-id" : {
+                                    "type":"string" ,
+                                    "analyzer":"string_lowercase"
+                                    }
+                                }
+                            },
+                        "smpdb_id" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "name" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            }
+                        }                    
+                    },
+                "categories" : {
+                    "properties" : {
+                        "category" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "mesh-id" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            }
+                        }
+                    },
+                "atc_codes" : {
+                    "type":"string" ,
+                    "analyzer":"string_lowercase"
+                    },
+                "salts" : {
+                    "type":"string" ,
+                    "analyzer":"string_lowercase"
+                    },
+                "patents" : {
+                    "properties" : {
+                        "country" : {
+                            "type":"string" ,
+                            "analyzer":"string_lowercase"
+                            },
+                        "expires" : {
+                            "type":"string"                            
+                            },
+                        "number" : {
+                            "type":"string" 
+                            },
+                        "approved" : {
+                            "type":"string" 
+                            }
+                        }
+                    },
                 "pharmacology": {
                     "properties": {
                         "toxicity": {
@@ -300,10 +544,7 @@ def get_mapping():
                 },
                 "manufacturers": { 
                     "type":"string"                                                            
-                },              
-                "categories": {                    
-                    "type":"string"                   
-                },                
+                },                              
                 "products": {
                     "properties": {
                         "strength": {
