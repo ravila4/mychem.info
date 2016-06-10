@@ -2,9 +2,8 @@
 from biothings.www.api.handlers import MetaDataHandler, BiothingHandler, QueryHandler, StatusHandler, FieldsHandler
 from biothings.settings import BiothingSettings
 from www.api.es import ESQuery
-import config
 
-biothing_settings = BiothingSettings()
+bts = BiothingSettings()
 
 class DrugsHandler(BiothingHandler):
     ''' This class is for the /drugs endpoint. '''
@@ -28,18 +27,18 @@ def return_applist():
         (r"/metadata", MetaDataHandler),
         (r"/metadata/fields", FieldsHandler),
     ]
-    if biothing_settings._api_version:
+    if bts._api_version:
         ret += [
-            (r"/" + biothing_settings._api_version + "/metadata", MetaDataHandler),
-            (r"/" + biothing_settings._api_version + "/metadata/fields", FieldsHandler),
-            (r"/" + biothing_settings._api_version + "/drug/(.+)/?", DrugsHandler),
-            (r"/" + biothing_settings._api_version + "/drug/?$", DrugsHandler),
-            (r"/" + biothing_settings._api_version + "/query/?", QueryHandler),
+            (r"/" + bts._api_version + "/metadata", MetaDataHandler),
+            (r"/" + bts._api_version + "/metadata/fields", FieldsHandler),
+            (r"/" + "/".join([bts._api_version, bts._annotation_endpoint, "(.+)", "?"]), DrugsHandler),
+            (r"/" + "/".join([bts._api_version, bts._annotation_endpoint, "?$"]), DrugsHandler),
+            (r"/" + "/".join([bts._api_version, bts._query_endpoint, "?"]), QueryHandler),
         ]
     else:
         ret += [
-            (r"/drugs/(.+)/?", DrugsHandler),
-            (r"/drugs/?$", DrugsHandler),
-            (r"/query/?", QueryHandler),
+            (r"/" + bts._annotation_endpoint + "/(.+)/?", DrugsHandler),
+            (r"/" + bts._annotation_endpoint + "/?$", DrugsHandler),
+            (r"/" + bts._query_endpoint + "/?", QueryHandler),
         ]
     return ret
