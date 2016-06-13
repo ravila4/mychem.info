@@ -114,7 +114,7 @@ def get_mapping():
                 }
             }
         }
-        return mapping
+    return mapping
     
     
     
