@@ -6,7 +6,7 @@ import gzip
 import os
 from biothings.utils.dataload import value_convert
 
-def load_source(url):
+def load_data(url):
     compound_list = []   
     def handle(path,item):
         item = restructure_dict(item)
@@ -18,7 +18,6 @@ def load_source(url):
     links = re.findall('Compound_.*.gz', resp)  #find all url from the html 
     for x in links:
         new_url = url + x    
-        print 'Processing the url, ',new_url
         f = urllib2.urlopen(new_url)   
         data = f.read()       
         with open(temp_file,"w") as _file:
