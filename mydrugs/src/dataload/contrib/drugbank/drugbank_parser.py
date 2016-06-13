@@ -50,7 +50,7 @@ def restructure_dict(dictionary):
     carriers_list = [] 
     transporters_list = []
     atccode_list = []
-    
+        
     for key,value in dictionary.iteritems():
         if key == 'name' and value:
             d1[key] = value
@@ -79,8 +79,6 @@ def restructure_dict(dictionary):
                         id_list.append(y)
                         d1.update({key:id_list})                        
                         restr_dict['_id'] = y
-            else:
-                print value 
                 
         elif key == 'description':            
             d1.update({'pharmacology':{key:value}})      
