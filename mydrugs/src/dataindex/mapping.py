@@ -3,7 +3,7 @@ import importlib
 
 def get_mapping(sources=None):
     if sources is None:
-        sources = sources or ['drugbank', 'chembl']
+        sources = sources or ['drugbank', 'chembl','pubchem']
         extra_mapping_li = []
     else:
         extra_mapping_li = []
