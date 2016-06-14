@@ -396,35 +396,37 @@ def get_mapping():
                         "snp_adverse_drug_reactions" : {
                             "properties" : {
                                 "reactions" : {
-                                    "protein-name" : {
-                                        "type":"string" ,
-                                        "analyzer":"string_lowercase"                                        
-                                        },
-                                    "description" : {
-                                        "type":"string"                                                                               
-                                        },
-                                    "gene-symbol" : {
-                                        "type":"string" ,
-                                        "analyzer":"string_lowercase"                                        
-                                        },
-                                    "rs-id" : {
-                                        "type":"string" ,
-                                        "analyzer":"string_lowercase"                                        
-                                        },
-                                    "pubmed-id" : {
-                                        "type":"string" ,
-                                        "analyzer":"string_lowercase"                                        
-                                        },
-                                    "adverse-reaction" : {
-                                        "type":"string"                                                                                 
-                                        },
-                                    "uniprot-id" : {
-                                        "type":"string" ,
-                                        "analyzer":"string_lowercase"                                        
-                                        },
-                                    "allele" : {
-                                        "type":"string" ,
-                                        "analyzer":"string_lowercase"                                        
+                                    "properties" : {
+                                        "protein-name" : {
+                                            "type":"string" ,
+                                            "analyzer":"string_lowercase"                                        
+                                            },
+                                        "description" : {
+                                            "type":"string"                                                                               
+                                            },
+                                        "gene-symbol" : {
+                                            "type":"string" ,
+                                            "analyzer":"string_lowercase"                                        
+                                            },
+                                        "rs-id" : {
+                                            "type":"string" ,
+                                            "analyzer":"string_lowercase"                                        
+                                            },
+                                        "pubmed-id" : {
+                                            "type":"string" ,
+                                            "analyzer":"string_lowercase"                                        
+                                            },
+                                        "adverse-reaction" : {
+                                            "type":"string"                                                                                 
+                                            },
+                                        "uniprot-id" : {
+                                            "type":"string" ,
+                                            "analyzer":"string_lowercase"                                        
+                                            },
+                                        "allele" : {
+                                            "type":"string" ,
+                                            "analyzer":"string_lowercase"                                        
+                                            }
                                         }
                                     }
                                 }
