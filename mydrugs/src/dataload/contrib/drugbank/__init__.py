@@ -634,16 +634,14 @@ def get_mapping():
                             "type":"string"                             
                         },
                         "generic": {
-                            "type":"string",
-                            "analyzer":"string_lowercase"
+                            "type":"boolean"
                         },
                         "route": {
                             "type":"string",
                             "analyzer":"string_lowercase"
                         },
                         "otc": {
-                            "type":"string",
-                            "analyzer":"string_lowercase"
+                            "type":"boolean",
                         },
                         "dosage_form": {
                             "type":"string"                              
