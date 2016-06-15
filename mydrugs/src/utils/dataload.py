@@ -99,9 +99,9 @@ def to_boolean(val,true_str=['true','1', 't', 'y', 'yes', 'Y','Yes','YES',1],fal
     if type(val)!=str:
         return bool(val)
     else:
-        if val in s1:
+        if val in true_str:
             return True
-        elif val in s2:
+        elif val in false_str:
             return False
 
 # split fields by sep into comma separated lists, strip.
