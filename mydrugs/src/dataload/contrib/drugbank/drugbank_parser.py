@@ -2,7 +2,8 @@ from __future__ import print_function
 import xmltodict
 import json
 import collections
-from utils.dataload import dict_sweep, unlist, value_convert, boolean_convert  
+from biothings.utils.dataload import dict_sweep, unlist, value_convert  
+from utils.dataload import boolean_convert  
     
 def load_data(xml_file):
     drug_list = []        
@@ -10,15 +11,15 @@ def load_data(xml_file):
         item = restructure_dict(item)        
         drug_list.append(item)
         return True 
-    with open(xml_file) as f:
-        xmltodict.parse(f.read(),item_depth=2,item_callback=handle)           
+    with open(xml_file,'rb') as f:
+        xmltodict.parse(f,item_depth=2,item_callback=handle)           
     f.close()
     return drug_list  
 
 def restr_protein_dict(dictionary):        
     _li1 = ['id', 'name', 'organism']
     _dict = {}
-    for x,y in dictionary.iteritems():
+    for x,y in iter(dictionary.items()):
         if x in _li1:                
             _dict.update({x:y})                      
         elif x == 'actions' and y:
@@ -51,7 +52,7 @@ def restructure_dict(dictionary):
     transporters_list = []
     atccode_list = []
         
-    for key,value in dictionary.iteritems():
+    for key,value in iter(dictionary.items()):
         if key == 'name' and value:
             d1[key] = value
             
@@ -60,20 +61,20 @@ def restructure_dict(dictionary):
             if isinstance(value,list):
                 for ele in value:                  
                     if isinstance(ele,collections.OrderedDict):
-                        for x,y in ele.iteritems():                            
+                        for x,y in iter(ele.items()):                            
                             if x == '#text':
                                 key = key.replace('-','_')
                                 id_list.append(y)
                                 d1.update({'accession_number':id_list})                                
                                 restr_dict['_id'] = y
                                 
-                    if isinstance(ele,unicode):
+                    if isinstance(ele,str):
                         key = key.replace('-','_')
                         id_list.append(ele)
                         d1.update({'accession_number':id_list}) 
                         
             elif isinstance(value,dict) or isinstance(value,collections.OrderedDict):
-                for x,y in value.iteritems():
+                for x,y in iter(value.items()):
                     if x == '#text':
                         key = key.replace('-','_')
                         id_list.append(y)
@@ -84,7 +85,7 @@ def restructure_dict(dictionary):
             d1.update({'pharmacology':{key:value}})      
             
         elif key == 'groups':
-            for i,j in value.iteritems():
+            for i,j in iter(value.items()):
                 d1[key] = j
                 
         elif key == 'indication':                       
@@ -126,14 +127,14 @@ def restructure_dict(dictionary):
             d1['pharmacology'].update({key:value})
 
         elif key == 'classification' and value:
-            for m,n in value.iteritems():
+            for m,n in iter(value.items()):
                 m = m.lower().replace('-','_')                
                 d1.update({'taxonomy':value})                    
         
         elif key == 'salts'and value:
             salts_list = [] 
             
-            for m,n in value.iteritems():
+            for m,n in iter(value.items()):
                 if isinstance(n,list):
                     for ele in n:
                         for k in ele:
@@ -147,7 +148,7 @@ def restructure_dict(dictionary):
         elif key == 'synonyms' and value:
             synonym_list = []                          
             if isinstance(value,collections.OrderedDict):
-                for x,y in value.iteritems():
+                for x,y in iter(value.items()):
                     for ele in y:
                         for name in ele:
                             if name == '#text':
@@ -172,7 +173,7 @@ def restructure_dict(dictionary):
                         products_dict[x] = dictionary[x]
                 return products_dict
                 
-            for x,y in value.iteritems():
+            for x,y in iter(value.items()):
                 if isinstance(y,dict) or isinstance(y,collections.OrderedDict):                    
                     _d = restr_product_dict(y)
                     products_list.append(_d)                        
@@ -192,7 +193,7 @@ def restructure_dict(dictionary):
 
         elif key == 'manufacturers' and value:
             manuf_list = []
-            for x,y in value.iteritems():
+            for x,y in iter(value.items()):
                 if isinstance(y,dict) or isinstance(y,collections.OrderedDict):
                     for i in y:
                         if i == '#text':                            
@@ -201,13 +202,13 @@ def restructure_dict(dictionary):
                      
                 if isinstance(y,list):
                     for i in y:
-                        for m,n in i.iteritems():
+                        for m,n in iter(i.items()):
                             if m == '#text':                                 
                                 manuf_list.append(n)
                                 d1.update({key:manuf_list})                                  
                              
         elif key == 'categories' and value:
-            for x,y in value.iteritems():
+            for x,y in iter(value.items()):
                 d1.update({key:y}) 
             
         elif key == "snp-effects" and value:            
@@ -219,7 +220,7 @@ def restructure_dict(dictionary):
             d1['pharmacology'].update({key:value})
                 
         elif key == 'affected-organisms' and value:
-            for x,y in value.iteritems():                
+            for x,y in iter(value.items()):                
                 key = key.replace('-','_')
                 d1['pharmacology'].update({key:value["affected-organism"]})               
                                              
@@ -230,7 +231,7 @@ def restructure_dict(dictionary):
 
         elif key == 'food-interactions' and value:
             food_interaction_list = []
-            for x,y in value.iteritems():
+            for x,y in iter(value.items()):
                 if isinstance(y,list):
                     key = key.replace('-','_')
                     for i in y:
@@ -241,11 +242,11 @@ def restructure_dict(dictionary):
         
         elif key == 'drug-interactions' and value:
             key = key.replace('-','_')            
-            for x,y in value.iteritems():
+            for x,y in iter(value.items()):
                 d1.update({key:y})                
 
         elif key == 'sequences'and value:
-            for x,y in value.iteritems():
+            for x,y in iter(value.items()):
                 for i in y:
                     if i == '@format':
                         str1 = y[i]+'_sequences'
@@ -254,7 +255,7 @@ def restructure_dict(dictionary):
         elif key == 'experimental-properties' and value:
             d1_exp_properties = {}            
             def restr_properties_dict(dictionary):
-                for x,y in dictionary.iteritems():
+                for x,y in iter(dictionary.items()):
                     k1 = dictionary['kind']
                     k1 = k1.lower().replace(' ','_').replace('-','_')                        
                     d1_exp_properties[k1] = dictionary['value'] 
@@ -296,7 +297,7 @@ def restructure_dict(dictionary):
                     elif dictionary['kind'] == "Monoisotopic Weight":
                         d1['weight'].update({'monoisotopic':dictionary['value']})  
                 
-            for x,y in value.iteritems():
+            for x,y in iter(value.items()):
                 if isinstance(y,list):
                     for _d in y:
                         _d = restr_properties_dict(_d)
@@ -337,7 +338,7 @@ def restructure_dict(dictionary):
             _li = []               
             def restr_pathway_dict(dictionary):
                 _dict = {}
-                for x,y in dictionary.iteritems():
+                for x,y in iter(dictionary.items()):
                     if x == 'smpdb-id':
                         _dict.update({'smpdb_id':y})
                     elif x == 'name':
@@ -423,8 +424,8 @@ def restructure_dict(dictionary):
     restr_dict['drugbank'] = d1     
     restr_dict = unlist(restr_dict) 
     restr_dict = dict_sweep(restr_dict)      
-    restr_dict = boolean_convert(restr_dict)
-    restr_dict = value_convert(restr_dict)    
+    restr_dict = boolean_convert(restr_dict,added_keys=["mddr_like_rule","bioavailability","ghose_filter","rule_of_five"])
+    restr_dict = value_convert(restr_dict,skipped_keys=["dpd"])    
     return restr_dict       
 
 
