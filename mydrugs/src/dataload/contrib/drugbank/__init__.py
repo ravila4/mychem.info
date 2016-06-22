@@ -22,9 +22,6 @@ def get_mapping():
                 "ndc_directory": {  
                     "type":"string"                    
                 },
-                "cas": {  
-                    "type":"string"
-                },
                 "kegg": {
                     "type":"string",
                     "analyzer":"string_lowercase"
