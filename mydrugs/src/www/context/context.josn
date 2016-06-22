@@ -1,0 +1,23 @@
+{
+    "root" : {
+        "@context" : {
+            "drugbank" : "http://schema.biothings.io/datasource/drugbank/",
+            "chembl" : "http://schema.biothings.io/datasource/chembl/",
+            "pubchem" : "http://schema.biothings.io/datasource/pubchem/",
+            "targets" : "http://schema.biothings.io/datanode/targets/",
+            "experimental_properties" : "http://schema.biothings.io/datanode/experimental_properties/"           
+        }
+    },      
+    "drugbank"/targets : {
+        "@context" : {
+            "uniprot" : "http://identifiers.org/uniprot/"
+        }
+    },
+    "drugbank/experimental_properties" : {
+        "@context" : {
+            "molecular_weight" : "http://purl.bioontology.org/ontology/MESH/D008970"
+        }
+    }
+     
+ }
+
