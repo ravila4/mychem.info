@@ -1,0 +1,6 @@
+{
+    "field_name": "smiles",
+    "type": "data node",
+    "path": "pubchem/smiles",
+    "data_source": "pubchem"
+}

@@ -1,0 +1,6 @@
+{
+    "field_name": "weight",
+    "type": "data node",
+    "path": "drugbank/weight",
+    "data_source": "drugbank"
+}

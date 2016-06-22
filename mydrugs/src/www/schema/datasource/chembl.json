@@ -1,0 +1,6 @@
+{
+    "data_source_name": "chembl",
+    "data_source_uri": "https://www.ebi.ac.uk/chembl/",
+    "data_fields": "http://c.biothings.io/metadata/fields?prefix=chembl"
+    "type": "data source"
+}

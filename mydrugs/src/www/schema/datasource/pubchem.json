@@ -1,0 +1,6 @@
+{
+    "data_source_name": "pubchem",
+    "data_source_uri": "https://pubchem.ncbi.nlm.nih.gov/",
+    "data_fields": "http://c.biothings.io/metadata/fields?prefix=pubchem"
+    "type": "data source"
+}

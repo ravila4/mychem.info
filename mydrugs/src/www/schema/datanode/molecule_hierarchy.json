@@ -1,0 +1,6 @@
+{
+    "field_name": "molecule_hierarchy",
+    "type": "data node",
+    "path": "chembl/molecule_hierarchy",
+    "data_source": "chembl"
+}

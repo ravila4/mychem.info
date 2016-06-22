@@ -1,0 +1,6 @@
+{
+    "field_name": "molecule_properties",
+    "type": "data node",
+    "path": "chembl/molecule_properties",
+    "data_source": "chembl"
+}

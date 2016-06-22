@@ -1,0 +1,6 @@
+{
+    "field_name": "patents",
+    "type": "data node",
+    "path": "drugbank/patents",
+    "data_source": "drugbank"
+}

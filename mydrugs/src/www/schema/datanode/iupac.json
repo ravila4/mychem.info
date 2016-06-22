@@ -1,0 +1,6 @@
+{
+    "field_name": "iupac",
+    "type": "data node",
+    "path": "pubchem/iupac",
+    "data_source": "pubchem"
+}

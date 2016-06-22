@@ -1,0 +1,6 @@
+{
+    "field_name": "predicted_properties",
+    "type": "data node",
+    "path": "drugbank/predicted_properties",
+    "data_source": "drugbank"
+}
