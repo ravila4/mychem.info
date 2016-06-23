@@ -5,7 +5,7 @@
             "chembl" : "http://schema.biothings.io/datasource/chembl/",
             "pubchem" : "http://schema.biothings.io/datasource/pubchem/",
             "targets" : "http://schema.biothings.io/datanode/targets/",
-            "experimental_properties" : "http://schema.biothings.io/datanode/experimental_properties/"  
+            "experimental_properties" : "http://schema.biothings.io/datanode/experimental_properties/", 
             "weight" : "http://schema.biothings.io/datanode/weight",
             "patents" : "http://schema.biothings.io/datanode/patents" ,
             "predicted_properties" : "http://schema.biothings.io/datanode/predicted_properties",
@@ -33,7 +33,7 @@
             "atc_codes" : "http://identifiers.org/atc/"            
         }
     }, 
-    "drugbank"/weight : {
+    "drugbank/weight" : {
         "@context" : {
             "average" : "http://purl.bioontology.org/ontology/MESH/D008970",
             "monoisotopic" : "http://semanticscience.org/resource/CHEMINF_000485"
