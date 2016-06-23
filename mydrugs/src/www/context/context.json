@@ -48,8 +48,7 @@
     "drugbank/targets" : {
         "@context" : {
             "uniprot" : "http://identifiers.org/uniprot/",
-            "id" : "http://identifiers.org/drugbankv4.target/",
-            "source" : "http://identifiers.org/uniprot/"
+            "id" : "http://identifiers.org/drugbankv4.target/",            
         }
     },
     "drugbank/experimental_properties" : {
@@ -69,7 +68,12 @@
             "smiles" : "http://edamontology.org/format_1196",
             "inchikey" : "http://identifiers.org/inchikey/",
             "inchi" : "http://identifiers.org/inchi/",
-            "molecular_formula" : "http://semanticscience.org/resource/CHEMINF_000490"
+            "molecular_formula" : "http://semanticscience.org/resource/CHEMINF_000490",
+            "rotatable_bond_count" : "http://semanticscience.org/resource/CHEMINF_000389",
+            "h_bond_donor_count" : "http://semanticscience.org/resource/CHEMINF_000387",
+            "h_bond_acceptor_count" : "http://semanticscience.org/resource/CHEMINF_000388",
+            "polar_surface_area_(psa)" : "http://semanticscience.org/resource/CHEMINF_000307",
+            "physiological_charge" : "http://semanticscience.org/resource/CHEMINF_000336"
         }
     },
     "chembl" : {
@@ -94,7 +98,12 @@
         "@context" : {
             "full_molformula" : "http://semanticscience.org/resource/CHEMINF_000490",
             "mw_monoisotopic" : "http://semanticscience.org/resource/CHEMINF_000485",
-            "full_mwt" : "http://purl.bioontology.org/ontology/MESH/D008970"
+            "full_mwt" : "http://purl.bioontology.org/ontology/MESH/D008970",
+            "rtb" : "http://semanticscience.org/resource/CHEMINF_000389",
+            "hbd" : "http://semanticscience.org/resource/CHEMINF_000387",
+            "hba" : "http://semanticscience.org/resource/CHEMINF_000388",
+            "heavy_atoms" : "http://semanticscience.org/resource/CHEMINF_000300",
+            "psa" : "http://semanticscience.org/resource/CHEMINF_000307"
         }
     },
     "pubchem" : {
@@ -104,7 +113,13 @@
             "monoisotopic_weight" : "http://semanticscience.org/resource/CHEMINF_000485", 
             "inchi" : "http://identifiers.org/inchi/",
             "cid" : "http://identifiers.org/pubchem.compound/",
-            "molecular_formula" : "http://semanticscience.org/resource/CHEMINF_000490"
+            "molecular_formula" : "http://semanticscience.org/resource/CHEMINF_000490",
+            "rotatable_bond_count" : "http://semanticscience.org/resource/CHEMINF_000389",
+            "hydrogen_bond_donor_count" : "http://semanticscience.org/resource/CHEMINF_000387",
+            "hydrogen_bond_acceptor_count" : "http://semanticscience.org/resource/CHEMINF_000388",
+            "heavy_atom_count" : "http://semanticscience.org/resource/CHEMINF_000300",
+            "topological_polar_surface_area" : "http://semanticscience.org/resource/CHEMINF_000307",
+            "formal_charge" : "http://semanticscience.org/resource/CHEMINF_000336"
         }
     },
     "pubchem/smiles" : {
