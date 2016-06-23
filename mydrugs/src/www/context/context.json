@@ -30,7 +30,8 @@
             "inchi" : "http://identifiers.org/inchi/",
             "iupac" : "http://edamontology.org/data_0998",
             "formula" : "http://semanticscience.org/resource/CHEMINF_000490" ,
-            "atc_codes" : "http://identifiers.org/atc/"            
+            "atc_codes" : "http://identifiers.org/atc/",
+            "name" : "http://edamontology.org/data_0990"
         }
     }, 
     "drugbank/weight" : {
@@ -79,7 +80,8 @@
             "smiles" : "http://edamontology.org/format_1196",
             "chebi_par_id" : "http://identifiers.org/chebi/",
             "usan_stem" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C96973",
-            "atc_classifications" : "http://identifiers.org/atc/"
+            "atc_classifications" : "http://identifiers.org/atc/",
+            "pref_name" : "http://edamontology.org/data_0990"
         }
     },
     "chembl/molecule_hierarchy" : {
