@@ -1,6 +1,0 @@
-{
-    "data_source_name": "drugbank",
-    "data_source_uri": "http://www.drugbank.ca/",
-    "data_fields": "http://c.biothings.io/metadata/fields?prefix=drugbank"
-    "type": "data source"
-}
