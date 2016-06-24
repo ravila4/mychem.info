@@ -1,10 +1,10 @@
 {
     "root" : {
         "@context" : {
-            "drugbank" : "http://schema.biothings.io/datasource/drugbank/",
-            "chembl" : "http://schema.biothings.io/datasource/chembl/",
-            "pubchem" : "http://schema.biothings.io/datasource/pubchem/",
-            "targets" : "http://schema.biothings.io/datanode/targets/",
+            "drugbank" : "http://identifiers.org/drugbank/",
+            "chembl" : "http://identifiers.org/chembl.compound/",
+            "pubchem" : "http://identifiers.org/pubchem.compound/",
+            "targets" : "http://identifiers.org/drugbankv4.target/",
             "experimental_properties" : "http://schema.biothings.io/datanode/experimental_properties/", 
             "weight" : "http://schema.biothings.io/datanode/weight",
             "patents" : "http://schema.biothings.io/datanode/patents" ,
@@ -23,7 +23,7 @@
             "pharmagkb" : "http://identifiers.org/pharmgkb.drug/",
             "wikipedia" : "http://identifiers.org/wikipedia.en/",
             "dpd" : "http://identifiers.org/cdpd/",
-            "accession_number" : "http://identifiers.org/drugbank/",
+            "accession_number" : "http://edamontology.org/data_2326",
             "ahfs_code" : "http://purl.bioontology.org/ontology/HL7/C3242320",
             "smiles" : "http://edamontology.org/format_1196",
             "inchi_key" : "http://identifiers.org/inchikey/",
@@ -48,7 +48,7 @@
     "drugbank/targets" : {
         "@context" : {
             "uniprot" : "http://identifiers.org/uniprot/",
-            "id" : "http://identifiers.org/drugbankv4.target/"          
+            "id" : "http://semanticscience.org/resource/CHEMINF_000406"          
         }
     },
     "drugbank/experimental_properties" : {
@@ -77,7 +77,7 @@
     },
     "chembl" : {
         "@context" : {
-            "molecule_chembl_id" : "http://identifiers.org/chembl.compound/",
+            "molecule_chembl_id" : "http://edamontology.org/data_2646",
             "inchi_key" : "http://identifiers.org/inchikey/",
             "inchi" : "http://identifiers.org/inchi/",
             "smiles" : "http://edamontology.org/format_1196",
@@ -111,7 +111,7 @@
             "molecular_weight" : "http://purl.bioontology.org/ontology/MESH/D008970",
             "monoisotopic_weight" : "http://semanticscience.org/resource/CHEMINF_000485", 
             "inchi" : "http://identifiers.org/inchi/",
-            "cid" : "http://identifiers.org/pubchem.compound/",
+            "cid" : "http://edamontology.org/data_1172",
             "molecular_formula" : "http://semanticscience.org/resource/CHEMINF_000490",
             "rotatable_bond_count" : "http://semanticscience.org/resource/CHEMINF_000389",
             "hydrogen_bond_donor_count" : "http://semanticscience.org/resource/CHEMINF_000387",
