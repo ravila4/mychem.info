@@ -2,5 +2,5 @@
     "field_name": "targets",
     "type": "data node",
     "path": "drugbank/targets",
-    "data_source": "targets"
+    "data_source": "drugbank"
 }
