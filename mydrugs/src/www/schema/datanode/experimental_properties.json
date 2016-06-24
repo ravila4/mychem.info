@@ -1,6 +1,6 @@
 {
     "field_name": "experimental_properties",
     "type": "data node",
-    "path": "experimental_properties",
+    "path": "drugbank/experimental_properties",
     "data_source": "drugbank"
 }
