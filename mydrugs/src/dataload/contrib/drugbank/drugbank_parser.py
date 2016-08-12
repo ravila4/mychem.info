@@ -356,14 +356,25 @@ def restructure_dict(dictionary):
                         else:
                             source = ele[x].lower().replace('-','_').replace(' ','_')
                             d1[source]=ele['identifier']
-                            
                                 
         elif key == 'external-links' and value:
-            for ele in value['external-link']:
-                for x in ele:
-                    print ele['resource']
+            if isinstance(value['external-link'],list):
+                for ele in value['external-link']:
+                    for x in ele:
+                        #print ele['resource']                        
+                        try:
+                            resource = ele['resource']
+                            d1[resource.lower().replace('.','_')] = ele['url']
+                        except:
+                            pass
+            else:                
+                try:
                     resource = ele['resource']
-                    d1[resource.lower()] = ele['url']
+                    d1[resource.lower().replace('.','_')] = ele['url']
+                except:
+                    pass
+            
+            
 
         elif key == 'patents'and value:           
             if isinstance(value,dict):                
@@ -470,8 +481,7 @@ def restructure_dict(dictionary):
     restr_dict = boolean_convert(restr_dict,added_keys=["mddr_like_rule","bioavailability","ghose_filter","rule_of_five"])
     restr_dict = value_convert(restr_dict,skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance"])    
     return restr_dict       
-
-
+              
 
     
 
