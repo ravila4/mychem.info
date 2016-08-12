@@ -353,25 +353,17 @@ def restructure_dict(dictionary):
                                 d1['uniprotkb'] = ele['identifier']
                         elif ele[x] == "GenBank":
                                 d1['genbank'] = ele['identifier']
+                        else:
+                            source = ele[x].lower().replace('-','_').replace(' ','_')
+                            d1[source]=ele['identifier']
+                            
                                 
         elif key == 'external-links' and value:
-            if isinstance(value['external-link'],list):
-                for ele in value['external-link']:
-                    for x in ele:
-                        #print ele['resource']                        
-                        try:
-                            resource = ele['resource']
-                            d1[resource.lower().replace('.','_')] = ele['url']
-                        except:
-                            pass
-            else:                
-                try:
+            for ele in value['external-link']:
+                for x in ele:
+                    print ele['resource']
                     resource = ele['resource']
-                    d1[resource.lower().replace('.','_')] = ele['url']
-                except:
-                    pass
-            
-            
+                    d1[resource.lower()] = ele['url']
 
         elif key == 'patents'and value:           
             if isinstance(value,dict):                
@@ -478,7 +470,6 @@ def restructure_dict(dictionary):
     restr_dict = boolean_convert(restr_dict,added_keys=["mddr_like_rule","bioavailability","ghose_filter","rule_of_five"])
     restr_dict = value_convert(restr_dict,skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance"])    
     return restr_dict       
-              
 
 
 
