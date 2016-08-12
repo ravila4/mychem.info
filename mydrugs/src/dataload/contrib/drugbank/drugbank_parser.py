@@ -161,15 +161,33 @@ def restructure_dict(dictionary):
                 for x in dictionary:                
                     if x == 'name':
                         products_dict[x] = dictionary[x]                            
-                    if x == 'dosage-form':
+                    elif x == 'dosage-form':
                         products_dict['dosage_form'] = dictionary[x]                           
-                    if x == 'strength':
+                    elif x == 'strength':
                         products_dict[x] = dictionary[x]                            
-                    if x == 'route':
+                    elif x == 'route':
                         products_dict[x] = dictionary[x]                            
-                    if x == 'over-the-counter':
+                    elif x == 'over-the-counter':
                         products_dict['otc'] = dictionary[x]                            
-                    if x == 'generic':
+                    elif x == 'generic':
+                        products_dict[x] = dictionary[x]
+                    elif x == 'ndc-id':
+                        products_dict['ndc_id'] = dictionary[x]
+                    elif x == 'ndc-product-code':
+                        products_dict['ndc_product_code'] = dictionary[x]
+                    elif x == 'dpd-id':
+                        products_dict['dpd'] = dictionary[x]
+                    elif x == 'started-marketing-on':
+                        products_dict[x.replace('-','_')] = dictionary[x]
+                    elif x == 'ended-marketing-on':
+                        products_dict[x.replace('-','_')] = dictionary[x]
+                    elif x == 'fda-application-number':
+                        products_dict[x.replace('-','_')] = dictionary[x]
+                    elif x == 'approved':
+                        products_dict[x] = dictionary[x]
+                    elif x == 'country':
+                        products_dict[x] = dictionary[x]
+                    elif x == 'source':
                         products_dict[x] = dictionary[x]
                 return products_dict
                 
@@ -312,7 +330,9 @@ def restructure_dict(dictionary):
                         if ele[x] == "Drugs Product Database (DPD)":
                             d1['dpd'] = ele['identifier']
                         elif ele[x] == "KEGG Drug":
-                            d1['kegg'] = ele['identifier']
+                            d1['kegg_drug'] = ele['identifier']
+                        elif ele[x] == "KEGG Compound":
+                            d1['kegg_compound'] = ele['identifier']
                         elif ele[x] == "National Drug Code Directory":
                             d1['ndc_directory'] = ele['identifier']
                         elif ele[x] == "PharmGKB":
@@ -320,7 +340,38 @@ def restructure_dict(dictionary):
                         elif ele[x] == "UniProtKB":
                             d1['uniprotkb'] = ele['identifier']
                         elif ele[x] == "Wikipedia":
-                                d1['wikipedia'] = ele['identifier']            
+                                d1['wikipedia'] = ele['identifier']
+                        elif ele[x] == "ChemSpider":
+                                d1['chemspider'] = ele['identifier']
+                        elif ele[x] == "ChEBI":
+                                d1['chebi'] = ele['identifier']
+                        elif ele[x] == "PubChem Compound":
+                                d1['pubchem_compound'] = ele['identifier']
+                        elif ele[x] == "PubChem Substance":
+                                d1['pubchem_substance'] = ele['identifier']
+                        elif ele[x] == "UniProtKB":
+                                d1['uniprotkb'] = ele['identifier']
+                        elif ele[x] == "GenBank":
+                                d1['genbank'] = ele['identifier']
+                                
+        elif key == 'external-links' and value:
+            if isinstance(value['external-link'],list):
+                for ele in value['external-link']:
+                    for x in ele:
+                        #print ele['resource']                        
+                        try:
+                            resource = ele['resource']
+                            d1[resource.lower().replace('.','_')] = ele['url']
+                        except:
+                            pass
+            else:                
+                try:
+                    resource = ele['resource']
+                    d1[resource.lower().replace('.','_')] = ele['url']
+                except:
+                    pass
+            
+            
 
         elif key == 'patents'and value:           
             if isinstance(value,dict):                
@@ -425,8 +476,10 @@ def restructure_dict(dictionary):
     restr_dict = unlist(restr_dict) 
     restr_dict = dict_sweep(restr_dict)      
     restr_dict = boolean_convert(restr_dict,added_keys=["mddr_like_rule","bioavailability","ghose_filter","rule_of_five"])
-    restr_dict = value_convert(restr_dict,skipped_keys=["dpd"])    
+    restr_dict = value_convert(restr_dict,skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance"])    
     return restr_dict       
+              
+
 
 
     
