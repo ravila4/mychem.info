@@ -30,7 +30,7 @@ def get_mapping():
                     "type":"string",
                     "analyzer":"string_lowercase"
                 },
-                "pharmagkb": {
+                "pharmgkb": {
                     "type":"string",
                     "analyzer":"string_lowercase"
                 },
