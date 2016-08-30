@@ -12,7 +12,8 @@ def load_data(xml_file):
         drug_list.append(item)
         return True 
     with open(xml_file,'rb') as f:
-        xmltodict.parse(f,item_depth=2,item_callback=handle)           
+        print (type(f))
+        xmltodict.parse(f,item_depth=2,item_callback=handle,xml_attribs=True)           
     f.close()
     return drug_list  
 
@@ -477,9 +478,9 @@ def restructure_dict(dictionary):
     d1['products'] = products_list            
     restr_dict['drugbank'] = d1     
     restr_dict = unlist(restr_dict) 
-    restr_dict = dict_sweep(restr_dict)      
+    restr_dict = dict_sweep(restr_dict,vals=[None,".", "-", "", "NA", "none", " ", "Not Available", "unknown","null","None"])      
     restr_dict = boolean_convert(restr_dict,added_keys=["mddr_like_rule","bioavailability","ghose_filter","rule_of_five"])
-    restr_dict = value_convert(restr_dict,skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance"])    
+    restr_dict = value_convert(restr_dict,skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance","bindingdb"])    
     return restr_dict       
               
 
