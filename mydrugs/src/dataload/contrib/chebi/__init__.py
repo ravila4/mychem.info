@@ -1,9 +1,16 @@
+from .chebi_parser import load_data as _load_data
+
 __METADATA__ = {
     "src_name": 'ChEBI',
     "src_url": 'https://www.ebi.ac.uk/chebi/',    
     "field": "chebi"
 }
 
+CHEBI_INPUT_FILE = '/home/jadesara/ENV/chebi/ChEBI_complete.sdf'
+
+def load_data():
+    chebi_data = _load_data(CHEBI_INPUT_FILE)
+    return chebi_data
 
 def get_mapping():
     mapping = {
