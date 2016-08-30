@@ -6,22 +6,21 @@ def load_data(sdf_file):
     f = open(sdf_file,'r').read()
     comp_list = f.split("$$$$") #split the compounds and list     
     comp_list = [ele.split("\n> <") for ele in comp_list] #split from \n> <
-    comp_list = map(lambda x:[ele.strip("\n") for ele in x],comp_list)
-    comp_list = map(lambda x: [ele.split('>\n') for ele in x],comp_list) 
+    comp_list = list(map(lambda x:[ele.strip("\n") for ele in x],comp_list))
+    comp_list = list(map(lambda x: [ele.split('>\n') for ele in x],comp_list))
     for item in comp_list:    
         del item[0] #remove molecule structure - Marvin
     for element in comp_list:
         element = map(lambda x: [ele.split('\n') for ele in x],element)
-    comp_list = map(lambda x: dict([ ele for ele in x]),comp_list)  
+    comp_list = list(map(lambda x: dict([ ele for ele in x]),comp_list)) #python 3 compatible
     del comp_list[-1]
-      
     for compound in comp_list:
         restr_dict = restructure_dict(compound)
         yield restr_dict
 
 def clean_up(_dict):
     _temp = dict()
-    for key, value in _dict.iteritems():        
+    for key, value in iter(_dict.items()):        
         key = key.lower().replace(' ','_').replace('-','_')
         value = value.split('\n')
        
