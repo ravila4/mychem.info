@@ -1,6 +1,7 @@
 from __future__ import print_function
 import csv
 import sys
+from biothings.utils.dataload import dict_sweep, unlist
 
 csv.field_size_limit(sys.maxsize)
 
@@ -16,9 +17,9 @@ def load_data(tsv_file):
         _d = unlist(dict_sweep(_d))        
         _dict.update({'_id':_id,'pharmgkb':_d})
         drug_list.append(_dict)
+    #print (len(drug_list))
     return drug_list
-        
-    
+
 def restr_dict(d):
     _d = {}
     _li2 = ["External Vocabulary","Trade Names","Generic Names","Brand Mixtures","Dosing Guideline","Cross-references"]
@@ -28,12 +29,14 @@ def restr_dict(d):
             _d.update({key.lower():val})
         elif key in _li2:            
             val = val.split(',"')
-            val = map(lambda each:each.strip('"'), val)            
+            val = list(map(lambda each:each.strip('"'), val))  #python 3 compatible
             k = key.lower().replace(" ","_").replace('-','_')
+            
             _d.update({k:val})  
         elif key == "PharmGKB Accession Id":
             k = key.lower().replace(" ","_")
             _d.update({k:val})    
+    #print (_d)
     return _d
 
 def clean_up(d):
