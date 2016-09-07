@@ -1,8 +1,12 @@
+from .pharmgkb_parser import load_data as _load_data
+
 __METADATA__ = {
     "src_name": 'PharmGKb',
     "src_url": 'https://www.pharmgkb.org/',    
     "field": "pharmgkb"
 }
+
+PHARMGKB_INPUT_FILE = '/home/jadesara/ENV/pharmgkb/drugs.tsv'
 
 def get_mapping():
     mapping = {
