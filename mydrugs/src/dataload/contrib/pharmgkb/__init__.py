@@ -8,6 +8,10 @@ __METADATA__ = {
 
 PHARMGKB_INPUT_FILE = '/home/jadesara/ENV/pharmgkb/drugs.tsv'
 
+def load_data():
+    pharmgkb_data = _load_data(PHARMGKB_INPUT_FILE)
+    return pharmgkb_data
+
 def get_mapping():
     mapping = {
         "pharmgkb" : {
