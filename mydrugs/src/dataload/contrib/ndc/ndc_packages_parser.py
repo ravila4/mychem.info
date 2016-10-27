@@ -18,7 +18,7 @@ def restr_dict(dictionary):
             _d['ndc'].update({key.lower():dictionary[key]})
     return _d   
    
-def csv_to_dict(_file):
+def load_data(_file):
     f = open(_file,'r')
     reader = csv.DictReader(f)
     for row in reader:        
