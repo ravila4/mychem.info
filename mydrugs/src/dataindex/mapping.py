@@ -1,6 +1,5 @@
 import importlib
 
-
 def get_mapping(sources=None):
     if sources is None:
         sources = sources or ['drugbank', 'chembl','pubchem','chebi','ndc','pharmgkb']
@@ -25,5 +24,4 @@ def get_mapping(sources=None):
 
     for extra_mapping in extra_mapping_li:
         m['drug']['properties'].update(extra_mapping)
-
     return m
