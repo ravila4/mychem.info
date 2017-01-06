@@ -11,6 +11,13 @@ def load_data():
     chembl_data = _load_data(CHEMBL_INPUT_URL)
     return chembl_data
 
+def get_id_for_merging(doc, src, db):    
+    try:
+        _id = doc[src]['inchi_key']
+    except:
+        _id = doc['_id']
+    return _id
+
 def get_mapping():
     mapping = {
         "chembl": {

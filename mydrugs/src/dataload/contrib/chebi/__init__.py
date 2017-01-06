@@ -12,6 +12,43 @@ def load_data():
     chebi_data = _load_data(CHEBI_INPUT_FILE)
     return chebi_data
 
+def get_id_for_merging(doc, src, db):
+    _flag = 0
+    
+    if 'inchikey' in doc[src]:
+        _id = doc[src]['inchikey']       
+    else:                
+        if 'drugbank_database_links' in doc[src]:            
+            d = db.drugbank.find_one({'_id':doc[src]['drugbank_database_links']})
+            if d != None:                
+                try:
+                    _id = d['drugbank']['inchi_key']
+                except:
+                    _id = d['_id']                
+            else:                           
+                _flag = 1
+        else:                       
+            _flag = 1
+            
+        if _flag:
+            _flag = 0
+            d = db.chembl.find_one({'chembl.chebi_par_id':doc['_id'][6:]},no_cursor_timeout=True)
+            if d != None:
+                try:
+                    _id = d['chembl']['inchi_key']
+                except:
+                    _id = d['_id']
+            else:                
+                d = db.drugbank.find_one({'drugbank.chebi':doc['_id'][6:]})
+                if d != None:
+                    try:
+                        _id = d['chembl']['inchi_key']
+                    except:
+                        _id = d['_id']                                   
+                else:
+                    _id = doc['_id']    
+    return _id
+
 def get_mapping():
     mapping = {
         "chebi" : {

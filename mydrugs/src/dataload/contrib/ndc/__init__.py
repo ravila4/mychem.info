@@ -1,5 +1,13 @@
 
+__METADATA__ = {
+    "src_name": 'National Drug Code Directory',
+    "src_url": 'http://www.fda.gov/Drugs/InformationOnDrugs/ucm142438.htm',    
+    "field": "ndc"
+}
 
+def get_id_for_merging(doc, src, db):    
+    _id = doc[src]['productndc']   
+    return _id
 
 def get_mapping():
     mapping = {

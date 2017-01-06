@@ -11,7 +11,14 @@ DRUGBANK_INPUT_FILE = '/home/jadesara/ENV/drugbank/drugbank.xml'
 def load_data():
     drugbank_data = _load_data(DRUGBANK_INPUT_FILE)
     return drugbank_data
-    
+
+def get_id_for_merging(doc, src, db):    
+    try:
+        _id = doc[src]['inchi_key']
+    except:
+        _id = doc['_id']
+    return _id
+  
 def get_mapping():       
     mapping = {        
         "drugbank": {

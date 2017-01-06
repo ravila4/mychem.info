@@ -1,3 +1,4 @@
+from biothings.utils.dataload import dict_sweep, unlist
 import csv
 
 def restr_dict(dictionary):
@@ -23,7 +24,7 @@ def load_data(_file):
     reader = csv.DictReader(f)
     for row in reader:        
         _dict = restr_dict(row)
-        _dict = dict_sweep(_dict)
+        _dict = unlist(dict_sweep(_dict))
         yield _dict
 
 
