@@ -1,5 +1,7 @@
 from __future__ import print_function
 import time
+import importlib
+
 try:
     from mongokit import Connection
 except:
@@ -7,6 +9,7 @@ except:
 from config import (DATA_SRC_SERVER, DATA_SRC_PORT, DATA_SRC_DATABASE,
                     DATA_SERVER_USERNAME, DATA_SERVER_PASSWORD)
 from utils.common import timesofar, ask
+from utils.dataload import value_convert
 
 def get_conn(server, port):
     uri = "mongodb://{}:{}@{}:{}".format(DATA_SERVER_USERNAME,
@@ -47,7 +50,7 @@ def doc_feeder(collection, step=1000, s=None, e=None, inbatch=False, query=None,
        fields is optional parameter passed to find to restrict fields to return.
     '''
     #src = get_src_db()
-    cur = collection.find()
+    cur = collection.find(no_cursor_timeout=True)
     n = cur.count()
     s = s or 0
     e = e or n
@@ -96,18 +99,22 @@ def doc_feeder(collection, step=1000, s=None, e=None, inbatch=False, query=None,
 
 def merge(src, target, step=10000, confirm=True):
     """Merging docs from src collection into target collection."""
+    
+    src_m = importlib.import_module('dataload.contrib.' + src + '.__init__')
+    
     db = get_src_db()
     src_coll = db[src]
     target_coll = db[target]
     cnt = src_coll.count()
     if not (confirm and ask('Continue to update {} docs from "{}" into "{}"?'.format(cnt, src_coll.name, target_coll.name)) == 'Y'):
-        return
-
+        return   
+          
     for doc in doc_feeder(src_coll, step=step):        
+        if src == 'ndc':
+            _id = src_m.get_id_for_merging(doc, src, db)                                  
+            target_coll.update_many({'drugbank.products.ndc_product_code':_id},{'$addToSet':{'ndc':doc['ndc']}})
+        
         d = {}
-        try:
-            _id = doc[src]['inchi_key']
-        except:
-            _id = doc['_id']
-        d.update({'_id':_id,src:doc[src]})
-        target_coll.update_one({"_id": _id}, {'$set': d}, upsert=True)
+        _id = src_m.get_id_for_merging(doc, src, db)                       
+        d.update({'_id':_id,src:doc[src]})        
+        target_coll.update_one({"_id": _id}, {'$set': d}, upsert=True) 
