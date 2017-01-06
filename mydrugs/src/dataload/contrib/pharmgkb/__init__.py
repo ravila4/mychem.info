@@ -12,6 +12,73 @@ def load_data():
     pharmgkb_data = _load_data(PHARMGKB_INPUT_FILE)
     return pharmgkb_data
 
+def get_id_for_merging(doc, src, db):    
+    _flag = 0
+    if 'inchi' in doc[src]:
+        _inchi = doc[src]['inchi']
+        d = db.drugbank.find_one({'drugbank.inchi':_inchi})        
+        if d != None:
+            try:
+                _id = d['drugbank']['inchi_key']
+            except:
+                _id = d['_id']            
+        else:
+            d = db.pubchem.find_one({'pubchem.inchi':_inchi})
+            if d != None:
+                try:
+                    _id = d['pubchem']['inchi_key']
+                except:
+                    _id = d['_id']               
+            else:
+                d = db.chembl.find_one({'chembl.inchi':doc[src]['inchi']})
+                if d != None:
+                    try:
+                        _id = d['chembl']['inchi_key']
+                    except:
+                        _id = d['_id']                    
+                else:
+                    _flag = 1    
+    else:
+        _flag = 1
+
+    if _flag:
+        _flag = 0
+        if 'cross_references' in doc [src]:          
+            for key in doc[src]['cross_references']:              
+                if key == 'pubchem_compound':                 
+                    cid = doc[src]['cross_references'].get(key) 
+                    d = db.pubchem.find_one({'_id':cid})  
+                    if d != None:                        
+                        try:
+                           _id = d['pubchem']['inchi_key']
+                        except:
+                            _id = d['_id']    
+                                          
+                elif key=='drugbank':                    
+                    db_id = doc[src]['cross_references'].get(key)   
+                    d = db.drugbank.find_one({'_id':db_id})
+                    if d != None:
+                        try:
+                           _id = d['drugbank']['inchi_key']
+                        except:
+                            _id = d['_id']  
+                elif key =='chebi':                    
+                    chebi = doc[src]['cross_references'].get(key)
+                    d = db.chebi.find_one({'_id':'CHEBI:'+chebi})
+                    if d != None:
+                        try:
+                           _id = d['chebi']['inchikey']
+                        except:
+                            _d = db.merged_coll.find_one({'chebi.chebi_id':d['_id']})
+                            _id = _d['_id']
+                else:
+                    _id = doc['_id']                           
+                 
+        else:
+            _id = doc['_id']
+    
+    return _id
+
 def get_mapping():
     mapping = {
         "pharmgkb" : {

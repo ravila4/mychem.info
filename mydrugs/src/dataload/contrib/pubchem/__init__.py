@@ -12,6 +12,13 @@ def load_data():
     pubchem_data = _load_data(PUBCHEM_INPUT_URL)
     return pubchem_data
 
+def get_id_for_merging(doc, src, db):    
+    try:
+        _id = doc[src]['inchi_key']
+    except:
+        _id = doc['_id']
+    return _id
+
 def get_mapping():
     mapping = {
         "pubchem" : {
