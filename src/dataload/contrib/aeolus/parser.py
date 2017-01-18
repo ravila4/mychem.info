@@ -23,15 +23,25 @@ def merge_with_unii(aeolus, unii):
 
     for inchikey, subdf in gb:
         subdf_records = subdf[['ror', 'prr', 'prr_95_CI_lower', 'prr_95_CI_upper', 'ror_95_CI_lower', 'ror_95_CI_upper',
-                               'outcome_vocab', 'case_count', 'outcome_code', 'outcome_id', 'outcome_name']]
+                               'vocab', 'case_count', 'code', 'id', 'name']]
         top_level_df = subdf[['unii', 'drug_code', 'drug_name', 'drug_vocab', 'inchikey', 'drug_id', 'rxcui', 'pt']].drop_duplicates()
         if len(top_level_df) != 1:
             raise ValueError(top_level_df)
 
         top_level = dict(top_level_df.iloc[0])
+        top_level['no_of_outcomes'] = len(subdf_records)
         dr = subdf_records.to_dict("records")
         dr = [{k: v for k, v in record.items() if pd.notnull(v)} for record in dr]
-        dr.sort(key=lambda x: x['case_count'])
+        dr.sort(key=lambda x: x['case_count'], reverse=True)
+
+        # group CI fields
+        for doc in dr:
+            doc['prr_95_ci'] = [doc.get('prr_95_CI_lower', None), doc.get('prr_95_CI_upper', None)]
+            doc['ror_95_ci'] = [doc.get('ror_95_CI_lower', None), doc.get('ror_95_CI_upper', None)]
+            for field in ['prr_95_CI_lower', 'prr_95_CI_upper', 'ror_95_CI_lower',  'ror_95_CI_upper']:
+                if field in doc:
+                    del doc[field]
+
         top_level['outcomes'] = dr
         yield {'_id': inchikey, 'aeolus': top_level}
 
@@ -54,11 +64,12 @@ def main():
                            'prr_95_percent_upper_confidence_limit': 'prr_95_CI_upper',
                            'ror_95_percent_lower_confidence_limit': 'ror_95_CI_lower',
                            'ror_95_percent_upper_confidence_limit': 'ror_95_CI_upper',
-                           'outcome_concept_code': 'outcome_code',
-                           'outcome_concept_id': 'outcome_id',
+                           'outcome_concept_code': 'code',
+                           'outcome_concept_id': 'id',
+                           'outcome_name': 'name',
+                           'outcome_vocabulary': 'vocab',
                            'drug_concept_code': 'drug_code',
                            'drug_concept_id': 'drug_id',
-                           'outcome_vocabulary': 'outcome_vocab',
                            'drug_vocabulary': 'drug_vocab',
                            }, inplace=True)
 

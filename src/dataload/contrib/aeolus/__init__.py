@@ -27,6 +27,9 @@ def get_mapping():
                     "type": "string",
                     "analyzer": "string_lowercase"
                 },
+                "no_of_outcomes": {
+                    "type": "integer",
+                },
                 "pt": {
                     "type": "string",
                 },
@@ -43,36 +46,30 @@ def get_mapping():
                         "case_count": {
                             "type": "long",
                         },
-                        "outcome_code": {
+                        "code": {
                             "type": "string",
                             "analyzer": "string_lowercase"
                         },
-                        "outcome_id": {
+                        "id": {
                             "type": "string",
                             "analyzer": "string_lowercase"
                         },
-                        "outcome_name": {
+                        "name": {
                             "type": "string",
                         },
-                        "outcome_vocab": {
+                        "vocab": {
                             "type": "string",
                         },
                         "prr": {
                             "type": "float",
                         },
-                        "prr_95_CI_lower": {
-                            "type": "float",
-                        },
-                        "prr_95_CI_upper": {
+                        "prr_95_ci": {
                             "type": "float",
                         },
                         "ror": {
                             "type": "float",
                         },
-                        "ror_95_CI_lower": {
-                            "type": "float",
-                        },
-                        "ror_95_CI_upper": {
+                        "ror_95_ci": {
                             "type": "float",
                         },
                     },
