@@ -56,8 +56,13 @@ GA_ACTION_QUERY_GET = 'query_get'
 GA_ACTION_QUERY_POST = 'query_post'
 GA_ACTION_ANNOTATION_GET = 'drug_get'
 GA_ACTION_ANNOTATION_POST = 'drug_post'
-GA_TRACKER_URL = 'MyDrug.info'
+GA_TRACKER_URL = 'c.biothings.io'
+
+ANNOTATION_ID_REGEX_LIST = [(re.compile(r'db[0-9]+', re.I), 'drugbank.drugbank_id'),
+                            (re.compile(r'chembl[0-9]+', re.I), 'chembl.molecule_chembl_id')]
 
 STATUS_CHECK_ID = ''
+
+HIPCHAT_MESSAGE_COLOR = 'gray'
 
 JSONLD_CONTEXT_PATH = 'www/context/context.json'
