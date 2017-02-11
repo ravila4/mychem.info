@@ -11,7 +11,7 @@ from www.api.handlers import DrugHandler, QueryHandler, MetadataHandler, StatusH
 # elasticsearch server transport url
 ES_HOST = 'localhost:9200'
 # elasticsearch index name
-ES_INDEX = 'mydrug_current'
+ES_INDEX = 'mydrugs_current'
 # elasticsearch document type
 ES_DOC_TYPE = 'drug'
 # make these smaller for c.biothings
@@ -62,7 +62,7 @@ GA_ACTION_ANNOTATION_GET = 'drug_get'
 GA_ACTION_ANNOTATION_POST = 'drug_post'
 GA_TRACKER_URL = 'c.biothings.io'
 
-ANNOTATION_ID_REGEX_LIST = [#(re.compile(r'db[0-9]+', re.I), 'drugbank.drugbank_id'),
+ANNOTATION_ID_REGEX_LIST = [(re.compile(r'db[0-9]+', re.I), 'drugbank.drugbank_id'),
                             (re.compile(r'chembl[0-9]+', re.I), 'chembl.molecule_chembl_id'),
                             (re.compile(r'chebi\:[0-9]+', re.I), 'chebi.chebi_id'),
                             (re.compile(r'cid[0-9]+', re.I), 'pubchem.cid'),
