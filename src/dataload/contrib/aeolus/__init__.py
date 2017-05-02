@@ -9,7 +9,7 @@ def get_mapping():
     mapping = {
         "aeolus": {
             "properties": {
-                "drug_code": {
+                "drug_rxcui": {
                     "type": "string",
                     "analyzer": "string_lowercase"
                 },
@@ -18,9 +18,6 @@ def get_mapping():
                     "analyzer": "string_lowercase"
                 },
                 "drug_name": {
-                    "type": "string",
-                },
-                "drug_vocab": {
                     "type": "string",
                 },
                 "inchikey": {
@@ -33,10 +30,6 @@ def get_mapping():
                 "pt": {
                     "type": "string",
                 },
-                "rxcui": {
-                    "type": "string",
-                    "analyzer": "string_lowercase"
-                },
                 "unii": {
                     "type": "string",
                     "analyzer": "string_lowercase"
@@ -46,7 +39,7 @@ def get_mapping():
                         "case_count": {
                             "type": "long",
                         },
-                        "code": {
+                        "meddra_code": {
                             "type": "string",
                             "analyzer": "string_lowercase"
                         },
@@ -55,9 +48,6 @@ def get_mapping():
                             "analyzer": "string_lowercase"
                         },
                         "name": {
-                            "type": "string",
-                        },
-                        "vocab": {
                             "type": "string",
                         },
                         "prr": {
@@ -73,6 +63,24 @@ def get_mapping():
                             "type": "float",
                         },
                     },
+                },
+                "indications": {
+                    "properties": {
+                        "meddra_code": {
+                            "type": "string",
+                            "analyzer": "string_lowercase"
+                        },
+                        "id": {
+                            "type": "string",
+                            "analyzer": "string_lowercase"
+                        },
+                        "name": {
+                            "type": "string",
+                        },
+                        "count": {
+                            "type": "integer",
+                        },
+                    }
                 }
             }
         }
