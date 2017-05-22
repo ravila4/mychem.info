@@ -1,135 +1,23 @@
 {
-    "root" : {
-        "@context" : {
-            "drugbank" : "http://identifiers.org/drugbank/",
-            "chembl" : "http://identifiers.org/chembl.compound/",
-            "pubchem" : "http://identifiers.org/pubchem.compound/",
-            "targets" : "http://identifiers.org/drugbankv4.target/",
-            "experimental_properties" : "http://schema.biothings.io/datanode/experimental_properties/", 
-            "weight" : "http://schema.biothings.io/datanode/weight",
-            "patents" : "http://schema.biothings.io/datanode/patents" ,
-            "predicted_properties" : "http://schema.biothings.io/datanode/predicted_properties",
-            "molecule_hierarchy" : "http://schema.biothings.io/datanode/molecule_hierarchy",
-            "molecule_properties" : "http://schema.biothings.io/datanode/molecule_properties",
-            "smiles" : "http://schema.biothings.io/datanode/smiles",
-            "iupac" : "http://schema.biothings.io/datanode/iupac"
-        }
-    }, 
-    "drugbank" : {
-        "@context" : {
-            "ndc_directory" : "http://identifiers.org/ndc/",
-            "kegg" : "http://identifiers.org/kegg.drug/",
-            "uniprotkb" : "http://identifiers.org/uniprot/",
-            "pharmagkb" : "http://identifiers.org/pharmgkb.drug/",
-            "wikipedia" : "http://identifiers.org/wikipedia.en/",
-            "dpd" : "http://identifiers.org/cdpd/",
-            "accession_number" : "http://edamontology.org/data_2326",
-            "ahfs_code" : "http://purl.bioontology.org/ontology/HL7/C3242320",
-            "smiles" : "http://edamontology.org/format_1196",
-            "inchi_key" : "http://identifiers.org/inchikey/",
-            "inchi" : "http://identifiers.org/inchi/",
-            "iupac" : "http://edamontology.org/data_0998",
-            "formula" : "http://semanticscience.org/resource/CHEMINF_000490" ,
-            "atc_codes" : "http://identifiers.org/atc/",
-            "name" : "http://edamontology.org/data_0990"
-        }
-    }, 
-    "drugbank/weight" : {
-        "@context" : {
-            "average" : "http://purl.bioontology.org/ontology/MESH/D008970",
-            "monoisotopic" : "http://semanticscience.org/resource/CHEMINF_000485"
-        }
-    },
-    "drugbank/patents" : {
-        "@context" : {
-            "number" : "http://purl.bioontology.org/ontology/MESH/D020490"
-        }
-    },
-    "drugbank/targets" : {
-        "@context" : {
-            "uniprot" : "http://identifiers.org/uniprot/",
-            "id" : "http://semanticscience.org/resource/CHEMINF_000406"          
-        }
-    },
-    "drugbank/experimental_properties" : {
-        "@context" : {
-            "molecular_weight" : "http://purl.bioontology.org/ontology/MESH/D008970",
-            "melting_point" : "http://purl.bioontology.org/ontology/MESH/D044366",
-            "isoelectric_point" : "http://purl.bioontology.org/ontology/MESH/D007526",
-            "molecular_formula" : "http://semanticscience.org/resource/CHEMINF_000490",
-            "molecular_weight" : "http://purl.bioontology.org/ontology/MESH/D008970"
-        }
-    },
-    "drugbank/predicted_properties" : {
-        "@context" : {
-            "molecular_weight" : "http://purl.bioontology.org/ontology/MESH/D008970",
-            "monoisotopic_weight" : "http://semanticscience.org/resource/CHEMINF_000485",
-            "iupac_name" : "http://edamontology.org/data_0998",
-            "smiles" : "http://edamontology.org/format_1196",
-            "inchikey" : "http://identifiers.org/inchikey/",
-            "inchi" : "http://identifiers.org/inchi/",
-            "molecular_formula" : "http://semanticscience.org/resource/CHEMINF_000490",
-            "rotatable_bond_count" : "http://semanticscience.org/resource/CHEMINF_000389",
-            "h_bond_donor_count" : "http://semanticscience.org/resource/CHEMINF_000387",
-            "h_bond_acceptor_count" : "http://semanticscience.org/resource/CHEMINF_000388",
-            "polar_surface_area_(psa)" : "http://semanticscience.org/resource/CHEMINF_000307"
-        }
-    },
-    "chembl" : {
-        "@context" : {
-            "molecule_chembl_id" : "http://edamontology.org/data_2646",
-            "inchi_key" : "http://identifiers.org/inchikey/",
-            "inchi" : "http://identifiers.org/inchi/",
-            "smiles" : "http://edamontology.org/format_1196",
-            "chebi_par_id" : "http://identifiers.org/chebi/",
-            "usan_stem" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C96973",
-            "atc_classifications" : "http://identifiers.org/atc/",
-            "pref_name" : "http://edamontology.org/data_0990"
-        }
-    },
-    "chembl/molecule_hierarchy" : {
-        "@context" : {
-            "molecule_chembl_id" : "http://identifiers.org/chembl.compound/",
-            "parent_chembl_id" : "http://identifiers.org/chembl.compound/"
-        }
-    },
-    "chembl/molecule_properties" : {
-        "@context" : {
-            "full_molformula" : "http://semanticscience.org/resource/CHEMINF_000490",
-            "mw_monoisotopic" : "http://semanticscience.org/resource/CHEMINF_000485",
-            "full_mwt" : "http://purl.bioontology.org/ontology/MESH/D008970",
-            "rtb" : "http://semanticscience.org/resource/CHEMINF_000389",
-            "hbd" : "http://semanticscience.org/resource/CHEMINF_000387",
-            "hba" : "http://semanticscience.org/resource/CHEMINF_000388",
-            "heavy_atoms" : "http://semanticscience.org/resource/CHEMINF_000300",
-            "psa" : "http://semanticscience.org/resource/CHEMINF_000307"
-        }
-    },
-    "pubchem" : {
-        "@context" : {
-            "inchi_key" : "http://identifiers.org/inchikey/",
-            "molecular_weight" : "http://purl.bioontology.org/ontology/MESH/D008970",
-            "monoisotopic_weight" : "http://semanticscience.org/resource/CHEMINF_000485", 
-            "inchi" : "http://identifiers.org/inchi/",
-            "cid" : "http://edamontology.org/data_1172",
-            "molecular_formula" : "http://semanticscience.org/resource/CHEMINF_000490",
-            "rotatable_bond_count" : "http://semanticscience.org/resource/CHEMINF_000389",
-            "hydrogen_bond_donor_count" : "http://semanticscience.org/resource/CHEMINF_000387",
-            "hydrogen_bond_acceptor_count" : "http://semanticscience.org/resource/CHEMINF_000388",
-            "heavy_atom_count" : "http://semanticscience.org/resource/CHEMINF_000300",
-            "topological_polar_surface_area" : "http://semanticscience.org/resource/CHEMINF_000307"
-        }
-    },
-    "pubchem/smiles" : {
-        "@context" : {
-            "isomeric" : "http://semanticscience.org/resource/CHEMINF_000379",
-            "canonical" : "http://semanticscience.org/resource/CHEMINF_000376"
-        }
-    },
-    "pubchem/iupac" : {
-        "@context" : {
-            "traditional" : "http://edamontology.org/data_0998"
-        }
-    }            
+    "@context": {
+        "drugbank.targets.uniprot": "http://identifiers.org/uniprot/",
+        "drugbank.accession_number": "http://identifiers.org/drugbank/",
+        "drugbank.carriers.uniprot": "http://identifiers.org/uniprot_carrier/",
+        "drugbank.transporters.uniprot": "http://identifiers.org/uniprot_transporter/",
+        "drugbank.enzymes.uniprot": "http://identifiers.org/uniprot_enzymes/",
+        "drugbank.drug_interaction.drugbank-id": "http://identifiers.org/drugbank/",
+        "drugbank.pathway.drugs.drugbank-id": "http://identifiers.org/drugbank/",
+        "drugbank.pathways.enzymes.uniprot-id": "http://identifiers.org/uniprot_enzymes/",
+        "drugbank.pharmacology.snp_effects.effect.gene-symbol": "http://identifiers.org/hgnc.symbol/",
+        "drugbank.pharmacology.snp_effects.effect.rs-id": "http://identifiers.org/dbsnp/",
+        "drugbank.pharmacology.snp_effects.effect.pubmed-id": "http://identifiers.org/pubmed/",
+        "drugbank.pharmacology.snp_effects.effect.uniprot_id": "http://identifiers.org/uniprot_snp/",
+        "drugbank.pharmacology.snp_adverse_drug_reactions.reactions.pubmed-id": "http://identifiers.org/pubmed/",
+        "drugbank.pharmacology.snp_adverse_drug_reactions.reactions.gene-symbol": "http://identifiers.org/hgnc.symbol/",
+        "drugbank.pharmacology.snp_adverse_drug_reactions.reactions.rs-id": "http://identifiers.org/dbsnp/",
+        "drugbank.pharmacology.snp_adverse_drug_reactions.reactions.uniprot_id": "http://identifiers.org/uniprot_snp/",
+        "pharmgkb.cross_references.clinicaltrials_gov": "http://identifiers.org/clinicaltrials/",
+        "pharmgkb.cross_references.drugbank": "http://identifiers.org/drugbank/",
+        "pharmgkb.cross_references.uniprotkb": "http://identifiers.org/uniprot_cross/"
+    }
 }
-
