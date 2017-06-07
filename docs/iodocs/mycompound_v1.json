@@ -1,7 +1,7 @@
 {
   "endpoints": [
     {
-      "name": "c.biothings.io drug/compound query service",
+      "name": "MyChem.Info drug/compound query service",
       "methods": [
         {
           "MethodName": "Drug/Compound query service",
@@ -87,7 +87,7 @@
       ]
     },
     {
-      "name": "c.biothings.io drug/compound annotation services",
+      "name": "MyChem.Info drug/compound annotation services",
       "methods": [
         {
           "MethodName": "Drug/Compound annotation service",
@@ -137,7 +137,7 @@
       ]
     },
     {
-      "name": "c.biothings.io metadata service",
+      "name": "MyChem.Info metadata service",
       "methods": [
         {
           "MethodName": "Metadata service",
