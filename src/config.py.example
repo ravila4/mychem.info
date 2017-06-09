@@ -47,3 +47,7 @@ STATUS_CHECK_ID = ''
 FIELD_NOTES_PATH = ''
 # Path to a file containing a json object with the json-ld context information
 JSONLD_CONTEXT_PATH = ''
+
+DATA_ARCHIVE_ROOT = '/path/to/data/folder'
+DIFF_PATH = os.path.join(DATA_ARCHIVE_ROOT,"diff")
+
