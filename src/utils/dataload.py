@@ -9,6 +9,8 @@ Utility functions for parsing flatfiles,
 mapping to JSON, cleaning.
 """
 
+raise Exception("dont use me")
+
 
 # remove keys whos values are ".", "-", "", "NA", "none", " "
 # and remove empty dictionaries

@@ -48,6 +48,18 @@ FIELD_NOTES_PATH = ''
 # Path to a file containing a json object with the json-ld context information
 JSONLD_CONTEXT_PATH = ''
 
+DATA_SRC_SERVER = 'mongohost'
+DATA_SRC_PORT = 27017
+DATA_SRC_DATABASE = 'dbname'
+DATA_SRC_SERVER_USERNAME = ''
+DATA_SRC_SERVER_PASSWORD = ''
+
+DATA_TARGET_SERVER = 'mongohost'
+DATA_TARGET_PORT = 27017
+DATA_TARGET_DATABASE = 'dbname'
+DATA_TARGET_SERVER_USERNAME = ''
+DATA_TARGET_SERVER_PASSWORD = ''
+
 DATA_ARCHIVE_ROOT = '/path/to/data/folder'
 DIFF_PATH = os.path.join(DATA_ARCHIVE_ROOT,"diff")
 
