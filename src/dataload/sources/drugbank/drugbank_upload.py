@@ -4,6 +4,7 @@ import zipfile
 
 from .drugbank_parser import load_data
 from dataload.uploader import BaseDrugUploader
+import biothings.dataload.storage as storage
 
 
 # common to both hg19 and hg38
@@ -16,6 +17,7 @@ SRC_META = {
 class DrugBankUploader(BaseDrugUploader):
 
     name = "drugbank"
+    storage_class = storage.IgnoreDuplicatedStorage
 
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)

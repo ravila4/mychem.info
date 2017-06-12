@@ -15,12 +15,11 @@ def load_data(xml_file):
     f.close()
     for doc in drug_list:
         # try to normalize to inchi key
-        # FIXME: this gives duplicated key
-        #try:
-        #    _id = doc["drugbank"]['inchi_key']
-        #    doc["_id"] = _id
-        #except KeyError:
-        #    pass
+        try:
+            _id = doc["drugbank"]['inchi_key']
+            doc["_id"] = _id
+        except KeyError:
+            pass
         yield doc
 
 def restr_protein_dict(dictionary):
