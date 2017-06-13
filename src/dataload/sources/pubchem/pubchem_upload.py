@@ -16,6 +16,7 @@ SRC_META = {
 class PubChemUploader(BaseDrugUploader):
 
     name = "pubchem"
+    __metadata__ = {"src_meta" : SRC_META}
 
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)

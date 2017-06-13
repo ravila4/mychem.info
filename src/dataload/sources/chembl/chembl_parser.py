@@ -10,6 +10,11 @@ def load_data(input_file):
     molecules_list = data['molecules']
     for i in range(0,len(molecules_list)):
         restr_dict = restructure_dict(molecules_list[i])
+        try:
+            _id = restr_dict["chembl"]['inchi_key']
+            restr_dict["_id"] = _id
+        except KeyError:
+            pass
         yield restr_dict
 
 def restructure_dict(dictionary):
@@ -39,14 +44,6 @@ def restructure_dict(dictionary):
     restr_dict = boolean_convert(restr_dict, added_keys=["topical","oral","parenteral",
                               "dosed_ingredient","polymer_flag","therapeutic_flag","med_chem_friendly","ro3_pass"])
     return restr_dict
-
-# FIXME: include in load_data ? or as a mapper ?
-def get_id_for_merging(doc, src, db):
-    try:
-        _id = doc[src]['inchi_key']
-    except:
-        _id = doc['_id']
-    return _id
 
 
 

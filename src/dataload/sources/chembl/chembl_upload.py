@@ -17,6 +17,7 @@ SRC_META = {
 class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     name = "chembl"
+    __metadata__ = {"src_meta" : SRC_META}
 
     MOLECULE_PATTERN = "molecule.*.json"
 
