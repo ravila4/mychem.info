@@ -4,22 +4,13 @@ import collections
 from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
 from biothings.utils.dataload import boolean_convert
 
-def load_data(path):
+def load_data(input_file):
     molecules_list = []
-    url = urllib.request.urlopen(path)
-    status_code = url.getcode()
-    if status_code == 200:
-        data = urllib.request.urlopen(path).read()
-        jsonData = json.loads(str(data,'utf-8'))
-        total_cnt = jsonData["page_meta"]['total_count']
-    for i in range(0,total_cnt,1000):
-        url = path+"?limit=1000&offset="+str(i)
-        data = urllib.request.urlopen(url).read()  #type instance
-        jsonData = json.loads(str(data,'utf-8'))  #type dictionary, lenght 2
-        molecules_list = jsonData['molecules']
-        for i in range(0,len(molecules_list)):
-            restr_dict = restructure_dict(molecules_list[i])
-            yield restr_dict
+    data = json.load(open(input_file))
+    molecules_list = data['molecules']
+    for i in range(0,len(molecules_list)):
+        restr_dict = restructure_dict(molecules_list[i])
+        yield restr_dict
 
 def restructure_dict(dictionary):
     restr_dict = dict()

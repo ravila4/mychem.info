@@ -4,6 +4,7 @@ import zipfile
 
 from .chembl_parser import load_data
 from dataload.uploader import BaseDrugUploader
+from biothings.dataload.uploader import ParallelizedSourceUploader
 
 
 # common to both hg19 and hg38
@@ -13,14 +14,19 @@ SRC_META = {
         }
 
 
-class ChemblUploader(BaseDrugUploader):
+class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     name = "chembl"
 
-    def load_data(self,data_folder):
-        self.logger.info("Load data from '%s'" % data_folder)
-        input_file = 'https://www.ebi.ac.uk/chembl/api/data/molecule.json'
-        # FIXME: this should be downloaded locally
+    MOLECULE_PATTERN = "molecule.*.json"
+
+    def jobs(self):
+        # this will generate arguments for self.load.data() method, allowing parallelization
+        json_files = glob.glob(os.path.join(self.data_folder,self.__class__.MOLECULE_PATTERN))
+        return [(f,) for f in json_files]
+
+    def load_data(self,input_file):
+        self.logger.info("Load data from file '%s'" % input_file)
         return load_data(input_file)
 
     @classmethod
