@@ -5,6 +5,7 @@ import zipfile
 from .pubchem_parser import load_data
 from dataload.uploader import BaseDrugUploader
 from biothings.dataload.uploader import ParallelizedSourceUploader
+import biothings.dataload.storage as storage
 
 
 # common to both hg19 and hg38
@@ -17,6 +18,7 @@ SRC_META = {
 class PubChemUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     name = "pubchem"
+    storage_class = storage.IgnoreDuplicatedStorage
     __metadata__ = {"src_meta" : SRC_META}
 
     COMPOUND_PATTERN = "Compound*.xml.gz"

@@ -1,10 +1,10 @@
 import os
 import glob
-import zipfile
 
 from .drugbank_parser import load_data
 from dataload.uploader import BaseDrugUploader
 import biothings.dataload.storage as storage
+from biothings.utils.common import unzipall
 
 
 # common to both hg19 and hg38
@@ -21,8 +21,12 @@ class DrugBankUploader(BaseDrugUploader):
     __metadata__ = {"src_meta" : SRC_META}
 
     def load_data(self,data_folder):
+        self.logger.info("Unzipping drugbank archive")
+        unzipall(data_folder)
         self.logger.info("Load data from '%s'" % data_folder)
-        input_file = os.path.join(data_folder,"drugbank.xml")
+        xmlfiles = glob.glob(os.path.join(data_folder,"*.xml"))
+        assert len(xmlfiles) == 1, "Expecting one xml file, got %s" % repr(xmlfiles)
+        input_file = xmlfiles.pop()
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
         return load_data(input_file)
 
