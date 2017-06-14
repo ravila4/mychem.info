@@ -4,6 +4,7 @@ import zipfile
 
 from .pubchem_parser import load_data
 from dataload.uploader import BaseDrugUploader
+from biothings.dataload.uploader import ParallelizedSourceUploader
 
 
 # common to both hg19 and hg38
@@ -13,15 +14,20 @@ SRC_META = {
         }
 
 
-class PubChemUploader(BaseDrugUploader):
+class PubChemUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     name = "pubchem"
     __metadata__ = {"src_meta" : SRC_META}
 
-    def load_data(self,data_folder):
-        self.logger.info("Load data from '%s'" % data_folder)
-        input_file = "ftp://ftp.ncbi.nlm.nih.gov/pubchem/Compound/CURRENT-Full/XML/"
-        # FIXME: this should be downloaded locally
+    COMPOUND_PATTERN = "Compound*.xml.gz"
+
+    def jobs(self):
+        # this will generate arguments for self.load.data() method, allowing parallelization
+        xmlgz_files = glob.glob(os.path.join(self.data_folder,self.__class__.COMPOUND_PATTERN))
+        return [(f,) for f in xmlgz_files]
+
+    def load_data(self,input_file):
+        self.logger.info("Load data from file '%s'" % input_file)
         return load_data(input_file)
 
     @classmethod

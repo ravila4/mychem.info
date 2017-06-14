@@ -5,27 +5,23 @@ import gzip
 import os
 from biothings.utils.dataload import value_convert_to_number
 
-def load_data(url):
+def load_data(input_file):
     compound_list = []
     def handle(path,item):
         item = restructure_dict(item)
         compound_list.append(item)
         return True
 
-    temp_file = "temp.xml.gz"
-    resp = urllib.request.urlopen(url).read().decode('utf-8')
-    links = re.findall('Compound_.*.gz', resp)  #find all url from the html
-    for x in links:
-        new_url = url + x
-        f = urllib.request.urlopen(new_url)
-        data = f.read()
-        with open(temp_file,"wb") as _file:
-            _file.write(data)
-        _f = gzip.open(temp_file,'rb').read()
-        xmltodict.parse(_f,item_depth=2,item_callback=handle,xml_attribs=True)  #parse the xml file to dictionary
-        for compound in compound_list:
-            yield compound
-        os.remove(temp_file)
+    _f = gzip.open(input_file,'rb').read()
+    xmltodict.parse(_f,item_depth=2,item_callback=handle,xml_attribs=True)  #parse the xml file to dictionary
+    for compound in compound_list:
+        try:
+            _id = compound["pubchem"]['inchi_key']
+            compound["_id"] = _id
+        except KeyError:
+            pass
+
+        yield compound
 
 def restructure_dict(dictionary):
     smile_dict = dict()
@@ -144,12 +140,4 @@ def restructure_dict(dictionary):
     restr_dict["pubchem"] = d
     restr_dict = value_convert_to_number(restr_dict)
     return restr_dict
-
-# FIXME: set this _id during parsing ?
-def get_id_for_merging(doc, src, db):
-    try:
-        _id = doc[src]['inchi_key']
-    except:
-        _id = doc['_id']
-    return _id
 
