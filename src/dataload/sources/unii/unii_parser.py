@@ -2,9 +2,9 @@ import pandas as pd
 import json
 
 
-def main():
+def load_data(input_file):
 
-    unii = pd.read_csv('unii_records.tsv', sep='\t', low_memory=False, dtype=str)
+    unii = pd.read_csv(input_file, sep='\t', low_memory=False, dtype=str)
     unii.rename(columns={'MF': 'molecular_formula',
                          'PT': 'preferred_term',
                          'RN': 'registry_number'}, inplace=True)
@@ -29,21 +29,5 @@ def main():
         else:
             for subr in record['unii']:
                 del subr['_id']
+        yield record
 
-
-    with open("unii_records.json", "w") as f:
-        for record in records:
-            print(json.dumps(record), file=f)
-
-
-def do_import():
-    from pymongo import MongoClient
-
-    from local import MONGO_PASS
-    db = MongoClient('mongodb://mydrug_user:{}@su08.scripps.edu:27017/drugdoc'.format(MONGO_PASS)).drugdoc
-    coll = db['unii']
-
-    with open("unii_records.json") as f:
-        for line in f:
-            doc = json.loads(line)
-            coll.insert_one(doc)
