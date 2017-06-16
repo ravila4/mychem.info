@@ -1,6 +1,7 @@
 import os
 import glob
 import zipfile
+import pymongo
 
 from .chebi_parser import load_data
 from dataload.uploader import BaseDrugUploader
@@ -33,6 +34,12 @@ class ChebiUploader(BaseDrugUploader):
                 "conversion). Please run 'chembl' uploader first"
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
         return load_data(input_file,drugbank_col,chembl_col)
+
+    def post_update_data(self, *args, **kwargs):
+        for idxname in ["chebi.chebi_id"]:
+            self.logger.info("Indexing '%s'" % idxname)
+            # background=true or it'll lock the whole database...
+            self.collection.create_index([(idxname,pymongo.HASHED)],background=True)
 
     @classmethod
     def get_mapping(klass):

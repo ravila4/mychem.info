@@ -1,5 +1,6 @@
 import os
 import glob
+import pymongo
 
 from .drugbank_parser import load_data
 from dataload.uploader import BaseDrugUploader
@@ -33,10 +34,10 @@ class DrugBankUploader(BaseDrugUploader):
         return load_data(input_file)
 
     def post_update_data(self, *args, **kwargs):
-        for idxname in ["drugbank.drugbank_id","drugbank.chebi"]:
+        for idxname in ["drugbank.drugbank_id","drugbank.chebi","drugbank.inchi"]:
             self.logger.info("Indexing '%s'" % idxname)
             # background=true or it'll lock the whole database...
-            self.collection.create_index(idxname,background=True)
+            self.collection.create_index([(idxname,pymongo.HASHED)],background=True)
 
     @classmethod
     def get_mapping(klass):

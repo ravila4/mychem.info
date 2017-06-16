@@ -1,6 +1,7 @@
 import os
 import glob
 import zipfile
+import pymongo
 
 from .chembl_parser import load_data
 from dataload.uploader import BaseDrugUploader
@@ -30,12 +31,11 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
         self.logger.info("Load data from file '%s'" % input_file)
         return load_data(input_file)
 
-
     def post_update_data(self, *args, **kwargs):
-        for idxname in ["chembl.chebi_par_id"]:
+        for idxname in ["chembl.chebi_par_id","chembl.inchi"]:
             self.logger.info("Indexing '%s'" % idxname)
             # background=true or it'll lock the whole database...
-            self.collection.create_index(idxname,background=True)
+            self.collection.create_index([(idxname,pymongo.HASHED)],background=True)
 
     @classmethod
     def get_mapping(klass):
