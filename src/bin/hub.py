@@ -21,13 +21,12 @@ job_manager = JobManager(loop,
 import dataload
 import biothings.dataload.uploader as uploader
 import biothings.dataload.dumper as dumper
-#import biothings.databuild.builder as builder
-#import biothings.databuild.differ as differ
-#import biothings.databuild.syncer as syncer
-#import biothings.dataindex.indexer as indexer
-#from databuild.builder import MyVariantDataBuilder
-#from databuild.mapper import TagObserved
-#from dataindex.indexer import VariantIndexer
+import biothings.databuild.builder as builder
+import biothings.databuild.differ as differ
+import biothings.databuild.syncer as syncer
+import biothings.dataindex.indexer as indexer
+from databuild.builder import MyChemDataBuilder
+from dataindex.indexer import DrugIndexer
 
 # will check every 10 seconds for sources to upload
 upload_manager = uploader.UploaderManager(poll_schedule = '* * * * * */10', job_manager=job_manager)
@@ -38,21 +37,18 @@ dmanager = dumper.DumperManager(job_manager=job_manager)
 dmanager.register_sources(dataload.__sources_dict__)
 dmanager.schedule_all()
 
-#observed = TagObserved(name="observed")
-#build_manager = builder.BuilderManager(
-#        builder_class=partial(MyVariantDataBuilder,mappers=[observed]),
-#        job_manager=job_manager)
-#build_manager.configure()
-#
-#differ_manager = differ.DifferManager(job_manager=job_manager)
-#differ_manager.configure()
-#syncer_manager = syncer.SyncerManager(job_manager=job_manager)
-#syncer_manager.configure()
-#
-#pindexer = partial(VariantIndexer,es_host=config.ES_HOST)
-#index_manager = indexer.IndexerManager(pindexer=pindexer,
-#        job_manager=job_manager)
-#index_manager.configure()
+build_manager = builder.BuilderManager(builder_class=MyChemDataBuilder,job_manager=job_manager)
+build_manager.configure()
+
+differ_manager = differ.DifferManager(job_manager=job_manager)
+differ_manager.configure()
+syncer_manager = syncer.SyncerManager(job_manager=job_manager)
+syncer_manager.configure()
+
+pindexer = partial(DrugIndexer,es_host=config.ES_HOST)
+index_manager = indexer.IndexerManager(pindexer=pindexer,
+        job_manager=job_manager)
+index_manager.configure()
 
 
 from biothings.utils.hub import schedule, top, pending, done
@@ -66,27 +62,25 @@ COMMANDS = {
         "um" : upload_manager,
         "upload" : upload_manager.upload_src,
         "upload_all": upload_manager.upload_all,
-#        # building/merging
-#        "bm" : build_manager,
-#        "merge" : build_manager.merge,
-#        "mongo_sync" : partial(syncer_manager.sync,"mongo"),
-#        "es_sync" : partial(syncer_manager.sync,"es"),
-#        "es_sync_hg19_test" : partial(syncer_manager.sync,"es",target_backend=config.ES_TEST_HG19),
-#        "es_sync_hg38_test" : partial(syncer_manager.sync,"es",target_backend=config.ES_TEST_HG38),
-#        "es_sync_hg19_prod" : partial(syncer_manager.sync,"es",target_backend=config.ES_PROD_HG19),
-#        "es_sync_hg38_prod" : partial(syncer_manager.sync,"es",target_backend=config.ES_PROD_HG38),
-#        "es_prod": {"hg19":config.ES_PROD_HG19,"hg38":config.ES_PROD_HG38},
-#        "es_test": {"hg19":config.ES_TEST_HG19,"hg38":config.ES_TEST_HG38},
-#        "sm" : syncer_manager,
-#        # diff
-#        "dim" : differ_manager,
-#        "diff" : partial(differ_manager.diff,"jsondiff"),
-#        "report": differ_manager.diff_report,
-#        # indexing commands
-#        "im" : index_manager,
-#        "index" : index_manager.index,
-#        "snapshot" : index_manager.snapshot,
-#        # admin/advanced
+        # building/merging
+        "bm" : build_manager,
+        "merge" : partial(build_manager.merge,"drug"),
+        "mongo_sync" : partial(syncer_manager.sync,"mongo"),
+        "es_sync" : partial(syncer_manager.sync,"es"),
+        "es_sync_test" : partial(syncer_manager.sync,"es",target_backend=config.ES_TEST),
+        #"es_sync_prod" : partial(syncer_manager.sync,"es",target_backend=config.ES_PROD),
+        "es_test": config.ES_TEST,
+        #"es_prod": config.ES_PROD,
+        "sm" : syncer_manager,
+        # diff
+        "dim" : differ_manager,
+        "diff" : partial(differ_manager.diff,"jsondiff"),
+        "report": differ_manager.diff_report,
+        # indexing commands
+        "im" : index_manager,
+        "index" : index_manager.index,
+        "snapshot" : index_manager.snapshot,
+        # admin/advanced
         "loop" : loop,
         "pqueue" : process_queue,
         "tqueue" : thread_queue,
