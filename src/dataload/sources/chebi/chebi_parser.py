@@ -36,7 +36,8 @@ def restructure_dict(dictionary):
     restr_dict['_id'] = dictionary['ChEBI ID']
     restr_dict['chebi']= dictionary
     restr_dict['chebi'] = clean_up(restr_dict['chebi'])
-    restr_dict = dict_sweep(restr_dict,vals=[None,".", "-", "", "NA", "none", " ", "Not Available", "unknown","null","None"])
+    restr_dict = dict_sweep(restr_dict,vals=[None,".", "-", "", "NA", "none", " ", "Not Available",
+        "unknown","null","None","NaN"])
     restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein_registry_numbers","pubchem_database_links","pubmed_citation_links","sabio_rk_database_links","gmelin_registry_numbers","molbase_database_links"])
     return restr_dict
 
