@@ -30,6 +30,13 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
         self.logger.info("Load data from file '%s'" % input_file)
         return load_data(input_file)
 
+
+    def post_update_data(self, *args, **kwargs):
+        for idxname in ["chembl.chebi_par_id"]:
+            self.logger.info("Indexing '%s'" % idxname)
+            # background=true or it'll lock the whole database...
+            self.collection.create_index(idxname,background=True)
+
     @classmethod
     def get_mapping(klass):
         mapping = {

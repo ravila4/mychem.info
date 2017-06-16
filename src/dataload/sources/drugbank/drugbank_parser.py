@@ -67,11 +67,11 @@ def restructure_dict(dictionary):
             if isinstance(value,list):
                 for ele in value:
                     if isinstance(ele,collections.OrderedDict):
+                        assert "@primary" in ele
                         for x,y in iter(ele.items()):
                             if x == '#text':
-                                key = key.replace('-','_')
-                                id_list.append(y)
-                                d1.update({'accession_number':id_list})
+                                # make sure we always have DB ID as drugbank_id
+                                d1.update({'drugbank_id' : y})
                                 restr_dict['_id'] = y
 
                     if isinstance(ele,str):
@@ -86,6 +86,7 @@ def restructure_dict(dictionary):
                         id_list.append(y)
                         d1.update({key:id_list})
                         restr_dict['_id'] = y
+
 
         elif key == 'description':
             d1.update({'pharmacology':{key:value}})
