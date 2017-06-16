@@ -1,12 +1,13 @@
 from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
 
 
-def load_data(sdf_file):
+def load_data(sdf_file, drugbank_col=None, chembl_col=None):
+    import biothings.utils.mongo as mongo
     f = open(sdf_file,'r').read()
     comp_list = f.split("$$$$") #split the compounds and list
     comp_list = [ele.split("\n> <") for ele in comp_list] #split from \n> <
     comp_list = list(map(lambda x:[ele.strip("\n") for ele in x],comp_list))
-    comp_list = list(map(lambda x: [ele.split('>\n') for ele in x],comp_list))
+    comp_list = list(map(lambda x: [ele.split('>\n',1) for ele in x],comp_list))
     for item in comp_list:
         del item[0] #remove molecule structure - Marvin
     for element in comp_list:
@@ -15,6 +16,7 @@ def load_data(sdf_file):
     del comp_list[-1]
     for compound in comp_list:
         restr_dict = restructure_dict(compound)
+        restr_dict["_id"] = find_inchikey(restr_dict,drugbank_col,chembl_col)
         yield restr_dict
 
 def clean_up(_dict):
@@ -38,19 +40,20 @@ def restructure_dict(dictionary):
     restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein_registry_numbers","pubchem_database_links","pubmed_citation_links","sabio_rk_database_links","gmelin_registry_numbers","molbase_database_links"])
     return restr_dict
 
-# FIXME: chedi_id -> inchi-key will require a mapper
-def get_id_for_merging(doc, src, db):
+def find_inchikey(doc, drugbank_col, chembl_col):
     _flag = 0
+    _id = doc["_id"] # default if we can't find anything
 
-    if 'inchikey' in doc[src]:
-        _id = doc[src]['inchikey']
-    else:
-        if 'drugbank_database_links' in doc[src]:
-            d = db.drugbank.find_one({'_id':doc[src]['drugbank_database_links']})
+    if 'inchikey' in doc["chebi"]:
+        _id = doc["chebi"]['inchikey']
+    elif drugbank_col and chembl_col:
+        if 'drugbank_database_links' in doc["chebi"]:
+            d = drugbank_col.find_one({'_id':doc["chebi"]['drugbank_database_links']})
             if d != None:
                 try:
                     _id = d['drugbank']['inchi_key']
-                except:
+                except KeyError:
+                    # no inchi-key in drugbank
                     _id = d['_id']
             else:
                 _flag = 1
@@ -59,14 +62,14 @@ def get_id_for_merging(doc, src, db):
 
         if _flag:
             _flag = 0
-            d = db.chembl.find_one({'chembl.chebi_par_id':doc['_id'][6:]},no_cursor_timeout=True)
+            d = chembl_col.find_one({'chembl.chebi_par_id':doc['_id'][6:]},no_cursor_timeout=True)
             if d != None:
                 try:
                     _id = d['chembl']['inchi_key']
                 except:
                     _id = d['_id']
             else:
-                d = db.drugbank.find_one({'drugbank.chebi':doc['_id'][6:]})
+                d = drugbank_col.find_one({'drugbank.chebi':doc['_id'][6:]})
                 if d != None:
                     try:
                         _id = d['chembl']['inchi_key']
