@@ -8,7 +8,6 @@ from dataload.uploader import BaseDrugUploader
 from biothings.dataload.uploader import ParallelizedSourceUploader
 
 
-# common to both hg19 and hg38
 SRC_META = {
         "url": 'https://www.ebi.ac.uk/chembl/',
         "license_url" : "?",

@@ -8,7 +8,6 @@ import biothings.dataload.storage as storage
 from biothings.utils.common import unzipall
 
 
-# common to both hg19 and hg38
 SRC_META = {
         "url" : "http://www.drugbank.ca",
         "license_url" : "?",

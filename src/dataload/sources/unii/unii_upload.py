@@ -6,7 +6,6 @@ from dataload.uploader import BaseDrugUploader
 import biothings.dataload.storage as storage
 
 
-# common to both hg19 and hg38
 SRC_META = {
         "url": 'https://fdasis.nlm.nih.gov/srs/',
         "license_url" : "?",

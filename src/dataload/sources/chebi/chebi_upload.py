@@ -9,7 +9,6 @@ from biothings.utils.mongo import get_src_db
 import biothings.dataload.storage as storage
 
 
-# common to both hg19 and hg38
 SRC_META = {
         "url": 'https://www.ebi.ac.uk/chebi/',
         "license_url" : "?",

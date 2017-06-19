@@ -9,7 +9,6 @@ from biothings.dataload.uploader import ParallelizedSourceUploader
 import biothings.dataload.storage as storage
 
 
-# common to both hg19 and hg38
 SRC_META = {
         "url": "https://pubchem.ncbi.nlm.nih.gov/",
         "license_url" : "?",
