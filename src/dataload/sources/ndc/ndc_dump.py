@@ -1,35 +1,34 @@
 import os, sys, re, time
 import bs4
 import dateutil.parser as dtparser
-import datetime
+from datetime import datetime
+import requests
 
 from config import DATA_ARCHIVE_ROOT
 from biothings.dataload.dumper import HTTPDumper, DumperException
 from biothings.utils.common import unzipall
 
 
-class UniiDumper(HTTPDumper):
+class NDCDumper(HTTPDumper):
 
-    SRC_NAME = "unii"
+    SRC_NAME = "ndc"
     SRC_ROOT_FOLDER = os.path.join(DATA_ARCHIVE_ROOT, SRC_NAME)
 
-    HOMEPAGE_URL = "https://fdasis.nlm.nih.gov/srs"
-    DATA_URL = "https://fdasis.nlm.nih.gov/srs/download/srs/UNII_Data.zip"
+    DATA_URL = "http://www.accessdata.fda.gov/cder/ndctext.zip"
 
     def get_latest_release(self):
-        res = self.client.get(self.__class__.HOMEPAGE_URL)
-        html = bs4.BeautifulSoup(res.text,"lxml")
-        # link containing the latest date version
-        version = html.find(attrs={"href":"/srs/jsp/srs/uniiListDownload.jsp"}).text
-        m = re.match("UNII List download \(updated (.*)\)",version)
+        req = requests.Request('HEAD',self.__class__.DATA_URL)
+        res = self.client.send(req.prepare())
         try:
-            latest = datetime.date.strftime(dtparser.parse(m.groups()[0]),"%Y-%m-%d")
+            lastmodified = res.headers["last-modified"]
+            latest = datetime.strptime(lastmodified, "%a, %d %b %Y %H:%M:%S %Z").strftime("%Y%M%d")
             return latest
         except Exception as e:
-            raise DumperException("Can't find or parse date from URL '%s': %s" % (self.__class__.HOMEPAGE_URL,e))
+            raise DumperException("Can't find or parse latest release date from URL '%s': %s" % (self.__class__.DATA_URL,e))
 
     def create_todump_list(self,force=False,**kwargs):
         self.release = self.get_latest_release()
+        print("self.src_doc %s"  % self.src_doc)
         if force or not self.src_doc or (self.src_doc and self.src_doc.get("release") < self.release):
             # if new release, that link points to that latest release
             local = os.path.join(self.new_data_folder,os.path.basename(self.DATA_URL))

@@ -8,6 +8,7 @@ __sources_dict__ = [
         'dataload.sources.unii',
         'dataload.sources.pharmgkb',
         'dataload.sources.sider',
+        'dataload.sources.ndc',
 
         # collection-only
         'dataload.sources.ginas',
