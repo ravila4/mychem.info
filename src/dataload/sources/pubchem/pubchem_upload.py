@@ -47,7 +47,7 @@ class PubChemUploader(BaseDrugUploader,ParallelizedSourceUploader):
                         "type":"string",
                         "analyzer":"string_lowercase"
                         },
-                    "undefined_atom_stereoceter_count" : {
+                    "undefined_atom_stereocenter_count" : {
                         "type":"integer"
                         },
                     "formal_charge" : {
@@ -56,7 +56,7 @@ class PubChemUploader(BaseDrugUploader,ParallelizedSourceUploader):
                     "isotope_atom_count" : {
                         "type":"integer"
                         },
-                    "defined_atom_stereoceter_count" : {
+                    "defined_atom_stereocenter_count" : {
                         "type":"integer"
                         },
                     "molecular_weight" : {

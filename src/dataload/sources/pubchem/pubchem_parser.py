@@ -111,10 +111,10 @@ def restructure_dict(dictionary):
                         d["chiral_atom_count"] = y
 
                     elif x == "PC-Count_atom-chiral-def":
-                        d["defined_atom_stereoceter_count"] = y
+                        d["defined_atom_stereocenter_count"] = y
 
                     elif x == "PC-Count_atom-chiral-undef":
-                        d["undefined_atom_stereoceter_count"] = y
+                        d["undefined_atom_stereocenter_count"] = y
 
                     elif x == "PC-Count_bond-chiral":
                         d["chiral_bond_count"] = y
