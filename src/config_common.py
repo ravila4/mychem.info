@@ -149,8 +149,10 @@ HUB_MAX_MEM_USAGE = None
 # to broadcast message to a Hipchat room
 HIPCHAT_CONFIG = {
 #        "token" : "",
+#        "usertoken" : "", # from an active user, to share file
 #        "roomid" : "",
-#        "from" : "mychem_hub"
+#        "from" : "mychem_hub",
+#        "host" : "xxxx.hipchat.com"
         }
 
 SSH_HUB_PORT = 8022
