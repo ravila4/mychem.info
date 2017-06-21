@@ -40,9 +40,8 @@ def find_inchi_key(doc, pubchem_col):
     _id = doc["_id"]
     if not pubchem_col:
         return _id
-    cid = str(abs(100000000-int(doc['_id'][3:])))
-    d = pubchem_col.find_one({'_id':cid})
-    if d!= None:
+    d = pubchem_col.find_one({'pubchem.cid':_id})
+    if d:
         _id = d['pubchem']['inchi_key']
     else:
         _id = doc['_id']

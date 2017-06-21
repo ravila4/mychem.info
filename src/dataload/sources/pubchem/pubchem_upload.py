@@ -34,7 +34,7 @@ class PubChemUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     def post_update_data(self, *args, **kwargs):
         # hashed because inchi is too long (and we'll do == ops to hashed are enough)
-        for idxname in ["pubchem.inchi"]:
+        for idxname in ["pubchem.inchi","pubchem.cid"]:
             self.logger.info("Indexing '%s'" % idxname)
             self.collection.create_index([(idxname,pymongo.HASHED)],background=True)
 
