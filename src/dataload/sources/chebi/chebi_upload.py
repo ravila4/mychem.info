@@ -133,6 +133,10 @@ class ChebiUploader(BaseDrugUploader):
                         "type":"string",
                         "analyzer":"string_lowercase"
                         },
+                    "cas": {
+                        "analyzer": "string_lowercase",
+                        "type": "string"
+                        },
                     "patent_database_links" : {
                         "type":"string",
                         "analyzer":"string_lowercase"

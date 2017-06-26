@@ -41,8 +41,43 @@ class AeolusUploader(uploader.DummySourceUploader):
                         "type": "string",
                         "analyzer": "string_lowercase"
                     },
+					"drug_vocab": {
+						"type": "string"
+					},
+					"rxcui": {
+						"analyzer": "string_lowercase",
+						"type": "string"
+					},
+					"relationships": {
+						"properties": {
+							"relatedSubstance": {
+								"properties": {
+									"approvalID": {
+										"analyzer": "string_lowercase",
+										"type": "string"
+										},
+									"refPname": {
+										"analyzer": "string_lowercase",
+										"type": "string"
+										}
+									}
+								},
+							"type": {
+								"analyzer": "string_lowercase",
+								"type": "string"
+								}
+							}
+						},
                     "outcomes": {
                         "properties": {
+							"code": {
+								"analyzer": "string_lowercase",
+								"type": "string"
+								},
+							"vocab": {
+								"include_in_all": False,
+								"type": "string"
+								},
                             "case_count": {
                                 "type": "long",
                             },

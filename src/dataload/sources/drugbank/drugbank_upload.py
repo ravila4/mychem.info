@@ -37,6 +37,8 @@ class DrugBankUploader(BaseDrugUploader):
             self.logger.info("Indexing '%s'" % idxname)
             # background=true or it'll lock the whole database...
             self.collection.create_index([(idxname,pymongo.HASHED)],background=True)
+        # hashed index won"t support arrays, values are small enough to standard
+        self.collection.create_index("drugbank.products.ndc_product_code")
 
     @classmethod
     def get_mapping(klass):
@@ -143,6 +145,10 @@ class DrugBankUploader(BaseDrugUploader):
                                 "analyzer":"string_lowercase"
                                 }
                             }
+                        },
+                    "drugbank_id": {
+                        "analyzer": "string_lowercase",
+                        "type": "string"
                         },
                     "targets" : {
                         "properties" : {
@@ -419,7 +425,7 @@ class DrugBankUploader(BaseDrugUploader):
                             },
                             "snp_adverse_drug_reactions" : {
                                 "properties" : {
-                                    "reactions" : {
+                                    "reaction" : {
                                         "properties" : {
                                             "protein-name" : {
                                                 "type":"string" ,
@@ -457,7 +463,7 @@ class DrugBankUploader(BaseDrugUploader):
                                 },
                             "snp_effects" : {
                                 "properties" : {
-                                    "effects" : {
+                                    "effect" : {
                                         "properties" : {
                                             "defining-change" : {
                                                 "type":"string" ,
