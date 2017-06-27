@@ -16,10 +16,6 @@ class AeolusUploader(uploader.DummySourceUploader):
         mapping = {
             "aeolus": {
                 "properties": {
-                    "drug_rxcui": {
-                        "type": "string",
-                        "analyzer": "string_lowercase"
-                    },
                     "drug_id": {
                         "type": "string",
                         "analyzer": "string_lowercase"
@@ -44,6 +40,10 @@ class AeolusUploader(uploader.DummySourceUploader):
 					"drug_vocab": {
 						"type": "string"
 					},
+                    "drug_code": {
+                        "analyzer": "string_lowercase",
+                        "type": "string"
+                    },
 					"rxcui": {
 						"analyzer": "string_lowercase",
 						"type": "string"
@@ -81,10 +81,6 @@ class AeolusUploader(uploader.DummySourceUploader):
                             "case_count": {
                                 "type": "long",
                             },
-                            "meddra_code": {
-                                "type": "string",
-                                "analyzer": "string_lowercase"
-                            },
                             "id": {
                                 "type": "string",
                                 "analyzer": "string_lowercase"
@@ -105,24 +101,6 @@ class AeolusUploader(uploader.DummySourceUploader):
                                 "type": "float",
                             },
                         },
-                    },
-                    "indications": {
-                        "properties": {
-                            "meddra_code": {
-                                "type": "string",
-                                "analyzer": "string_lowercase"
-                            },
-                            "id": {
-                                "type": "string",
-                                "analyzer": "string_lowercase"
-                            },
-                            "name": {
-                                "type": "string",
-                            },
-                            "count": {
-                                "type": "integer",
-                            },
-                        }
                     }
                 }
             }

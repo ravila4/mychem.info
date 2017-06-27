@@ -20,8 +20,12 @@ class GinasUploader(uploader.DummySourceUploader):
                             "analyzer": "string_lowercase"
                             },
                         "relationships": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "properties": {
+                                "type": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    }
+                                }
                             },
                         "unii": {
                             "type": "string",
