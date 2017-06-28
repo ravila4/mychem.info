@@ -13,5 +13,6 @@ __sources_dict__ = [
         # collection-only
         'dataload.sources.ginas',
         'dataload.sources.aeolus',
+        'dataload.sources.drugcentral',
     ]
 
