@@ -485,7 +485,10 @@ def restructure_dict(dictionary):
     restr_dict = unlist(restr_dict)
     restr_dict = dict_sweep(restr_dict,vals=[None,math.inf,".", "-", "", "NA", "none", " ",
         "Not Available", "unknown","null","None"])
-    restr_dict = boolean_convert(restr_dict,added_keys=["mddr_like_rule","bioavailability","ghose_filter","rule_of_five"])
+    restr_dict = boolean_convert(restr_dict,["predicted_properties.mddr_like_rule",
+        "predicted_properties.bioavailability","predicted_properties.ghose_filter",
+        "predicted_properties.rule_of_five","products.generic","products.otc",
+        "products.approved","products.pediatric-extension"])
     restr_dict = value_convert_to_number(restr_dict,skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance","bindingdb"])
     return restr_dict
 

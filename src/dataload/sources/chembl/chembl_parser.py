@@ -41,8 +41,8 @@ def restructure_dict(dictionary):
     restr_dict = unlist(restr_dict)
     restr_dict = dict_sweep(restr_dict, vals=[None,".", "-", "", "NA", "None","none", " ", "Not Available", "unknown","null"])
     restr_dict = value_convert_to_number(restr_dict, skipped_keys=["chebi_par_id","first_approval"])
-    restr_dict = boolean_convert(restr_dict, added_keys=["topical","oral","parenteral",
-                              "dosed_ingredient","polymer_flag","therapeutic_flag","med_chem_friendly","ro3_pass"])
+    restr_dict = boolean_convert(restr_dict, ["topical","oral","parenteral","dosed_ingredient","polymer_flag",
+        "therapeutic_flag","med_chem_friendly","molecule_properties.ro3_pass"])
     return restr_dict
 
 
