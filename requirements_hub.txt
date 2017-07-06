@@ -24,4 +24,6 @@ asyncssh==1.7.1 # ssh hub console
 boto # interaction with AWS
 jsonpointer==1.10 # applying JSON patches
 xmltodict==0.11.0 # drugbank parsing
-bs4==4.5.1 # drugbank dumper
+beautifulsoup4==4.5.1 # drugbank dumper
+lxml # bs4 html parsing (note: no version avail to set it fixed)
+pandas==0.19.1 # sider parser

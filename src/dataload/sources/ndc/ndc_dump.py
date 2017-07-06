@@ -15,6 +15,7 @@ class NDCDumper(HTTPDumper):
     SRC_ROOT_FOLDER = os.path.join(DATA_ARCHIVE_ROOT, SRC_NAME)
 
     DATA_URL = "http://www.accessdata.fda.gov/cder/ndctext.zip"
+    SCHEDULE = "0 12 * * *"
 
     def get_latest_release(self):
         req = requests.Request('HEAD',self.__class__.DATA_URL)

@@ -18,7 +18,7 @@ class PubChemDumper(FTPDumper):
     FTP_HOST = 'ftp.ncbi.nlm.nih.gov'
     CWD_DIR = '/pubchem/Compound/CURRENT-Full/XML'
     ARCHIVE = False
-    SCHEDULE = None
+    SCHEDULE = "0 12 * * *"
 
     VERSION_DIR = '/pubchem/Compound/Monthly'
 

@@ -19,7 +19,7 @@ class SiderDumper(FTPDumper):
     SRC_ROOT_FOLDER = os.path.join(DATA_ARCHIVE_ROOT, SRC_NAME)
     FTP_HOST = 'xi.embl.de'
     CWD_DIR = '/SIDER'
-    SCHEDULE = None
+    SCHEDULE = "0 12 * * *"
 
     def get_release(self):
         # only dir with dates
@@ -49,7 +49,7 @@ class SiderDumper(FTPDumper):
                     self.to_dump.append({"remote": remote,"local":local})
 
     def post_dump(self):
-        #gunzipall(self.new_data_folder)
+        gunzipall(self.new_data_folder)
         self.logger.info("Merging files")
         FREQ = os.path.join(self.new_data_folder,"meddra_freq.tsv")
         ALL_SE = os.path.join(self.new_data_folder,"meddra_all_se.tsv")

@@ -21,6 +21,7 @@ class DrugBankDumper(HTTPDumper):
     SRC_ROOT_FOLDER = os.path.join(DATA_ARCHIVE_ROOT, SRC_NAME)
     AUTO_UPLOAD = False # it's still manual, so upload won't have the 
 
+    SCHEDULE = "0 12 * * *"
     VERSIONS_URL = "https://www.drugbank.ca/releases"
 
     def create_todump_list(self,force=False,**kwargs):

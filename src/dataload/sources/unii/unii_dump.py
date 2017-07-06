@@ -13,6 +13,7 @@ class UniiDumper(HTTPDumper):
     SRC_NAME = "unii"
     SRC_ROOT_FOLDER = os.path.join(DATA_ARCHIVE_ROOT, SRC_NAME)
 
+    SCHEDULE = "0 12 * * *"
     HOMEPAGE_URL = "https://fdasis.nlm.nih.gov/srs"
     DATA_URL = "https://fdasis.nlm.nih.gov/srs/download/srs/UNII_Data.zip"
 

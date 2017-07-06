@@ -20,7 +20,7 @@ class ChemblDumper(HTTPDumper):
     SRC_DATA_URL = "https://www.ebi.ac.uk/chembl/api/data/molecule.json"
     SRC_VERSION_URL = "https://www.ebi.ac.uk/chembl/api/data/status.json"
 
-    SCHEDULE = None
+    SCHEDULE = "0 12 * * *"
     CHUNK_MERGE_SIZE = 100 # number of part files merged together after download
 
     def remote_is_better(self,remotefile,localfile):
