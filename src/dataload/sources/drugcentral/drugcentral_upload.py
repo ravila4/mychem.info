@@ -155,7 +155,7 @@ class DrugCentralUploader(uploader.DummySourceUploader):
                         }
                     },
                     "synonyms": {
-                        "type": "float"
+                        "type": "string"
                     },
                     "xref": {
                         "properties": {
