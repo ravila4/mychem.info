@@ -483,8 +483,10 @@ def restructure_dict(dictionary):
     d1['products'] = products_list
     restr_dict['drugbank'] = d1
     restr_dict = unlist(restr_dict)
-    restr_dict = dict_sweep(restr_dict,vals=[None,math.inf,".", "-", "", "NA", "none", " ",
+    restr_dict = dict_sweep(restr_dict,vals=[None,math.inf,"INF",".", "-", "", "NA", "none", " ",
         "Not Available", "unknown","null","None"])
+    if restr_dict["drugbank"].get('inchi_key') == "IOFPEOPOAMOMBE-MRVPVSSYSA-N":
+        print(repr(restr_dict["drugbank"].get("pdb")))
     restr_dict = boolean_convert(restr_dict,["predicted_properties.mddr_like_rule",
         "predicted_properties.bioavailability","predicted_properties.ghose_filter",
         "predicted_properties.rule_of_five","products.generic","products.otc",
