@@ -4,7 +4,7 @@ import dateutil.parser as dtparser
 import datetime
 
 from config import DATA_ARCHIVE_ROOT
-from biothings.dataload.dumper import HTTPDumper, DumperException
+from biothings.hub.dataload.dumper import HTTPDumper, DumperException
 from biothings.utils.common import unzipall
 
 
