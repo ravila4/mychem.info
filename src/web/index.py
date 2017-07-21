@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Simple template example used to instantiate a new biothing API
-from biothings.www.index_base import main, options
-from www.settings import MyDrugWebSettings
+from biothings.web.index_base import main, options
+from web.settings import MyDrugWebSettings
 
 # Instantiate settings class to configure biothings web
 web_settings = MyDrugWebSettings(config='config')
