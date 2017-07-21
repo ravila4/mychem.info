@@ -5,11 +5,11 @@ import logging, os, datetime, time
 LOGGER_NAME = "hub"
 from biothings.utils.loggers import setup_default_log
 
-from biothings.www.settings.default import *
-from www.api.query_builder import ESQueryBuilder
-from www.api.query import ESQuery
-from www.api.transform import ESResultTransformer
-from www.api.handlers import DrugHandler, QueryHandler, MetadataHandler, StatusHandler
+from biothings.web.settings.default import *
+from web.api.query_builder import ESQueryBuilder
+from web.api.query import ESQuery
+from web.api.transform import ESResultTransformer
+from web.api.handlers import DrugHandler, QueryHandler, MetadataHandler, StatusHandler
 
 # *****************************************************************************
 # Elasticsearch variables
@@ -50,16 +50,16 @@ APP_LIST = [
 ###############################################################################
 
 # *****************************************************************************
-# Subclass of biothings.www.api.es.query_builder.ESQueryBuilder to build
+# Subclass of biothings.web.api.es.query_builder.ESQueryBuilder to build
 # queries for this app
 # *****************************************************************************
 ES_QUERY_BUILDER = ESQueryBuilder
 # *****************************************************************************
-# Subclass of biothings.www.api.es.query.ESQuery to execute queries for this app
+# Subclass of biothings.web.api.es.query.ESQuery to execute queries for this app
 # *****************************************************************************
 ES_QUERY = ESQuery
 # *****************************************************************************
-# Subclass of biothings.www.api.es.transform.ESResultTransformer to transform
+# Subclass of biothings.web.api.es.transform.ESResultTransformer to transform
 # ES results for this app
 # *****************************************************************************
 ES_RESULT_TRANSFORMER = ESResultTransformer
@@ -84,7 +84,7 @@ STATUS_CHECK_ID = ''
 
 HIPCHAT_MESSAGE_COLOR = 'gray'
 
-JSONLD_CONTEXT_PATH = 'www/context/context.json'
+JSONLD_CONTEXT_PATH = 'web/context/context.json'
 
 
 # ################ #
