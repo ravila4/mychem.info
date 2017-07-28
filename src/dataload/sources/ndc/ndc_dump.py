@@ -22,7 +22,7 @@ class NDCDumper(HTTPDumper):
         res = self.client.send(req.prepare())
         try:
             lastmodified = res.headers["last-modified"]
-            latest = datetime.strptime(lastmodified, "%a, %d %b %Y %H:%M:%S %Z").strftime("%Y%M%d")
+            latest = datetime.strptime(lastmodified, "%a, %d %b %Y %H:%M:%S %Z").strftime("%Y%m%d")
             return latest
         except Exception as e:
             raise DumperException("Can't find or parse latest release date from URL '%s': %s" % (self.__class__.DATA_URL,e))
