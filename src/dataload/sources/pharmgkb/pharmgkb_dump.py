@@ -33,8 +33,6 @@ class PharmGkbDumper(HTTPDumper):
             # if new release, that link points to that latest release
             local = os.path.join(self.new_data_folder,os.path.basename(self.DATA_URL))
             self.to_dump.append({"remote":self.DATA_URL, "local":local})
-        else:
-            self.logger.debug("Nothing to dump",extra={"notify":True})
 
     def post_dump(self):
         unzipall(self.new_data_folder)

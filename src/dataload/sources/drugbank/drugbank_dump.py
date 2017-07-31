@@ -40,9 +40,4 @@ class DrugBankDumper(HTTPDumper):
                     extra={"notify":True})
             local = os.path.join(self.new_data_folder,"releases")
             self.to_dump.append({"remote":self.VERSIONS_URL, "local":local})
-        else:
-            self.logger.debug("Nothing to dump",extra={"notify":True})
-
-
-
 
