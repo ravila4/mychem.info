@@ -6,7 +6,8 @@ class DrugCentralUploader(uploader.DummySourceUploader):
     __metadata__ = {
             "src_meta" : {
                 "url" : "http://drugcentral.org/",
-                "license_url" : "?",
+                "license_url" : "http://drugcentral.org/privacy",
+                "license" : "CC BY-SA 4.0",
                 }
             }
 

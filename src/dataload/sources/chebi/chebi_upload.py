@@ -11,7 +11,7 @@ import biothings.dataload.storage as storage
 
 SRC_META = {
         "url": 'https://www.ebi.ac.uk/chebi/',
-        "license_url" : "?",
+        "license_url" : "https://www.ebi.ac.uk/about/terms-of-use",
         }
 
 

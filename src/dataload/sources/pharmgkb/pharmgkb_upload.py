@@ -10,7 +10,7 @@ from dataload.uploader import BaseDrugUploader
 
 SRC_META = {
         "url": 'https://www.pharmgkb.org/',
-        "license_url" : "?",
+        "license_url" : "https://www.pharmgkb.org/page/dataUsagePolicy",
         }
 
 

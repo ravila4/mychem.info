@@ -11,7 +11,7 @@ import biothings.dataload.storage as storage
 
 SRC_META = {
         "url": "https://pubchem.ncbi.nlm.nih.gov/",
-        "license_url" : "?",
+        "license_url" : "https://www.ncbi.nlm.nih.gov/home/about/policies/",
         }
 
 

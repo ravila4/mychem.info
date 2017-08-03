@@ -10,7 +10,8 @@ from biothings.utils.common import unzipall
 
 SRC_META = {
         "url" : "http://www.drugbank.ca",
-        "license_url" : "?",
+        "license_url" : "https://www.drugbank.ca/releases/latest",
+        "license" : "CC BY-NC 4.0",
         }
 
 
