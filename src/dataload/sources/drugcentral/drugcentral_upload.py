@@ -7,6 +7,7 @@ class DrugCentralUploader(uploader.DummySourceUploader):
             "src_meta" : {
                 "url" : "http://drugcentral.org/",
                 "license_url" : "http://drugcentral.org/privacy",
+                "license_url_short" : "https://goo.gl/QDNyNe",
                 "license" : "CC BY-SA 4.0",
                 }
             }
