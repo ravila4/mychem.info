@@ -11,6 +11,7 @@ from biothings.hub.dataload.uploader import ParallelizedSourceUploader
 SRC_META = {
         "url": 'https://www.ebi.ac.uk/chembl/',
         "license_url" : "https://www.ebi.ac.uk/about/terms-of-use",
+        "license_url_short" : "https://goo.gl/FJpLMf"
         }
 
 
