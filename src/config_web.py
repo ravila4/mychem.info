@@ -74,7 +74,11 @@ QUERY_GET_ES_KWARGS['size']['default'] = 10
 ANNOTATION_POST_CONTROL_KWARGS['ids']['max'] = 10
 QUERY_POST_CONTROL_KWARGS['q']['max'] = 10
 
-STATUS_CHECK_ID = ''
+STATUS_CHECK = {
+    'id': 'USNINKBPBVKHHZ-CYUUQNCZSA-L', #penicillin
+    'index': 'mydrugs_current',
+    'doc_type': 'drug'
+}
 
 HIPCHAT_MESSAGE_COLOR = 'gray'
 
