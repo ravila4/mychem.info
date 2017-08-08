@@ -12,6 +12,7 @@ from biothings.utils.mongo import get_src_db
 SRC_META = {
         "url": 'http://sideeffects.embl.de/',
         "license_url" : "ftp://xi.embl.de/SIDER/LICENSE",
+        "license_url_short" : "https://goo.gl/8b7ZCQ",
         "license": "CC BY-NC-SA 3.0"
         }
 
