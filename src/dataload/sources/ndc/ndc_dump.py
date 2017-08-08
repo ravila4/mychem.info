@@ -5,7 +5,7 @@ from datetime import datetime
 import requests
 
 from config import DATA_ARCHIVE_ROOT
-from biothings.dataload.dumper import HTTPDumper, DumperException
+from biothings.hub.dataload.dumper import HTTPDumper, DumperException
 from biothings.utils.common import unzipall
 
 

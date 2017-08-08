@@ -1,5 +1,5 @@
 
-import biothings.dataload.uploader as uploader
+import biothings.hub.dataload.uploader as uploader
 
 class BaseDrugUploader(uploader.BaseSourceUploader):
 

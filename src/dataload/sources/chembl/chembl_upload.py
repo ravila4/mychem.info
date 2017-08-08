@@ -5,7 +5,7 @@ import pymongo
 
 from .chembl_parser import load_data
 from dataload.uploader import BaseDrugUploader
-from biothings.dataload.uploader import ParallelizedSourceUploader
+from biothings.hub.dataload.uploader import ParallelizedSourceUploader
 
 
 SRC_META = {

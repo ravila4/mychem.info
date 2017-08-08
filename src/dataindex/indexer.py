@@ -2,7 +2,7 @@ import os
 import asyncio
 
 import config
-import biothings.dataindex.indexer as indexer
+import biothings.hub.dataindex.indexer as indexer
 
 
 class DrugIndexer(indexer.Indexer):

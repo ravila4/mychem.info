@@ -3,7 +3,7 @@ import glob
 
 from .unii_parser import load_data
 from dataload.uploader import BaseDrugUploader
-import biothings.dataload.storage as storage
+import biothings.hub.dataload.storage as storage
 
 
 SRC_META = {
