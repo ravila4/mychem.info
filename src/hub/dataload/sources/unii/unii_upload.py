@@ -2,7 +2,7 @@ import os
 import glob
 
 from .unii_parser import load_data
-from dataload.uploader import BaseDrugUploader
+from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 
 

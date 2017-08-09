@@ -4,7 +4,7 @@ import zipfile
 import pymongo
 
 from .chebi_parser import load_data
-from dataload.uploader import BaseDrugUploader
+from hub.dataload.uploader import BaseDrugUploader
 from biothings.utils.mongo import get_src_db
 import biothings.hub.dataload.storage as storage
 

@@ -4,7 +4,7 @@ import zipfile
 import pymongo
 
 from .chembl_parser import load_data
-from dataload.uploader import BaseDrugUploader
+from hub.dataload.uploader import BaseDrugUploader
 from biothings.hub.dataload.uploader import ParallelizedSourceUploader
 
 

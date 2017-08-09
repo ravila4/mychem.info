@@ -5,7 +5,7 @@ import biothings.hub.dataload.storage as storage
 from biothings.utils.mongo import get_src_db
 
 from .pharmgkb_parser import load_data
-from dataload.uploader import BaseDrugUploader
+from hub.dataload.uploader import BaseDrugUploader
 
 
 SRC_META = {

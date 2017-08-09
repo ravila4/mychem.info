@@ -3,7 +3,7 @@ import glob
 import pymongo
 
 from .ndc_parser import load_data
-from dataload.uploader import BaseDrugUploader
+from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.common import unzipall
 from biothings.utils.mongo import get_src_db

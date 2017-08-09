@@ -17,28 +17,26 @@ process_queue = concurrent.futures.ProcessPoolExecutor(max_workers=config.HUB_MA
 thread_queue = concurrent.futures.ThreadPoolExecutor()
 loop.set_default_executor(process_queue)
 max_mem = type(config.HUB_MAX_MEM_USAGE) == int and config.HUB_MAX_MEM_USAGE * 1024**3 or config.HUB_MAX_MEM_USAGE
-job_manager = JobManager(loop,
-                      process_queue, thread_queue,
-                      max_memory_usage=max_mem,
-                      )
+job_manager = JobManager(loop,num_workers=config.HUB_MAX_WORKERS,
+        max_memory_usage=config.HUB_MAX_MEM_USAGE)
 
-import dataload
+import hub.dataload
 import biothings.hub.dataload.uploader as uploader
 import biothings.hub.dataload.dumper as dumper
 import biothings.hub.databuild.builder as builder
 import biothings.hub.databuild.differ as differ
 import biothings.hub.databuild.syncer as syncer
 import biothings.hub.dataindex.indexer as indexer
-from databuild.builder import MyChemDataBuilder
-from dataindex.indexer import DrugIndexer
+from hub.databuild.builder import MyChemDataBuilder
+from hub.dataindex.indexer import DrugIndexer
 
 # will check every 10 seconds for sources to upload
 upload_manager = uploader.UploaderManager(poll_schedule = '* * * * * */10', job_manager=job_manager)
-upload_manager.register_sources(dataload.__sources_dict__)
+upload_manager.register_sources(hub.dataload.__sources_dict__)
 upload_manager.poll()
 
 dmanager = dumper.DumperManager(job_manager=job_manager)
-dmanager.register_sources(dataload.__sources_dict__)
+dmanager.register_sources(hub.dataload.__sources_dict__)
 dmanager.schedule_all()
 
 build_manager = builder.BuilderManager(builder_class=MyChemDataBuilder,job_manager=job_manager)
@@ -55,7 +53,7 @@ index_manager = indexer.IndexerManager(pindexer=pindexer,
 index_manager.configure()
 
 
-from biothings.utils.hub import schedule, top, pending, done
+from biothings.utils.hub import schedule, pending, done
 
 COMMANDS = {
         # dump commands
@@ -90,7 +88,7 @@ COMMANDS = {
         "tqueue" : thread_queue,
         "g": globals(),
         "sch" : partial(schedule,loop),
-        "top" : partial(top,process_queue,thread_queue),
+        "top" : job_manager.top,
         "pending" : pending,
         "done" : done,
         }
