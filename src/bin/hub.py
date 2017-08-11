@@ -47,7 +47,7 @@ differ_manager.configure()
 syncer_manager = syncer.SyncerManager(job_manager=job_manager)
 syncer_manager.configure()
 
-pindexer = partial(DrugIndexer,es_host=config.ES_HOST)
+pindexer = partial(DrugIndexer,es_host=config.ES_TEST_HOST)
 index_manager = indexer.IndexerManager(pindexer=pindexer,
         job_manager=job_manager)
 index_manager.configure()
@@ -70,9 +70,9 @@ COMMANDS = {
         "mongo_sync" : partial(syncer_manager.sync,"mongo"),
         "es_sync" : partial(syncer_manager.sync,"es"),
         "es_sync_test" : partial(syncer_manager.sync,"es",target_backend=config.ES_TEST),
-        #"es_sync_prod" : partial(syncer_manager.sync,"es",target_backend=config.ES_PROD),
+        "es_sync_prod" : partial(syncer_manager.sync,"es",target_backend=config.ES_PROD),
         "es_test": config.ES_TEST,
-        #"es_prod": config.ES_PROD,
+        "es_prod": config.ES_PROD,
         "sm" : syncer_manager,
         # diff
         "dim" : differ_manager,
