@@ -3,11 +3,18 @@
 import asyncio, asyncssh, sys
 import concurrent.futures
 from functools import partial
+from collections import OrderedDict
 
 import config, biothings
 biothings.config_for_app(config)
 
 import logging
+# shut some mouths...
+logging.getLogger("elasticsearch").setLevel(logging.ERROR)
+logging.getLogger("urllib3").setLevel(logging.ERROR)
+logging.getLogger("requests").setLevel(logging.ERROR)
+logging.getLogger("boto").setLevel(logging.ERROR)
+
 logging.info("Hub DB backend: %s" % biothings.config.HUB_DB_BACKEND)
 logging.info("Hub database: %s" % biothings.config.DATA_HUB_DB_DATABASE)
 
@@ -35,9 +42,9 @@ upload_manager = uploader.UploaderManager(poll_schedule = '* * * * * */10', job_
 upload_manager.register_sources(hub.dataload.__sources_dict__)
 upload_manager.poll()
 
-dmanager = dumper.DumperManager(job_manager=job_manager)
-dmanager.register_sources(hub.dataload.__sources_dict__)
-dmanager.schedule_all()
+dump_manager = dumper.DumperManager(job_manager=job_manager)
+dump_manager.register_sources(hub.dataload.__sources_dict__)
+dump_manager.schedule_all()
 
 build_manager = builder.BuilderManager(builder_class=MyChemDataBuilder,job_manager=job_manager)
 build_manager.configure()
@@ -55,38 +62,45 @@ index_manager.configure()
 
 from biothings.utils.hub import schedule, pending, done
 
-COMMANDS = {
-        # dump commands
-        "dm" : dmanager,
-        "dump" : dmanager.dump_src,
-        "dump_all" : dmanager.dump_all,
-        # upload commands
+COMMANDS = OrderedDict()
+# dump commands
+COMMANDS["dump"] = dump_manager.dump_src
+COMMANDS["dump_all"] = dump_manager.dump_all
+# upload commands
+COMMANDS["upload"] = upload_manager.upload_src
+COMMANDS["upload_all"] = upload_manager.upload_all
+# building/merging
+COMMANDS["merge"] = partial(build_manager.merge,"drug")
+COMMANDS["es_sync_test"] = partial(syncer_manager.sync,"es",target_backend=config.ES_TEST)
+COMMANDS["es_sync_prod"] = partial(syncer_manager.sync,"es",target_backend=config.ES_PROD)
+COMMANDS["es_test"] = config.ES_TEST
+COMMANDS["es_prod"] = config.ES_PROD
+# diff
+COMMANDS["diff"] = partial(differ_manager.diff,"jsondiff")
+COMMANDS["publish_diff"] = partial(differ_manager.publish_diff,config.S3_DIFF_FOLDER)
+COMMANDS["report"] = differ_manager.diff_report
+COMMANDS["release_note"] = differ_manager.release_note
+# indexing commands
+COMMANDS["index"] = index_manager.index
+COMMANDS["snapshot"] = index_manager.snapshot
+COMMANDS["publish_snapshot"] = partial(index_manager.publish_snapshot,config.S3_DIFF_FOLDER)
+
+# admin/advanced
+EXTRA_NS = {                                                                                                                                                                                                                            
+        "dm" : dump_manager,
         "um" : upload_manager,
-        "upload" : upload_manager.upload_src,
-        "upload_all": upload_manager.upload_all,
-        # building/merging
         "bm" : build_manager,
-        "merge" : partial(build_manager.merge,"drug"),
-        "mongo_sync" : partial(syncer_manager.sync,"mongo"),
-        "es_sync" : partial(syncer_manager.sync,"es"),
-        "es_sync_test" : partial(syncer_manager.sync,"es",target_backend=config.ES_TEST),
-        "es_sync_prod" : partial(syncer_manager.sync,"es",target_backend=config.ES_PROD),
-        "es_test": config.ES_TEST,
-        "es_prod": config.ES_PROD,
         "sm" : syncer_manager,
-        # diff
         "dim" : differ_manager,
-        "diff" : partial(differ_manager.diff,"jsondiff"),
-        "report": differ_manager.diff_report,
-        # indexing commands
         "im" : index_manager,
-        "index" : index_manager.index,
-        "snapshot" : index_manager.snapshot,
-        # admin/advanced
-        "loop" : loop,
-        "pqueue" : process_queue,
-        "tqueue" : thread_queue,
+        "jm" : job_manager,
+        ## admin/advanced
+        #"loop" : loop,
+        "q" : job_manager.process_queue,
+        "t" : job_manager.thread_queue,
         "g": globals(),
+        "l":loop,
+        "j":job_manager,
         "sch" : partial(schedule,loop),
         "top" : job_manager.top,
         "pending" : pending,
@@ -99,7 +113,8 @@ passwords = {
 
 from biothings.utils.hub import start_server
 
-server = start_server(loop,"MyChem.info hub",passwords=passwords,port=config.SSH_HUB_PORT,commands=COMMANDS)
+server = start_server(loop,"MyChem.info hub",passwords=passwords,
+        port=config.SSH_HUB_PORT,commands=COMMANDS,extra_ns=EXTRA_NS)
 
 try:
     loop.run_until_complete(server)
