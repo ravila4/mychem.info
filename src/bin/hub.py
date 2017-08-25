@@ -77,13 +77,13 @@ COMMANDS["es_test"] = config.ES_TEST
 COMMANDS["es_prod"] = config.ES_PROD
 # diff
 COMMANDS["diff"] = partial(differ_manager.diff,"jsondiff")
-COMMANDS["publish_diff"] = partial(differ_manager.publish_diff,config.S3_DIFF_FOLDER)
+COMMANDS["publish_diff"] = partial(differ_manager.publish_diff,config.S3_APP_FOLDER)
 COMMANDS["report"] = differ_manager.diff_report
 COMMANDS["release_note"] = differ_manager.release_note
 # indexing commands
 COMMANDS["index"] = index_manager.index
 COMMANDS["snapshot"] = index_manager.snapshot
-COMMANDS["publish_snapshot"] = partial(index_manager.publish_snapshot,config.S3_DIFF_FOLDER)
+COMMANDS["publish_snapshot"] = partial(index_manager.publish_snapshot,config.S3_APP_FOLDER)
 
 # admin/advanced
 EXTRA_NS = {                                                                                                                                                                                                                            
