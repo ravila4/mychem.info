@@ -76,7 +76,7 @@ COMMANDS["es_sync_prod"] = partial(syncer_manager.sync,"es",target_backend=confi
 COMMANDS["es_test"] = config.ES_TEST
 COMMANDS["es_prod"] = config.ES_PROD
 # diff
-COMMANDS["diff"] = partial(differ_manager.diff,"jsondiff")
+COMMANDS["diff"] = partial(differ_manager.diff,"jsondiff-selfcontained")
 COMMANDS["publish_diff"] = partial(differ_manager.publish_diff,config.S3_APP_FOLDER)
 COMMANDS["report"] = differ_manager.diff_report
 COMMANDS["release_note"] = differ_manager.release_note
