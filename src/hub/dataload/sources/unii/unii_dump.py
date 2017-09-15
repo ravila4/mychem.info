@@ -36,9 +36,6 @@ class UniiDumper(HTTPDumper):
             local = os.path.join(self.new_data_folder,os.path.basename(self.DATA_URL))
             self.to_dump.append({"remote":self.DATA_URL, "local":local})
 
-    def post_dump(self):
+    def post_dump(self, *args, **kwargs):
         unzipall(self.new_data_folder)
-
-
-
 

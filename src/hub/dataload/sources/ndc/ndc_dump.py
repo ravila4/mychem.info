@@ -16,7 +16,7 @@ class NDCDumper(LastModifiedHTTPDumper):
     SRC_URLS = ["http://www.accessdata.fda.gov/cder/ndctext.zip"]
     SCHEDULE = "0 12 * * *"
 
-    def post_dump(self):
+    def post_dump(self, *args, **kwargs):
         unzipall(self.new_data_folder)
 
 

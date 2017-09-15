@@ -48,7 +48,7 @@ class SiderDumper(FTPDumper):
                 if not os.path.exists(local) or self.remote_is_better(remote,local):
                     self.to_dump.append({"remote": remote,"local":local})
 
-    def post_dump(self):
+    def post_dump(self, *args, **kwargs):
         gunzipall(self.new_data_folder)
         self.logger.info("Merging files")
         FREQ = os.path.join(self.new_data_folder,"meddra_freq.tsv")

@@ -44,7 +44,7 @@ class ChebiDumper(FTPDumper):
             local = os.path.join(self.new_data_folder,data_file)
             self.to_dump.append({"remote": remote,"local":local})
 
-    def post_dump(self):
+    def post_dump(self, *args, **kwargs):
         gunzipall(self.new_data_folder)
 
 

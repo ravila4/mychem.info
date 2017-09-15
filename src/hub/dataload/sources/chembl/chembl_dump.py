@@ -61,7 +61,7 @@ class ChemblDumper(HTTPDumper):
                 local = os.path.join(self.new_data_folder,"molecule.part%d" % num)
                 self.to_dump.append({"remote":remote, "local":local})
 
-    def post_dump(self):
+    def post_dump(self, *args, **kwargs):
         self.logger.info("Merging JSON documents in '%s'" % self.new_data_folder)
         # we'll merge 100 files together, that's 100'000 documents. That way we don't have one huge
         # big files and we don't have thousands of them too. We'll also remove metadata (useless now)

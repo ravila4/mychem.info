@@ -16,9 +16,6 @@ class PharmGkbDumper(LastModifiedHTTPDumper):
     SRC_URLS = ["https://api.pharmgkb.org/v1/download/file/data/drugs.zip"]
     SCHEDULE = "0 12 * * *"
 
-    def post_dump(self):
+    def post_dump(self, *args, **kwargs):
         unzipall(self.new_data_folder)
-
-
-
 
