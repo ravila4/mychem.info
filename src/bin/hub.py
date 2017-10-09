@@ -71,6 +71,7 @@ COMMANDS["upload"] = upload_manager.upload_src
 COMMANDS["upload_all"] = upload_manager.upload_all
 # building/merging
 COMMANDS["merge"] = partial(build_manager.merge,"drug")
+COMMANDS["merge_demo"] = partial(build_manager.merge,"demo_drug")
 COMMANDS["es_sync_test"] = partial(syncer_manager.sync,"es",target_backend=config.ES_TEST)
 COMMANDS["es_sync_prod"] = partial(syncer_manager.sync,"es",target_backend=config.ES_PROD)
 COMMANDS["es_test"] = config.ES_TEST
@@ -78,12 +79,14 @@ COMMANDS["es_prod"] = config.ES_PROD
 # diff
 COMMANDS["diff"] = partial(differ_manager.diff,"jsondiff-selfcontained")
 COMMANDS["publish_diff"] = partial(differ_manager.publish_diff,config.S3_APP_FOLDER)
+COMMANDS["publish_diff_demo"] = partial(differ_manager.publish_diff,config.S3_APP_FOLDER + "-demo")
 COMMANDS["report"] = differ_manager.diff_report
 COMMANDS["release_note"] = differ_manager.release_note
 # indexing commands
 COMMANDS["index"] = index_manager.index
 COMMANDS["snapshot"] = index_manager.snapshot
 COMMANDS["publish_snapshot"] = partial(index_manager.publish_snapshot,config.S3_APP_FOLDER)
+COMMANDS["publish_snapshot_demo"] = partial(index_manager.publish_snapshot,config.S3_APP_FOLDER + "-demo")
 
 # admin/advanced
 EXTRA_NS = {                                                                                                                                                                                                                            
