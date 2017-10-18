@@ -49,12 +49,25 @@ dump_manager.schedule_all()
 build_manager = builder.BuilderManager(builder_class=MyChemDataBuilder,job_manager=job_manager)
 build_manager.configure()
 
-differ_manager = differ.DifferManager(job_manager=job_manager)
+differ_manager = differ.DifferManager(job_manager=job_manager,
+        poll_schedule="* * * * * */10")
 differ_manager.configure()
-syncer_manager = syncer.SyncerManager(job_manager=job_manager)
-syncer_manager.configure()
+differ_manager.poll("diff",lambda doc: differ_manager.diff("jsondiff-selfcontained",old=None,new=doc["_id"]))
+differ_manager.poll("release_note",lambda doc: differ_manager.release_note(old=None,new=doc["_id"]))
 
-pindexer = partial(DrugIndexer,es_host=config.ES_TEST_HOST)
+# test will access localhost ES, no need to throttle
+syncer_manager_test = syncer.SyncerManager(job_manager=job_manager)
+syncer_manager_test.configure()
+# prod needs to be throttled
+from biothings.hub.databuild.syncer import ThrottledESJsonDiffSyncer, ThrottledESJsonDiffSelfContainedSyncer
+syncer_manager_prod = syncer.SyncerManager(job_manager=job_manager)
+syncer_manager_prod.configure(klasses=[partial(ThrottledESJsonDiffSyncer,config.MAX_SYNC_WORKERS),
+                                           partial(ThrottledESJsonDiffSelfContainedSyncer,config.MAX_SYNC_WORKERS)])
+
+
+pindexer = partial(DrugIndexer,es_host=config.ES_TEST_HOST,
+        timeout=config.ES_TIMEOUT,max_retries=config.ES_MAX_RETRY,
+        retry_on_timeout=config.ES_RETRY)
 index_manager = indexer.IndexerManager(pindexer=pindexer,
         job_manager=job_manager)
 index_manager.configure()
@@ -72,8 +85,8 @@ COMMANDS["upload_all"] = upload_manager.upload_all
 # building/merging
 COMMANDS["merge"] = partial(build_manager.merge,"drug")
 COMMANDS["merge_demo"] = partial(build_manager.merge,"demo_drug")
-COMMANDS["es_sync_test"] = partial(syncer_manager.sync,"es",target_backend=config.ES_TEST)
-COMMANDS["es_sync_prod"] = partial(syncer_manager.sync,"es",target_backend=config.ES_PROD)
+COMMANDS["es_sync_test"] = partial(syncer_manager_test.sync,"es",target_backend=config.ES_TEST)
+COMMANDS["es_sync_prod"] = partial(syncer_manager_prod.sync,"es",target_backend=config.ES_PROD)
 COMMANDS["es_test"] = config.ES_TEST
 COMMANDS["es_prod"] = config.ES_PROD
 # diff
@@ -93,7 +106,8 @@ EXTRA_NS = {
         "dm" : dump_manager,
         "um" : upload_manager,
         "bm" : build_manager,
-        "sm" : syncer_manager,
+        "smp" : syncer_manager_prod,
+        "smt" : syncer_manager_test,
         "dim" : differ_manager,
         "im" : index_manager,
         "jm" : job_manager,

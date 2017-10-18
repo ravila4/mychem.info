@@ -27,6 +27,8 @@ MAX_QUEUED_JOBS = os.cpu_count() * 4
 
 # Max number of *processes* hub can access to run jobs
 HUB_MAX_WORKERS = int(os.cpu_count() / 4)
+# max number of sync workers (when throttled). Default is all workers
+MAX_SYNC_WORKERS = HUB_MAX_WORKERS
 
 # Max memory usage before hub will prevent creating more jobs, in byte
 # If None, no limit. It's a good practice to put a limit as the more processes
@@ -101,6 +103,10 @@ BIOTHINGS_ROLE = "slave"
 # key/secret to access AWS S3 (only used when publishing releases, role=master)
 AWS_KEY = ''
 AWS_SECRET = ''
+
+ES_TIMEOUT = 300                                                                                                                                                                                      
+ES_RETRY = True
+ES_MAX_RETRY = 10
 
 ########################################
 # APP-SPECIFIC CONFIGURATION VARIABLES #
