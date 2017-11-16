@@ -20,7 +20,7 @@ class UniiUploader(BaseDrugUploader):
 
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)
-        record_files = glob.glob(os.path.join(data_folder,"*Records.txt"))
+        record_files = glob.glob(os.path.join(data_folder,"*Records*.txt"))
         assert len(record_files) == 1, "Expecting one record.txt file, got %s" % repr(record_files)
         input_file = record_files.pop()
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
