@@ -80,6 +80,7 @@ COMMANDS["dump_all"] = dump_manager.dump_all
 COMMANDS["upload"] = upload_manager.upload_src
 COMMANDS["upload_all"] = upload_manager.upload_all
 # building/merging
+COMMANDS["whatsnew"] = build_manager.whatsnew
 COMMANDS["merge"] = partial(build_manager.merge,"drug")
 COMMANDS["merge_demo"] = partial(build_manager.merge,"demo_drug")
 COMMANDS["es_sync_test"] = partial(syncer_manager_test.sync,"es",target_backend=config.ES_TEST)
@@ -122,13 +123,9 @@ EXTRA_NS = {
         "done" : done,
         }
 
-passwords = {
-        'guest': '', # guest account with no password
-        }
-
 from biothings.utils.hub import start_server
 
-server = start_server(loop,"MyChem.info hub",passwords=passwords,
+server = start_server(loop,"MyChem.info hub",passwords=config.HUB_PASSWD,
         port=config.SSH_HUB_PORT,commands=COMMANDS,extra_ns=EXTRA_NS)
 
 try:
