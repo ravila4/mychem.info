@@ -80,7 +80,8 @@ COMMANDS["dump_all"] = dump_manager.dump_all
 COMMANDS["upload"] = upload_manager.upload_src
 COMMANDS["upload_all"] = upload_manager.upload_all
 # building/merging
-COMMANDS["whatsnew"] = build_manager.whatsnew
+COMMANDS["whatsnew"] = partial(build_manager.whatsnew,"drug")
+COMMANDS["lsmerge"] = build_manager.list_merge
 COMMANDS["merge"] = partial(build_manager.merge,"drug")
 COMMANDS["merge_demo"] = partial(build_manager.merge,"demo_drug")
 COMMANDS["es_sync_test"] = partial(syncer_manager_test.sync,"es",target_backend=config.ES_TEST)
