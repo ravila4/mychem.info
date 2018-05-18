@@ -6,12 +6,9 @@ from nose.tools import ok_, eq_
 from tornado.testing import AsyncHTTPTestCase
 from tornado.web import Application
 
-from biothings.tests.test_helper import BiothingTestHelperMixin, TornadoRequestHelper
-from web.settings import MyDrugWebSettings
+from biothings.tests.test_helper import BiothingTestHelperMixin
 
 class MyChemTest(BiothingTestHelperMixin):
-
-
     host = os.getenv("MC_HOST", "")
     host = host.rstrip('/')
     print(host)
@@ -32,15 +29,3 @@ class MyChemTest(BiothingTestHelperMixin):
         # we can't really compare the results, we just need to ensure we have data
         self.has_hits('imatinib')
         self.has_hits('drugbank.name:imatinib')
-
-
-class MyChemTornadoTest(AsyncHTTPTestCase,MyChemTest):
-
-    def __init__(self, methodName='runTest', **kwargs):
-        super(AsyncHTTPTestCase, self).__init__(methodName, **kwargs)
-        self.h = TornadoRequestHelper(self)
-        self._settings = MyDrugWebSettings(config='config')
-
-    def get_app(self):
-        return Application(self._settings.generate_app_list())
-
