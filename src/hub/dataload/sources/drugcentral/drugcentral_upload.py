@@ -76,7 +76,7 @@ class DrugCentralUploader(uploader.DummySourceUploader):
                                 "type": "string"
                             },
                             "act_value": {
-                                "analyzer": "float"
+                                "type": "float"
                             },
                             "action_type": {
                                 "type": "string"
