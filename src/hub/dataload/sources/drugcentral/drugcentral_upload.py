@@ -66,7 +66,7 @@ class DrugCentralUploader(uploader.DummySourceUploader):
                                 "type": "float"
                             }
                         }
-                    }
+                    },
                     "bioactivity": {
                         "properties": {
                             "act_source": {
