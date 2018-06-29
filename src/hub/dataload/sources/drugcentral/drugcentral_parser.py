@@ -87,3 +87,15 @@ def process_approval(file_path_approval):
         drecord = {"_id": strucid, "approval": approval_related}
         d.append(drecord)
     return {x['_id']: x['approval'] for x in d}
+
+def process_drug_dosage(file_path_drug_dosage):
+    df_drugcentral_drug_dosage = pd.read_csv(file_path_drug_dosage, sep=",", names=['_id', 'atc_code', 'dosage', 'unit', 'route', 'comment', 'struct_id'])
+    df_drugcentral_drug_dosage = df_drugcentral_drug_dosage.where((pd.notnull(df_drugcentral_drug_dosage)), None)
+    d = []
+    for strucid, subdf in df_drugcentral_drug_dosage.groupby('struct_id'):
+        records = subdf.to_dict(orient="records")
+        drug_dosage_related = [{k: v for k, v in record.items() if k not in {'struct_id', '_id', 'atc_code', 'comment'}} for record in records]
+        drecord = {"_id": strucid, "drug_dosage": drug_dosage_related}
+        d.append(drecord)
+    return {x['_id']: x['drug_dosage'] for x in d}
+
