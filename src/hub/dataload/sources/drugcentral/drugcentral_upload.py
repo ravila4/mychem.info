@@ -137,7 +137,7 @@ class DrugCentralUploader(uploader.DummySourceUploader):
                                         "type": "string"
                                     },
                                     "snomed_concept_id": {
-                                        "analyzer": "integer"
+                                        "type": "integer"
                                     },
                                     "snomed_full_name": {
                                         "analyzer": "string_lowercase",
@@ -159,7 +159,7 @@ class DrugCentralUploader(uploader.DummySourceUploader):
                                         "type": "string"
                                     },
                                     "snomed_concept_id": {
-                                        "analyzer": "integer"
+                                        "type": "integer"
                                     },
                                     "snomed_full_name": {
                                         "analyzer": "string_lowercase",
