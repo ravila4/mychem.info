@@ -191,7 +191,7 @@ def load_data():
                     "drug_dosage": drug_dosage.get(struc_id, {}),
                     "synonyms": synonyms.get(struc_id, {}),
                     "structures": structures.get(struc_id, {}),
-                    "external_ref": identifiers.get(struc_id, {})
+                    "xref": identifiers.get(struc_id, {})
                 }
             }
         else:
@@ -209,7 +209,7 @@ def load_data():
                     "drug_dosage": drug_dosage.get(struc_id, {}),
                     "synonyms": synonyms.get(struc_id, {}),
                     "structures": structures.get(struc_id, {}),
-                    "external_ref": identifiers.get(struc_id, {})
+                    "xref": identifiers.get(struc_id, {})
                 }
             }
         _doc = (dict_sweep(unlist(_doc), [None]))
