@@ -28,8 +28,11 @@ job_manager = JobManager(loop,num_workers=config.HUB_MAX_WORKERS,
         max_memory_usage=config.HUB_MAX_MEM_USAGE)
 
 import hub.dataload
+from biothings.utils.hub import schedule, pending, done, start_server, \
+                                HubShell
 import biothings.hub.dataload.uploader as uploader
 import biothings.hub.dataload.dumper as dumper
+import biothings.hub.dataload.source as source
 import biothings.hub.databuild.builder as builder
 import biothings.hub.databuild.differ as differ
 import biothings.hub.databuild.syncer as syncer
@@ -37,14 +40,16 @@ import biothings.hub.dataindex.indexer as indexer
 from hub.databuild.builder import MyChemDataBuilder
 from hub.dataindex.indexer import DrugIndexer
 
+shell = HubShell(job_manager)
+
 # will check every 10 seconds for sources to upload
 upload_manager = uploader.UploaderManager(poll_schedule = '* * * * * */10', job_manager=job_manager)
-upload_manager.register_sources(hub.dataload.__sources_dict__)
-upload_manager.poll('upload',lambda doc: upload_manager.upload_src(doc["_id"]))
-
 dump_manager = dumper.DumperManager(job_manager=job_manager)
-dump_manager.register_sources(hub.dataload.__sources_dict__)
+sources_path = hub.dataload.__sources_dict__
+smanager = source.SourceManager(sources_path,dump_manager,upload_manager)
+
 dump_manager.schedule_all()
+upload_manager.poll('upload',lambda doc: shell.launch(partial(upload_manager.upload_src,doc["_id"])))
 
 build_manager = builder.BuilderManager(builder_class=MyChemDataBuilder,job_manager=job_manager)
 build_manager.configure()
@@ -65,12 +70,8 @@ syncer_manager_prod.configure(klasses=[partial(ThrottledESJsonDiffSyncer,config.
                                            partial(ThrottledESJsonDiffSelfContainedSyncer,config.MAX_SYNC_WORKERS)])
 
 index_manager = indexer.IndexerManager(job_manager=job_manager)
-pindexer = partial(DrugIndexer,es_host=config.ES_TEST_HOST,
-        timeout=config.ES_TIMEOUT,max_retries=config.ES_MAX_RETRY,
-        retry_on_timeout=config.ES_RETRY)
-index_manager.configure([{"default":pindexer}])
+index_manager.configure(config.ES_CONFIG)
 
-from biothings.utils.hub import schedule, pending, done
 
 COMMANDS = OrderedDict()
 # dump commands
@@ -84,10 +85,16 @@ COMMANDS["whatsnew"] = partial(build_manager.whatsnew,"drug")
 COMMANDS["lsmerge"] = build_manager.list_merge
 COMMANDS["merge"] = partial(build_manager.merge,"drug")
 COMMANDS["merge_demo"] = partial(build_manager.merge,"demo_drug")
-COMMANDS["es_sync_test"] = partial(syncer_manager_test.sync,"es",target_backend=config.ES_TEST)
-COMMANDS["es_sync_prod"] = partial(syncer_manager_prod.sync,"es",target_backend=config.ES_PROD)
-COMMANDS["es_test"] = config.ES_TEST
-COMMANDS["es_prod"] = config.ES_PROD
+COMMANDS["es_sync_test"] = partial(syncer_manager_test.sync,"es",
+                                        target_backend=(config.ES_CONFIG["env"]["test"]["host"],
+                                                        config.ES_CONFIG["env"]["test"]["index"][0]["index"],
+                                                        config.ES_CONFIG["env"]["test"]["index"][0]["doc_type"]))
+COMMANDS["es_sync_prod"] = partial(syncer_manager_prod.sync,"es",
+                                        target_backend=(config.ES_CONFIG["env"]["prod"]["host"],
+                                                        config.ES_CONFIG["env"]["prod"]["index"][0]["index"],
+                                                        config.ES_CONFIG["env"]["prod"]["index"][0]["doc_type"]))
+COMMANDS["es_test"] = config.ES_CONFIG["env"]["test"]
+COMMANDS["es_prod"] = config.ES_CONFIG["env"]["prod"]
 # diff
 COMMANDS["diff"] = partial(differ_manager.diff,"jsondiff-selfcontained")
 COMMANDS["publish_diff"] = partial(differ_manager.publish_diff,config.S3_APP_FOLDER)
@@ -96,7 +103,7 @@ COMMANDS["publish_diff_demo"] = partial(differ_manager.publish_diff,config.S3_AP
 COMMANDS["report"] = differ_manager.diff_report
 COMMANDS["release_note"] = differ_manager.release_note
 # indexing commands
-COMMANDS["index"] = partial(index_manager.index,"default")
+COMMANDS["index"] = index_manager.index
 COMMANDS["snapshot"] = index_manager.snapshot
 COMMANDS["publish_snapshot"] = partial(index_manager.publish_snapshot,config.S3_APP_FOLDER)
 COMMANDS["publish_snapshot_demo"] = partial(index_manager.publish_snapshot,config.S3_APP_FOLDER + "-demo")
@@ -124,10 +131,10 @@ EXTRA_NS = {
         "done" : done,
         }
 
-from biothings.utils.hub import start_server
+shell.set_commands(COMMANDS,EXTRA_NS)
 
 server = start_server(loop,"MyChem.info hub",passwords=config.HUB_PASSWD,
-        port=config.SSH_HUB_PORT,commands=COMMANDS,extra_ns=EXTRA_NS)
+        port=config.SSH_HUB_PORT,shell=shell)
 
 try:
     loop.run_until_complete(server)
