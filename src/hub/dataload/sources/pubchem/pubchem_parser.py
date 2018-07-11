@@ -1,5 +1,4 @@
 import xmltodict
-import urllib.request
 import re
 import gzip
 import os
@@ -136,7 +135,6 @@ def restructure_dict(dictionary):
 
     restr_dict = {}
     restr_dict['_id'] = d["cid"]
-    d["cid"] = 'CID' + restr_dict['_id']
     restr_dict["pubchem"] = d
     restr_dict = value_convert_to_number(restr_dict)
     return restr_dict
