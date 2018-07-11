@@ -24,10 +24,18 @@ def clean_up(_dict):
     for key, value in iter(_dict.items()):
         key = key.lower().replace(' ','_').replace('-','_')
         value = value.split('\n')
-
         if key == "definition":
             value[0] = value[0].replace('<stereo>','').replace('<ital>','')
             value[0] = value[0].replace('</stereo>','').replace('</ital>','')
+        # restructure the pubchem_database_links field
+        if key == 'pubchem_database_links':
+            new_pubchem_dict = {}
+            if type(value) == list:
+                for _value in value:
+                    splitted_results = _value.split(':')
+                    if len(splitted_results) == 2:
+                        new_pubchem_dict[splitted_results[0]] = splitted_results[1][1:]
+            value = new_pubchem_dict
         _temp[key] = value
     return _temp
 
