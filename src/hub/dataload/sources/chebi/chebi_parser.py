@@ -24,10 +24,18 @@ def clean_up(_dict):
     for key, value in iter(_dict.items()):
         key = key.lower().replace(' ','_').replace('-','_')
         value = value.split('\n')
-
         if key == "definition":
             value[0] = value[0].replace('<stereo>','').replace('<ital>','')
             value[0] = value[0].replace('</stereo>','').replace('</ital>','')
+        # restructure the pubchem_database_links field
+        if key == 'pubchem_database_links':
+            new_pubchem_dict = {}
+            if type(value) == list:
+                for _value in value:
+                    splitted_results = _value.split(':')
+                    if len(splitted_results) == 2:
+                        new_pubchem_dict[splitted_results[0]] = splitted_results[1][1:]
+            value = new_pubchem_dict
         _temp[key] = value
     return _temp
 
@@ -38,7 +46,7 @@ def restructure_dict(dictionary):
     restr_dict['chebi'] = clean_up(restr_dict['chebi'])
     restr_dict = dict_sweep(restr_dict,vals=[None,".", "-", "", "NA", "none", " ", "Not Available",
         "unknown","null","None","NaN"])
-    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein_registry_numbers","pubchem_database_links","pubmed_citation_links","sabio_rk_database_links","gmelin_registry_numbers","molbase_database_links"])
+    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein_registry_numbers","pubmed_citation_links","sabio_rk_database_links","gmelin_registry_numbers","molbase_database_links"])
     return restr_dict
 
 def find_inchikey(doc, drugbank_col, chembl_col):

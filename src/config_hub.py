@@ -8,6 +8,8 @@ DATA_SRC_MASTER_COLLECTION = 'src_master'             # for metadata of each src
 DATA_SRC_DUMP_COLLECTION = 'src_dump'                 # for src data download information
 DATA_SRC_BUILD_COLLECTION = 'src_build'               # for src data build information
 DATA_SRC_BUILD_CONFIG_COLLECTION = 'src_build_config' # for src data build configuration
+EVENT_COLLECTION = "event"
+CMD_COLLECTION = "cmd"
 
 DATA_TARGET_MASTER_COLLECTION = 'db_master'
 
@@ -96,12 +98,38 @@ HUB_SSH_PORT = 8022
 # Generate crypted passwords with 'openssl passwd -crypt'
 HUB_PASSWD = {"guest":"9RKfd8gDuNf0Q"}
 
-# Temporarily required for biothings update hub (full/incr updates)
-ES_DOC_TYPE = 'drug'
-# used to directly index documents (usually the prod)
-ES_HOST = 'localhost:9200'
-# used to create snapshot internally before deploying to prod
-ES_SNAPSHOT_HOST = 'localhost:9200'
+
+# Pre-prod/test ES definitions
+ES_CONFIG = {
+        "indexer_select": {
+            # default
+            None : "hub.dataindex.indexer.DrugIndexer",
+            },
+        "env" : {
+            "prod" : {
+                "host" : "prodserver:9200",
+                "indexer" : {
+                    "args" : {
+                        "timeout" : 300,
+                        "retry_on_timeout" : True,
+                        "max_retries" : 10,
+                        },
+                    },
+                "index" : [{"index": "mydrugs_current", "doc_type": "drug"}],
+                },
+            "test" : {
+                "host" : "localhost:9200",
+                "indexer" : {
+                    "args" : {
+                        "timeout" : 300,
+                        "retry_on_timeout" : True,
+                        "max_retries" : 10,
+                        },
+                    },
+                "index" : [{"index": "mydrugs_current", "doc_type": "drug"}],
+                },
+            },
+        }
 
 # Role, when master, hub will publish data (updates, snapshot, etc...) that
 # other instances can use (production, standalones)

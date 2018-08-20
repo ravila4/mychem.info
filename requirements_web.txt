@@ -12,7 +12,7 @@ elasticsearch>=2.0.0,<3.0.0
 #elasticsearch<1.0.0
 
 # biothings
-git+https://github.com/biothings/biothings.api.git@3933f82392042b1446456e13700f51dea9b4c975#egg=biothings
+git+https://github.com/biothings/biothings.api.git@ES_2.x#egg=biothings
 
 # for utils.common
 psutil

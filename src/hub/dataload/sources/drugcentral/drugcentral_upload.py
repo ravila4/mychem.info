@@ -19,69 +19,98 @@ class DrugCentralUploader(uploader.DummySourceUploader):
                 "properties": {
                     "approval": {
                         "properties": {
-                            "applicant": {
-                                "type": "string"
+                            "company": {
+                                "type": "string",
+                                "analyzer": "string_lowercase"
                             },
                             "date": {
                                 "analyzer": "string_lowercase",
                                 "type": "string"
                             },
-                            "type": {
-                                "type": "string"
+                            "agency": {
+                                "type": "string",
+                                "analyzer": "string_lowercase"
+                            }
+                        }
+                    },
+                    "fda_adverse_event": {
+                        "properties": {
+                            "drug_ae": {
+                                "type": "integer"
+                            },
+                            "drug_no_ae": {
+                                "type": "integer"
+                            },
+                            "no_drug_ae": {
+                                "type": "integer"
+                            },
+                            "no_drug_no_ar": {
+                                "type": "integer"
+                            },
+                            "level": {
+                                "type": "string",
+                                "analyzer": "string_lowercase"
+                            },
+                            "meddra_code": {
+                                "type": "string",
+                                "analyzer": "string_lowercase"
+                            },
+                            "meddra_term": {
+                                "type": "string",
+                                "analyzer": "string_lowercase"
+                            },
+                            "llr": {
+                                "type": "float"
+                            },
+                            "llr_threshold": {
+                                "type": "float"
                             }
                         }
                     },
                     "bioactivity": {
                         "properties": {
-                            "act_comment": {
-                                "type": "string"
-                            },
                             "act_source": {
                                 "type": "string"
                             },
                             "act_type": {
-                                "analyzer": "string_lowercase",
                                 "type": "string"
                             },
                             "act_value": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                                "type": "float"
                             },
                             "action_type": {
                                 "type": "string"
                             },
-                            "gene_name": {
-                                "type": "string"
+                            "uniprot": {
+                                "properties": {
+                                    "gene_symbol": {
+                                        "type": "string",
+                                        "analyzer": "string_lowercase"
+                                    },
+                                    "swissprot_entry": {
+                                        "type": "string",
+                                        "analyzer": "string_lowercase"
+                                    },
+                                    "uniprot_id": {
+                                        "type": "string",
+                                        "analyzer": "string_lowercase"
+                                    }
+                                }
                             },
                             "moa": {
                                 "analyzer": "string_lowercase",
                                 "type": "string"
                             },
-                            "moa_source": {
-                                "type": "string"
-                            },
-                            "swissprot": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                            },
-                            "target": {
+                            "target_name": {
                                 "type": "string"
                             },
                             "target_class": {
-                                "type": "string"
-                            },
-                            "uniprot_id": {
-                                "analyzer": "string_lowercase",
                                 "type": "string"
                             }
                         }
                     },
                     "drug_dosage": {
                         "properties": {
-                            "atc_code": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                            },
                             "dose": {
                                 "analyzer": "string_lowercase",
                                 "type": "string"
@@ -98,39 +127,127 @@ class DrugCentralUploader(uploader.DummySourceUploader):
                     },
                     "drug_use": {
                         "properties": {
-                            "relation": {
-                                "type": "string"
+                            "contraindication": {
+                                "properties": {
+                                    "concept_name": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    },
+                                    "cui_semantic_type": {
+                                        "type": "string"
+                                    },
+                                    "snomed_concept_id": {
+                                        "type": "integer"
+                                    },
+                                    "snomed_full_name": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    },
+                                    "umls_cui": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    }
+                                }
                             },
-                            "snomed_id": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                            },
-                            "snomed_name": {
-                                "type": "string"
+                            "indication": {
+                                "properties": {
+                                    "concept_name": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    },
+                                    "cui_semantic_type": {
+                                        "type": "string"
+                                    },
+                                    "snomed_concept_id": {
+                                        "type": "integer"
+                                    },
+                                    "snomed_full_name": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    },
+                                    "umls_cui": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    }
+                                }
                             }
                         }
                     },
-                    "pharmacology_action": {
+                    "pharmacology_class": {
                         "properties": {
-                            "class_code": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                            "chebi": {
+                                "properties": {
+                                    "description": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    }
+                                }
                             },
-                            "name": {
-                                "type": "string"
+                            "mesh_pa": {
+                                "properties": {
+                                    "description": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    }
+                                }
                             },
-                            "source": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                            "fda_epc": {
+                                "properties": {
+                                    "description": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    }
+                                }
                             },
-                            "type": {
-                                "type": "string"
+                            "fda_chemical/ingredient": {
+                                "properties": {
+                                    "description": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "fda_moa": {
+                                "properties": {
+                                    "description": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "fda_pe": {
+                                "properties": {
+                                    "description": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                    }
+                                }
                             }
                         }
-                    },
-                    "struct_id": {
-                        "analyzer": "string_lowercase",
-                        "type": "string"
                     },
                     "structures": {
                         "properties": {
@@ -252,3 +369,6 @@ class DrugCentralUploader(uploader.DummySourceUploader):
         }
 
         return mapping
+
+
+"""

@@ -7,20 +7,19 @@ if src_path not in sys.path:
 
 from tornado.testing import AsyncHTTPTestCase
 from tornado.web import Application
-from tests.tests import {% nosetest_settings_class %}
+from tests.tests import MyChemTest
 from biothings.tests.test_helper import TornadoRequestHelper
-from www.api.handlers import return_applist
-import unittest
+from web.settings import MyDrugWebSettings
+#import unittest
 
-class {% nosetest_settings_class %}TornadoClient(AsyncHTTPTestCase, {% nosetest_settings_class %}):
-    __test__ = True
-
-    def__init__(self, methodName='runTest', **kwargs):
+class MyChemTornadoTest(AsyncHTTPTestCase, MyChemTest):
+    def __init__(self, methodName='runTest', **kwargs):
         super(AsyncHTTPTestCase, self).__init__(methodName, **kwargs)
         self.h = TornadoRequestHelper(self)
+        self._settings = MyDrugWebSettings(config='config')
 
     def get_app(self):
-        return Application(return_applist())
+        return Application(self._settings.generate_app_list())
 
-if __name__ == "__main__":
-    unittest.TextTestRunner().run({% nosetest_settings_class %}TornadoClient.suite())
+#if __name__ == "__main__":
+#    unittest.TextTestRunner().run(MyChemTornadoTest.suite())

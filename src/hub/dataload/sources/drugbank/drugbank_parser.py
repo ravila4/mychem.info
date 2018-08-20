@@ -1,6 +1,7 @@
 import xmltodict
 import json, math
 import collections
+import logging
 from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
 from biothings.utils.dataload import boolean_convert
 
@@ -283,7 +284,26 @@ def restructure_dict(dictionary):
                 for x,y in iter(dictionary.items()):
                     k1 = dictionary['kind']
                     k1 = k1.lower().replace(' ','_').replace('-','_')
-                    d1_exp_properties[k1] = dictionary['value']
+                    if k1 == "isoelectric_point":
+                        # make sure value are floats, if intervals, then list(float)
+                        try:
+                            d1_exp_properties[k1] = float(dictionary['value'])
+                        except ValueError:
+                            # not a float, maybe a range ? "5.6 - 7.6"
+                            vals = dictionary['value'].split("-")
+                            try:
+                                for i,val in enumerate([v for v in vals]):
+                                    vals[i] = float(val)
+                                logging.info("Document ID '%s' has a range " % restr_dict["_id"] + \
+                                             "as isoelectric_point: %s" % vals)
+                                d1_exp_properties[k1] = vals
+                            except ValueError as e:
+                                # not something we can handle, skip it
+                                logging.warning("Document ID '%s' has non-convertible " % restr_dict["_id"] + \
+                                                " value for isoelectric_point, field ignored: %s" % dictionary['value'])
+                                continue
+                    else:
+                        d1_exp_properties[k1] = dictionary['value']
                 return d1_exp_properties
 
             for ele in value:
