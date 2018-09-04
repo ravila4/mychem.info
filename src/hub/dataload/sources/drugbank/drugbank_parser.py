@@ -371,7 +371,7 @@ def restructure_dict(dictionary):
                         elif ele[x] == "ChemSpider":
                                 d1['chemspider'] = ele['identifier']
                         elif ele[x] == "ChEBI":
-                                d1['chebi'] = 'CHEBI:' + ele['identifier']
+                                d1['chebi'] = 'CHEBI:' + str(ele['identifier'])
                         elif ele[x] == "PubChem Compound":
                                 d1['pubchem_compound'] = ele['identifier']
                         elif ele[x] == "PubChem Substance":
