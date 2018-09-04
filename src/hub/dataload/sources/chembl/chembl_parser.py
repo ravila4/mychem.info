@@ -39,6 +39,9 @@ def restructure_dict(dictionary):
         restr_dict['chembl'] = dictionary
     del restr_dict['chembl']['molecule_structures']
     restr_dict = unlist(restr_dict)
+    # Add "CHEBI:" prefix, standardize the way representing CHEBI IDs
+    if 'chebi_par_id' in restr_dict['chembl']:
+        restr_dict['chembl']['chebi_par_id'] = 'CHEBI:' + restr_dict['chembl']['chebi_par_id']
     restr_dict = dict_sweep(restr_dict, vals=[None,".", "-", "", "NA", "None","none", " ", "Not Available", "unknown","null"])
     restr_dict = value_convert_to_number(restr_dict, skipped_keys=["chebi_par_id","first_approval"])
     restr_dict = boolean_convert(restr_dict, ["topical","oral","parenteral","dosed_ingredient","polymer_flag",
