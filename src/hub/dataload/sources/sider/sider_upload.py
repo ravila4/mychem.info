@@ -40,59 +40,57 @@ class SiderUploader(BaseDrugUploader):
     @classmethod
     def get_mapping(klass):
         mapping = {
-            "sider" : {
-                "properties" : {
-                    "meddra" : {
-                        "properties" : {
-                            "umls_id" : {
-                                "type" : "string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "type" : {
-                                "type" : "string",
-                                "analyzer":"string_lowercase"
-                                }
-                            }
-                        },
-                    "side_effect" : {
-                        "properties" : {
-                            "frequency" : {
-                                "type" : "string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "name" : {
-                                "type" : "string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "placebo" : {
-                                "type":"boolean"
-                                }
-                            }
-                        },
-                    "stitch" : {
-                        "properties" : {
-                            "flat" : {
-                                "type" : "string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "stereo" : {
-                                "type" : "string",
-                                "analyzer":"string_lowercase"
-                                }
-                            }
-                        },
-                    "indication" : {
-                        "properties" : {
-                            "name" : {
-                                "type" : "string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "method_of_detection" : {
-                                "type" : "string",
-                                "analyzer":"string_lowercase"
-                                }
+            "sider": {
+                "properties": {
+                    "stitch": {
+                        "properties": {
+                            "flat": {
+                                "analyzer": "string_lowercase",
+                                "type": "text"
+                            },
+                            "stereo": {
+                                "analyzer": "string_lowercase",
+                                "type": "text"
                             }
                         }
+                    },
+                    "indication": {
+                        "properties": {
+                            "method_of_detection": {
+                                "analyzer": "string_lowercase",
+                                "type": "text"
+                            },
+                            "name": {
+                                "type": "text"
+                            }
+                        }
+                    },
+                    "meddra": {
+                        "properties": {
+                            "type": {
+                                "analyzer": "string_lowercase",
+                                "type": "text"
+                            },
+                            "umls_id": {
+                                "analyzer": "string_lowercase",
+                                "type": "text"
+                            }
+                        }
+                    },
+                    "side_effect": {
+                        "properties": {
+                            "frequency": {
+                                "analyzer": "string_lowercase",
+                                "type": "text"
+                            },
+                            "placebo": {
+                                "type": "boolean"
+                            },
+                            "name": {
+                                "type": "text"
+                            }
+                        }
+                    }
                 }
             }
         }
