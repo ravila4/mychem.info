@@ -1,4 +1,5 @@
 import csv
+import re
 import sys
 from biothings.utils.dataload import dict_sweep, unlist
 
@@ -19,8 +20,29 @@ def load_data(tsv_file, drugbank_col=None, pubchem_col=None, chembl_col=None, ch
         yield _dict
 
 def restr_dict(d):
+    def _restr_xref(xref):
+        """Restructure field names related to the pharmgkb.xref field"""
+        # Rename fields
+        rename_fields = [
+            ('National Drug Code Directory', 'ndc'),
+            # ('Drugs Product Database \(DPD\)', 'dpd'),
+            ('FDA Drug Label at DailyMed', 'dailymed'),
+            ('Web Resource', 'wikipedia') # check that web_resource value is always wikipedia
+            ]
+        res = []
+        for v in xref:
+            for rf_orig, rf_new in rename_fields:
+                if re.match(rf_orig, v):
+                    v = re.sub(rf_orig, rf_new, v)
+                    k = rf_new
+            # Add 'CHEBI:' prefix if not there already
+            if re.match('^ChEBI:', v):
+                if not re.match('^ChEBI:CHEBI', v):
+                    v = re.sub('^ChEBI:', 'ChEBI:CHEBI:', v)  # Is there a bug in the parser that is taking only the number value?
+            res.append(v)
+        return res
     _d = {}
-    _li2 = ["External Vocabulary","Trade Names","Generic Names","Brand Mixtures","Dosing Guideline","Cross-references"]
+    _li2 = ["Trade Names","Generic Names","Brand Mixtures","Dosing Guideline"]
     _li1 = ["SMILES","Name","Type","InChI"]
     for key, val in iter(d.items()):
         if key in _li1:
@@ -33,10 +55,21 @@ def restr_dict(d):
         elif key == "PharmGKB Accession Id":
             k = key.lower().replace(" ","_").replace(".","_")
             _d.update({k:val})
+        elif key == "Cross-references":
+            k = "xref"
+            val = val.split(',"')
+            val = list(map(lambda each:each.strip('"'), val))  #python 3 compatible
+            val = _restr_xref(val)
+            _d.update({k:val})
+        elif key == "External Vocabulary":
+            # external_vocabulary - remove parenthesis and text within
+            k = "external_vocabulary"
+            val = re.sub('\([^)]*\)', '', val)
+            _d.update({k:val})
     return _d
 
 def clean_up(d):
-    _li = ['cross_references','external_vocabulary']
+    _li = ['xref','external_vocabulary']
     for key, val in iter(d.items()):
         if key in _li:
             _d= {}
