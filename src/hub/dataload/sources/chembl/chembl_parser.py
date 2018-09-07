@@ -42,7 +42,6 @@ def restructure_dict(dictionary):
     restr_dict = dict()
     _flag = 0
     for key in list(dictionary): # this is for 1
-        print(key)
         if key == 'molecule_chembl_id':
             restr_dict['_id']=dictionary[key]
         if key == 'molecule_structures' and type(dictionary['molecule_structures'])==dict:
