@@ -25,20 +25,23 @@ def restr_dict(d):
         # Rename fields
         rename_fields = [
             ('National Drug Code Directory', 'ndc'),
-            # ('Drugs Product Database \(DPD\)', 'dpd'),
-            ('FDA Drug Label at DailyMed', 'dailymed'),
-            ('Web Resource', 'wikipedia') # check that web_resource value is always wikipedia
+            ('Drugs Product Database (DPD)', 'dpd'),
+            ('FDA Drug Label at DailyMed', 'dailymed.setid'),
             ]
         res = []
         for v in xref:
             for rf_orig, rf_new in rename_fields:
-                if re.match(rf_orig, v):
-                    v = re.sub(rf_orig, rf_new, v)
-                    k = rf_new
+                if rf_orig in v:
+                    v = v.replace(rf_orig, rf_new)
+            # Multiple replacements on the 'Web Resource' field
+            if 'Web Resource' in v:
+                if 'http://en.wikipedia.org/wiki/' in v:
+                    v = v.replace('Web Resource', 'wikipedia.url_stub')
+                    v = v.replace('http://en.wikipedia.org/wiki/', '')
             # Add 'CHEBI:' prefix if not there already
-            if re.match('^ChEBI:', v):
+            elif re.match('^ChEBI:', v):
                 if not re.match('^ChEBI:CHEBI', v):
-                    v = re.sub('^ChEBI:', 'ChEBI:CHEBI:', v)  # Is there a bug in the parser that is taking only the number value?
+                    v = re.sub('^ChEBI:', 'ChEBI:CHEBI:', v)
             res.append(v)
         return res
     _d = {}
@@ -75,9 +78,12 @@ def clean_up(d):
             _d= {}
             for ele in val:
                 idx = ele.find(':')
-                k = ele[0:idx].lower().replace(' ','_').replace('-','_').replace(".","_")
+                # Note:  original pharmgkb keys do not have '.'
+                k = ele[0:idx].lower().replace(' ','_').replace('-','_')
                 v = ele[idx+1:]
-                _d.update({k:v})
+                # Handle nested elements (ex: 'wikipedia.url_stub') here
+                sub_d = sub_field(k, v)
+                _d.update(sub_d)
             d.update({key:_d})
     return d
 
@@ -154,3 +160,13 @@ def find_inchi_key(doc, drugbank_col, pubchem_col, chembl_col, chebi_col):
 
     return _id
 
+def sub_field(k, v):
+    """Return a nested dictionary with field keys k and value v."""
+    res = {}
+    field_d = res
+    fields = k.split('.')
+    for f in fields[:-1]:
+        field_d[f] = {}
+        field_d = field_d[f]
+    field_d[fields[-1]] = v
+    return res
