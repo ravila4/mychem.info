@@ -39,9 +39,9 @@ def restr_dict(d):
                     v = v.replace('Web Resource', 'wikipedia.url_stub')
                     v = v.replace('http://en.wikipedia.org/wiki/', '')
             # Add 'CHEBI:' prefix if not there already
-            elif re.match('^ChEBI:', v):
-                if not re.match('^ChEBI:CHEBI', v):
-                    v = re.sub('^ChEBI:', 'ChEBI:CHEBI:', v)
+            elif 'ChEBI:' in v:
+                if 'ChEBI:CHEBI' not in v:
+                    v = v.replace('ChEBI:', 'ChEBI:CHEBI:')
             res.append(v)
         return res
     _d = {}
@@ -67,7 +67,10 @@ def restr_dict(d):
         elif key == "External Vocabulary":
             # external_vocabulary - remove parenthesis and text within
             k = "external_vocabulary"
-            val = re.sub('\([^)]*\)', '', val)
+            # note:  regular expressions appear to be causing an error
+            # val = re.sub('\([^)]*\)', '', val)
+            val = val.split(',"')
+            val = list(map(lambda each:remove_paren(each.strip('"')), val))  #python 3 compatible
             _d.update({k:val})
     return _d
 
@@ -170,3 +173,10 @@ def sub_field(k, v):
         field_d = field_d[f]
     field_d[fields[-1]] = v
     return res
+
+def remove_paren(v):
+    """remove first occurance of trailing parentheses from a string"""
+    idx = v.find('(')
+    if idx != -1:
+        return v[0:idx]
+    return v
