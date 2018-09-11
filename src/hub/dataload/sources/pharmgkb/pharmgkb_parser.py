@@ -76,9 +76,9 @@ def restr_dict(d):
 
 def clean_up(d):
     _li = ['xref','external_vocabulary']
+    _d= {}
     for key, val in iter(d.items()):
         if key in _li:
-            _d= {}
             for ele in val:
                 idx = ele.find(':')
                 # Note:  original pharmgkb keys do not have '.'
@@ -87,7 +87,8 @@ def clean_up(d):
                 # Handle nested elements (ex: 'wikipedia.url_stub') here
                 sub_d = sub_field(k, v)
                 _d.update(sub_d)
-            d.update({key:_d})
+    # 'xref' and 'external_vocabulary' are merged
+    d.update({'xref':_d})
     return d
 
 def find_inchi_key(doc, drugbank_col, pubchem_col, chembl_col, chebi_col):
