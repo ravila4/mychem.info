@@ -28,7 +28,7 @@ def clean_up(_dict):
             value[0] = value[0].replace('<stereo>','').replace('<ital>','')
             value[0] = value[0].replace('</stereo>','').replace('</ital>','')
         # restructure the pubchem_database_links field
-        if key == 'pubchem_database_links':
+        elif key == 'pubchem_database_links':
             key = 'pubchem'
             new_pubchem_dict = {}
             if type(value) == list:
@@ -37,6 +37,17 @@ def clean_up(_dict):
                     if len(splitted_results) == 2:
                         new_pubchem_dict[splitted_results[0].lower()] = splitted_results[1][1:]
             value = new_pubchem_dict
+        elif key == 'lincs_database_links':
+            key = 'lincs'
+        elif key == 'kegg_drug_database_links':
+            key = 'kegg_drug'
+        elif key == 'iupac_names':
+            key = 'iupac'
+        elif key == 'wikipedia_database_links':
+            key = 'wikipedia'
+            value = {'url_stub': value}
+        elif key == 'cas_registry_numbers':
+            key = 'cas'
         _temp[key] = value
     return _temp
 
