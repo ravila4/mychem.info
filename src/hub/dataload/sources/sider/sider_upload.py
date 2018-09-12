@@ -46,11 +46,11 @@ class SiderUploader(BaseDrugUploader):
                         "properties": {
                             "flat": {
                                 "analyzer": "string_lowercase",
-                                "type": "text"
+                                "type": "string"
                             },
                             "stereo": {
                                 "analyzer": "string_lowercase",
-                                "type": "text"
+                                "type": "string"
                             }
                         }
                     },
@@ -58,10 +58,10 @@ class SiderUploader(BaseDrugUploader):
                         "properties": {
                             "method_of_detection": {
                                 "analyzer": "string_lowercase",
-                                "type": "text"
+                                "type": "string"
                             },
                             "name": {
-                                "type": "text"
+                                "type": "string"
                             }
                         }
                     },
@@ -69,11 +69,11 @@ class SiderUploader(BaseDrugUploader):
                         "properties": {
                             "type": {
                                 "analyzer": "string_lowercase",
-                                "type": "text"
+                                "type": "string"
                             },
                             "umls_id": {
                                 "analyzer": "string_lowercase",
-                                "type": "text"
+                                "type": "string"
                             }
                         }
                     },
@@ -81,13 +81,13 @@ class SiderUploader(BaseDrugUploader):
                         "properties": {
                             "frequency": {
                                 "analyzer": "string_lowercase",
-                                "type": "text"
+                                "type": "string"
                             },
                             "placebo": {
                                 "type": "boolean"
                             },
                             "name": {
-                                "type": "text"
+                                "type": "string"
                             }
                         }
                     }
