@@ -40,8 +40,6 @@ def clean_up(_dict):
             value = new_pubchem_dict
         elif key == 'iupac_names':
             key = 'iupac'
-        elif key == 'cas_registry_numbers':
-            key = 'cas'
         elif key == 'chebi_id':
             key = 'id'
         elif key == 'chebi_name':
@@ -51,8 +49,14 @@ def clean_up(_dict):
             key = 'wikipedia'
             value = {'url_stub': value}
             _xref[key] = value
+        elif key == 'beilstein_registry_numbers':
+            key = 'beilstein'
+            _xref[key] = value
         elif '_database_links' in key:
             key = key.replace('_database_links', '')
+            _xref[key] = value
+        elif '_registry_numbers' in key:
+            key = key.replace('_registry_numbers', '')
             _xref[key] = value
         elif '_citation_links' in key:
             key = key.replace('_citation_links', '')
@@ -75,7 +79,7 @@ def restructure_dict(dictionary):
     restr_dict['chebi'] = clean_up(restr_dict['chebi'])
     restr_dict = dict_sweep(restr_dict,vals=[None,".", "-", "", "NA", "none", " ", "Not Available",
         "unknown","null","None","NaN"])
-    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein_registry_numbers","pubmed","sabio_rk","gmelin_registry_numbers","molbase"])
+    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein","pubmed","sabio_rk","gmelin_registry_numbers","molbase"])
     return restr_dict
 
 def find_inchikey(doc, drugbank_col, chembl_col):
