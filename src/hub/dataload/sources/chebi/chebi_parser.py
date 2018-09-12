@@ -48,6 +48,16 @@ def clean_up(_dict):
             value = {'url_stub': value}
         elif key == 'cas_registry_numbers':
             key = 'cas'
+        elif key == 'chebi_id':
+            key = 'id'
+        elif key == 'chebi_name':
+            key = 'name'
+        elif key == 'drugbank_database_links':
+            key = 'drugbank'
+        elif key == 'pubmed_citation_links':
+            key = 'pubchem'
+        elif key == 'sabio_rk_database_links':
+            key = 'sabio_rk'
         _temp[key] = value
     return _temp
 
@@ -58,7 +68,7 @@ def restructure_dict(dictionary):
     restr_dict['chebi'] = clean_up(restr_dict['chebi'])
     restr_dict = dict_sweep(restr_dict,vals=[None,".", "-", "", "NA", "none", " ", "Not Available",
         "unknown","null","None","NaN"])
-    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein_registry_numbers","pubmed_citation_links","sabio_rk_database_links","gmelin_registry_numbers","molbase_database_links"])
+    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein_registry_numbers","pubmed","sabio_rk","gmelin_registry_numbers","molbase_database_links"])
     return restr_dict
 
 def find_inchikey(doc, drugbank_col, chembl_col):
@@ -68,8 +78,8 @@ def find_inchikey(doc, drugbank_col, chembl_col):
     if 'inchikey' in doc["chebi"]:
         _id = doc["chebi"]['inchikey']
     elif drugbank_col and chembl_col:
-        if 'drugbank_database_links' in doc["chebi"]:
-            d = drugbank_col.find_one({'_id':doc["chebi"]['drugbank_database_links']})
+        if 'drugbank' in doc["chebi"]:
+            d = drugbank_col.find_one({'_id':doc["chebi"]['drugbank']})
             if d != None:
                 try:
                     _id = d['drugbank']['inchi_key']
@@ -99,4 +109,3 @@ def find_inchikey(doc, drugbank_col, chembl_col):
                 else:
                     _id = doc['_id']
     return _id
-
