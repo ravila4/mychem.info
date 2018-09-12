@@ -127,19 +127,20 @@ def find_inchi_key(doc, drugbank_col, pubchem_col, chembl_col, chebi_col):
 
     if _flag:
         _flag = 0
-        if 'cross_references' in doc ["pharmgkb"]:
-            for key in doc["pharmgkb"]['cross_references']:
-                if key == 'pubchem_compound':
-                    cid = doc["pharmgkb"]['cross_references'].get(key)
-                    d = pubchem_col.find_one({'_id':cid})
-                    if d != None:
-                        try:
-                           _id = d['pubchem']['inchi_key']
-                        except KeyError:
-                            _id = d['_id']
+        if 'xref' in doc ["pharmgkb"]:
+            for key in doc["pharmgkb"]['xref']:
+                if key == 'pubchem':
+                    if 'cid' in doc['pharmgkb']['xref']['pubchem'].keys():
+                        cid = doc["pharmgkb"]['xref']['pubchem']['cid']
+                        d = pubchem_col.find_one({'_id':cid})
+                        if d != None:
+                            try:
+                                _id = d['pubchem']['inchi_key']
+                            except KeyError:
+                                _id = d['_id']
 
                 elif key=='drugbank':
-                    db_id = doc["pharmgkb"]['cross_references'].get(key)
+                    db_id = doc["pharmgkb"]['xref'].get(key)
                     d = drugbank_col.find_one({'_id':db_id})
                     if d != None:
                         try:
@@ -147,8 +148,8 @@ def find_inchi_key(doc, drugbank_col, pubchem_col, chembl_col, chebi_col):
                         except KeyError:
                             _id = d['_id']
                 elif key =='chebi':
-                    chebi = doc["pharmgkb"]['cross_references'].get(key)
-                    d = chebi_col.find_one({'_id':'CHEBI:'+chebi})
+                    chebi = doc["pharmgkb"]['xref'].get(key)
+                    d = chebi_col.find_one({'_id':chebi})
                     if d != None:
                         try:
                            _id = d['chebi']['inchikey']

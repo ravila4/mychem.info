@@ -89,8 +89,8 @@ def find_inchikey(doc, drugbank_col, chembl_col):
     if 'inchikey' in doc["chebi"]:
         _id = doc["chebi"]['inchikey']
     elif drugbank_col and chembl_col:
-        if 'drugbank' in doc["chebi"]:
-            d = drugbank_col.find_one({'_id':doc["chebi"]['drugbank']})
+        if 'xref' in doc['chebi'].keys() and 'drugbank' in doc["chebi"]['xref']:
+            d = drugbank_col.find_one({'_id':doc["chebi"]['xref']['drugbank']})
             if d != None:
                 try:
                     _id = d['drugbank']['inchi_key']
