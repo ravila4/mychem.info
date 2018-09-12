@@ -8,19 +8,18 @@ from biothings.utils.dataload import boolean_convert
 def load_data(xml_file):
     drug_list = []
     def handle(path,item):  #streaming mode of xmltodict
-        item = restructure_dict(item)
-        drug_list.append(item)
-        return True
-    with open(xml_file,'rb') as f:
-        xmltodict.parse(f,item_depth=2,item_callback=handle,xml_attribs=True)
-    f.close()
-    for doc in drug_list:
+        doc = restructure_dict(item)
         # try to normalize to inchi key
         try:
             _id = doc["drugbank"]['inchi_key']
             doc["_id"] = _id
+            drug_list.append(doc)
         except KeyError:
             pass
+        return True
+    with open(xml_file,'rb') as f:
+        xmltodict.parse(f,item_depth=2,item_callback=handle,xml_attribs=True)
+    for doc in drug_list:
         yield doc
 
 def restr_protein_dict(dictionary):
@@ -240,7 +239,6 @@ def restructure_dict(dictionary):
         elif key == "snp-effects" and value:
             key = key.replace('-','_')
             d1['pharmacology'].update({key:value})
-
         elif key == "snp-adverse-drug-reactions" and value:
             key = key.replace('-','_')
             d1['pharmacology'].update({key:value})
@@ -505,12 +503,12 @@ def restructure_dict(dictionary):
     restr_dict = unlist(restr_dict)
     restr_dict = dict_sweep(restr_dict,vals=[None,math.inf,"INF",".", "-", "", "NA", "none", " ",
         "Not Available", "unknown","null","None"])
-    if restr_dict["drugbank"].get('inchi_key') == "IOFPEOPOAMOMBE-MRVPVSSYSA-N":
-        print(repr(restr_dict["drugbank"].get("pdb")))
     restr_dict = boolean_convert(restr_dict,["predicted_properties.mddr_like_rule",
         "predicted_properties.bioavailability","predicted_properties.ghose_filter",
         "predicted_properties.rule_of_five","products.generic","products.otc",
         "products.approved","products.pediatric-extension"])
-    restr_dict = value_convert_to_number(restr_dict,skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance","bindingdb"])
+    restr_dict = value_convert_to_number(restr_dict,
+            skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance","bindingdb",
+                          "pka","boiling_point","melting_point","water_solubility","number","half_life","pdb"])
     return restr_dict
 
