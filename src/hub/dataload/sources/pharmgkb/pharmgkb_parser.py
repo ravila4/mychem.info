@@ -56,7 +56,7 @@ def restr_dict(d):
             k = key.lower().replace(" ","_").replace('-','_').replace(".","_")
             _d.update({k:val})
         elif key == "PharmGKB Accession Id":
-            k = key.lower().replace(" ","_").replace(".","_")
+            k = 'id'
             _d.update({k:val})
         elif key == "Cross-references":
             k = "xref"
@@ -82,12 +82,14 @@ def clean_up(d):
             for ele in val:
                 idx = ele.find(':')
                 # Note:  original pharmgkb keys do not have '.'
-                k = ele[0:idx].lower().replace(' ','_').replace('-','_')
+                k = transform_xref_fieldnames(ele[0:idx])
                 v = ele[idx+1:]
                 # Handle nested elements (ex: 'wikipedia.url_stub') here
                 sub_d = sub_field(k, v)
                 _d.update(sub_d)
     # 'xref' and 'external_vocabulary' are merged
+    if 'external_vocabulary' in d.keys():
+        d.pop('external_vocabulary')
     d.update({'xref':_d})
     return d
 
@@ -181,3 +183,17 @@ def remove_paren(v):
     if idx != -1:
         return v[0:idx]
     return v
+
+def transform_xref_fieldnames(k):
+    fields = [
+        ('Chemical Abstracts Service', 'cas'),
+        ('Therapeutic Targets Database', 'ttd'),
+        ('PubChem Substance', 'pubchem.sid'),
+        ('PubChem Compound', 'pubchem.cid')
+        ]
+    for orig_f, new_f in fields:
+        if orig_f in k:
+            k = k.replace(orig_f, new_f)
+            break
+    k = k.lower().replace(' ','_').replace('-','_')
+    return k
