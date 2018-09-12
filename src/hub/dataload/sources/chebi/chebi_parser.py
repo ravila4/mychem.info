@@ -79,7 +79,8 @@ def restructure_dict(dictionary):
     restr_dict['chebi'] = clean_up(restr_dict['chebi'])
     restr_dict = dict_sweep(restr_dict,vals=[None,".", "-", "", "NA", "none", " ", "Not Available",
         "unknown","null","None","NaN"])
-    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein","pubmed","sabio_rk","gmelin","molbase", "synonyms", "wikipedia"])
+    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=[
+        "beilstein","pubmed","sabio_rk","gmelin","molbase", "synonyms", "wikipedia","url_stub"])
     return restr_dict
 
 def find_inchikey(doc, drugbank_col, chembl_col):

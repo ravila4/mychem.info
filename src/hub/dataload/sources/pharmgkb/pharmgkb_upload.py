@@ -44,143 +44,173 @@ class PharmGkbUploader(BaseDrugUploader):
     @classmethod
     def get_mapping(klass):
         mapping = {
-            "pharmgkb" : {
-                "properties" : {
-                    "pharmgkb_accession_id" : {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "name" : {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "generic_names" : {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "trade_names" : {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "brand_mixtures" : {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "type" : {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "cross_references" : {
-                        "properties" : {
-                            "chebi" : {
-                                "type":"string"
-                                },
-                            "chemspider" : {
-                                "type":"string"
-                                },
-                            "therapeutic_targets_database" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "pubchem_substance" : {
-                                "type":"string"
-                                },
-                            "web_resource" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "drugbank" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "drugs_product_database" : {
-                                "type":"string"
-                                },
-                            "pubchem_compound" : {
-                                "type":"string"
-                                },
-                            "bindingdb" : {
-                                "type":"string"
-                                },
-                            "kegg_drug" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "fda_drug_label_at_dailymed" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "national_drug_code_directory" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "kegg_compound" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "pdb" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "iuphar_ligand" : {
-                                "type":"string"
-                                },
-                            "clinicaltrials_gov" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "het" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "genbank" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "uniprotkb" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                }
-                            }
-                        },
-                    "smiles" : {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "inchi" : {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "dosing_guideline" : {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "external_vocabulary" : {
-                        "properties" : {
-                            "umls" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "rxnorm" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "ndfrt" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "atc" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                                },
-                            "mesh" : {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
+                "pharmgkb": {
+                    "properties": {
+                        "id": {
+                            "analyzer": "string_lowercase",
+                            "type": "string"
+                            },
+                        "dosing_guideline": {
+                            "analyzer": "string_lowercase",
+                            "type": "string"
+                            },
+                        "inchi": {
+                            "analyzer": "string_lowercase",
+                            "type": "string"
+                            },
+                        "name": {
+                            "type": "string"
+                            },
+                        "smiles": {
+                            "analyzer": "string_lowercase",
+                            "type": "string"
+                            },
+                        "generic_names": {
+                            "type": "string"
+                            },
+                        "brand_mixtures": {
+                            "type": "string"
+                            },
+                        "trade_names": {
+                            "type": "string"
+                            },
+                        "type": {
+                            "type": "string"
+                            },
+                        "xref": {
+                            "properties": {
+                                "web_resource": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    },
+                                "uniprotkb": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    },
+                                "pubchem": {
+                                    "properties": {
+                                        "sid": {
+                                            "analyzer": "string_lowercase",
+                                            "type": "string"
+                                            },
+                                        "cid": {
+                                            "analyzer": "string_lowercase",
+                                            "type": "string"
+                                            }
+                                        }
+                                    },
+                                "het": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    },
+                                "wikipedia": {
+                                    "properties": {
+                                        "url_stub": {
+                                            "analyzer": "string_lowercase",
+                                            "type": "string"
+                                            }
+                                        }
+                                    },
+                                "iuphar_ligand": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    },
+                                "meddra": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    },
+                                "atc": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    },
+                                "kegg_compound": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    },
+                                "umls": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    },
+                                "clinicaltrials": {
+                                        "properties": {
+                                            "gov": {
+                                                "analyzer": "string_lowercase",
+                                                "type": "string"
+                                                }
+                                            }
+                                        },
+                                "genbank": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "rxnorm": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "chebi": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "cas": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "ttd": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "kegg_drug": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "mesh": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "ndc": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "chemspider": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "hmdb": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "dailymed": {
+                                        "properties": {
+                                            "setid": {
+                                                "analyzer": "string_lowercase",
+                                                "type": "string"
+                                                }
+                                            }
+                                        },
+                                "ndfrt": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "bindingdb": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "drugbank": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "pdb": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                "dpd": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        }
                                 }
                         }
                     }
                 }
             }
-        }
         return mapping
 

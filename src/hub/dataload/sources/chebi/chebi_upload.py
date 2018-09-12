@@ -46,215 +46,226 @@ class ChebiUploader(BaseDrugUploader):
         mapping = {
                 "chebi": {
                     "properties": {
-                        "citexplore_citation_links": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                        "brand_names": {
+                            "type": "text"
                             },
-                        "pdbechem_database_links": {
+                        "id": {
                             "analyzer": "string_lowercase",
-                            "type": "string"
+                            "type": "text"
                             },
-                        "sabio_rk_database_links": {
+                        "iupac": {
+                            "type": "text"
+                            },
+                        "inchi": {
                             "analyzer": "string_lowercase",
-                            "type": "string"
+                            "type": "text"
                             },
-                        "chinese_abstracts_citation_links": {
+                        "definition": {
+                            "type": "text"
+                            },
+                        "star": {
                             "type": "integer"
-                            },
-                        "last_modified": {
-                            "type": "string"
                             },
                         "smiles": {
                             "analyzer": "string_lowercase",
-                            "type": "string"
+                            "type": "text"
                             },
-                        "agricola_citation_links": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                        "last_modified": {
+                            "type": "text"
                             },
                         "inn": {
-                            "type": "string"
+                            "type": "text"
                             },
-                        "lipid_maps_class_database_links": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
-                            },
-                        "pubchem_database_links": {
+                        "xref": {
                             "properties": {
-                                "SID": {
-                                    "type": "integer"
+                                "molbase": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "text"
                                     },
-                                "CID": {
-                                    "type": "integer"
-                                    }
+                                "resid": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "text"
+                                    },
+                                "come": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "text"
+                                    },
+                                "pubchem": {
+                                    "properties": {
+                                        "sid": {
+                                            "type": "integer"
+                                            },
+                                        "cid": {
+                                            "type": "integer"
+                                            }
+                                        }
+                                    },
+                                "beilstein": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "text"
+                                    },
+                                "wikipedia": {
+                                    "properties": {
+                                        "url_stub": {
+                                            "analyzer": "string_lowercase",
+                                            "type": "text"
+                                            }
+                                        }
+                                    },
+                                "metacyc": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "text"
+                                    },
+                                "biomodels": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "text"
+                                    },
+                                "reactome": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "text"
+                                    },
+                                "um_bbd_compid": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "text"
+                                    },
+                                "lincs": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "uniprot": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "sabio_rk": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "patent": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "pdbechem": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "arrayexpress": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "cas": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "lipid_maps_class": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "kegg_drug": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "knapsack": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "lipid_maps_instance": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "intenz": {
+                                        "type": "text"
+                                        },
+                                "kegg_glycan": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "ecmdb": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "hmdb": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "kegg_compound": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "ymdb": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "drugbank": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "rhea": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "gmelin": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        },
+                                "intact": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "text"
+                                        }
                                 }
-                            },
-                        "intenz_database_links": {
-                            "type": "string"
-                            },
-                        "formulae": {
+            },
+            "monoisotopic_mass": {
+                    "type": "float"
+                    },
+            "mass": {
+                    "type": "float"
+                    },
+            "secondary_chebi_id": {
+                    "analyzer": "string_lowercase",
+                    "type": "text"
+                    },
+            "formulae": {
+                    "analyzer": "string_lowercase",
+                    "type": "text"
+                    },
+            "inchikey": {
+                    "analyzer": "string_lowercase",
+                    "type": "text"
+                    },
+            "name": {
+                    "type": "text"
+                    },
+            "charge": {
+                    "type": "integer"
+                    },
+            "synonyms": {
+                    "type": "text"
+                    },
+            "citation": {
+                    "properties": {
+                        "pubmed": {
                             "analyzer": "string_lowercase",
-                            "type": "string"
+                            "type": "text"
                             },
-                        "inchikey": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "ymdb_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "drugbank_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "synonyms": {
-                                "type": "string"
-                                },
-                        "wikipedia_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "chebi_name": {
-                                "type": "string"
-                                },
-                        "patent_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "beilstein_registry_numbers": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "hmdb_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "uniprot_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "iupac_names": {
-                                "type": "string"
-                                },
-                        "monoisotopic_mass": {
-                                "type": "float"
-                                },
-                        "metacyc_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "intact_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "cas_registry_numbers": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "gmelin_registry_numbers": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "pubmed_central_citation_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "secondary_chebi_id": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "um_bbd_compid_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "lipid_maps_instance_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "mass": {
-                                "type": "float"
-                                },
-                        "star": {
-                                "type": "integer"
-                                },
-                        "kegg_drug_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "lincs_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "arrayexpress_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "pubmed_citation_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "ecmdb_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "molbase_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "kegg_glycan_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "chebi_id": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "resid_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "inchi": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "kegg_compound_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "definition": {
-                                "type": "string"
-                                },
-                        "biomodels_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "come_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "rhea_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "brand_names": {
-                                "type": "string"
-                                },
-                        "reactome_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                },
-                        "charge": {
-                                "type": "integer"
-                                },
-                        "knapsack_database_links": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                                }
+                        "agricola": {
+                            "analyzer": "string_lowercase",
+                            "type": "text"
+                            },
+                        "pmc": {
+                            "analyzer": "string_lowercase",
+                            "type": "text"
+                            },
+                        "chinese_abstracts": {
+                            "type": "integer"
+                            },
+                        "citexplore": {
+                            "analyzer": "string_lowercase",
+                            "type": "text"
+                            }
                         }
+                    }
+                }
             }
         }
-
         return mapping
 
 
