@@ -21,6 +21,8 @@ def load_data(sdf_file, drugbank_col=None, chembl_col=None):
 
 def clean_up(_dict):
     _temp = dict()
+    _xref = dict()
+    _citation = dict()
     for key, value in iter(_dict.items()):
         key = key.lower().replace(' ','_').replace('-','_')
         value = value.split('\n')
@@ -29,7 +31,6 @@ def clean_up(_dict):
             value[0] = value[0].replace('</stereo>','').replace('</ital>','')
         # restructure the pubchem_database_links field
         elif key == 'pubchem_database_links':
-            key = 'pubchem'
             new_pubchem_dict = {}
             if type(value) == list:
                 for _value in value:
@@ -37,28 +38,34 @@ def clean_up(_dict):
                     if len(splitted_results) == 2:
                         new_pubchem_dict[splitted_results[0].lower()] = splitted_results[1][1:]
             value = new_pubchem_dict
-        elif key == 'lincs_database_links':
-            key = 'lincs'
-        elif key == 'kegg_drug_database_links':
-            key = 'kegg_drug'
         elif key == 'iupac_names':
             key = 'iupac'
-        elif key == 'wikipedia_database_links':
-            key = 'wikipedia'
-            value = {'url_stub': value}
         elif key == 'cas_registry_numbers':
             key = 'cas'
         elif key == 'chebi_id':
             key = 'id'
         elif key == 'chebi_name':
             key = 'name'
-        elif key == 'drugbank_database_links':
-            key = 'drugbank'
-        elif key == 'pubmed_citation_links':
-            key = 'pubchem'
-        elif key == 'sabio_rk_database_links':
-            key = 'sabio_rk'
-        _temp[key] = value
+
+        if key == 'wikipedia_database_links':
+            key = 'wikipedia'
+            value = {'url_stub': value}
+            _xref[key] = value
+        elif '_database_links' in key:
+            key = key.replace('_database_links', '')
+            _xref[key] = value
+        elif '_citation_links' in key:
+            key = key.replace('_citation_links', '')
+            if key == 'pubmed_central':
+                key = 'pmc'
+            _citation[key] = value
+        else:
+            _temp[key] = value
+
+    if _xref.keys():
+        _temp['xref'] = _xref
+    if _citation.keys():
+        _temp['citation'] = _citation
     return _temp
 
 def restructure_dict(dictionary):
@@ -68,7 +75,7 @@ def restructure_dict(dictionary):
     restr_dict['chebi'] = clean_up(restr_dict['chebi'])
     restr_dict = dict_sweep(restr_dict,vals=[None,".", "-", "", "NA", "none", " ", "Not Available",
         "unknown","null","None","NaN"])
-    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein_registry_numbers","pubmed","sabio_rk","gmelin_registry_numbers","molbase_database_links"])
+    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["beilstein_registry_numbers","pubmed","sabio_rk","gmelin_registry_numbers","molbase"])
     return restr_dict
 
 def find_inchikey(doc, drugbank_col, chembl_col):
