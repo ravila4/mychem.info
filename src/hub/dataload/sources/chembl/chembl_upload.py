@@ -40,241 +40,305 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
     @classmethod
     def get_mapping(klass):
         mapping = {
-            "chembl": {
-                "properties": {
-                    "max_phase": {
-                        "type":"integer"
-                    },
-                    "molecule_chembl_id": {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                    },
-                    "pref_name": {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                    },
-                    "inchi_key": {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                    },
-                    "smiles": {
-                        "type":"string" ,
-                        "analyzer":"string_lowercase"
-                    },
-                    "inchi": {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                    },
-                    "molecule_type": {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                    },
-                    "chebi_par_id": {
-                        "type":"string"
-                    },
-                    "first_approval": {
-                        "type":"string"
-                    },
-                    "topical": {
-                        "type":"boolean"
-
-                    },
-                    "prodrug":{
-                        "type":"integer"
-                    },
-                    "usan_stem_definition": {
-                         "type":"string",
-                         "analyzer":"string_lowercase"
-                    },
-                    "chirality": {
-                        "type":"integer"
-                    },
-                    "usan_stem": {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                    },
-                    "usan_substem": {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                    },
-                    "usan_year": {
-                        "type":"string"
-                    },
-                    "first_in_class": {
-                        "type":"integer"
-                    },
-                    "oral": {
-                        "type":"boolean"
-                    },
-                    "parenteral": {
-                        "type":"boolean"
-                    },
-                    "dosed_ingredient": {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                    },
-                    "natural_product": {
-                        "type":"integer"
-                    },
-                    "polymer_flag": {
-                        "type":"boolean"
-                    },
-                    "therapeutic_flag": {
-                        "type":"boolean"
-                    },
-                    "structure_type": {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                    },
-                    "helm_notation": {
-                        "type":"string"
-                    },
-                    "biotherapeutic": {
-                        "properties" : {
-                            "biocomponents" : {
-                                "properties" : {
-                                    "component_id": {
-                                        "type":"integer"
+                "chembl": {
+                    "properties": {
+                        "biotherapeutic": {
+                            "properties": {
+                                "helm_notation": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    },
+                                "description": {
+                                    "type": "string"
+                                    },
+                                "biocomponents": {
+                                    "properties": {
+                                        "organism": {
+                                            "type": "string"
+                                            },
+                                        "tax_id": {
+                                            "type": "integer"
+                                            },
+                                        "sequence": {
+                                            "type": "string"
+                                            },
+                                        "component_id": {
+                                            "type": "integer"
+                                            },
+                                        "description": {
+                                            "type": "string"
+                                            },
+                                        "component_type": {
+                                            "analyzer": "string_lowercase",
+                                            "type": "string"
+                                            }
+                                        }
+                                    },
+                                "molecule_chembl_id": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    }
+                                }
+                            },
+                        "therapeutic_flag": {
+                            "type": "boolean"
+                            },
+                        "usan_stem": {
+                            "type": "string"
+                            },
+                        "molecule_chembl_id": {
+                            "analyzer": "string_lowercase",
+                            "type": "string"
+                            },
+                        "molecule_properties": {
+                            "properties": {
+                                "heavy_atoms": {
+                                    "type": "integer"
+                                    },
+                                "acd_most_bpka": {
+                                    "type": "float"
+                                    },
+                                "mw_freebase": {
+                                    "type": "float"
+                                    },
+                                "num_ro5_violations": {
+                                    "type": "integer"
+                                    },
+                                "molecular_species": {
+                                    "analyzer": "string_lowercase",
+                                    "type": "string"
+                                    },
+                                "qed_weighted": {
+                                    "type": "float"
+                                    },
+                                "ro3_pass": {
+                                    "type": "boolean"
+                                    },
+                                "full_mwt": {
+                                    "type": "float"
+                                    },
+                                "num_lipinski_ro5_violations": {
+                                    "type": "integer"
+                                    },
+                                "rtb": {
+                                    "type": "integer"
+                                    },
+                                "psa": {
+                                    "type": "float"
+                                    },
+                                "alogp": {
+                                    "type": "float"
+                                    },
+                                "hbd": {
+                                    "type": "integer"
+                                    },
+                                "acd_most_apka": {
+                                    "type": "float"
+                                    },
+                                "hbd_lipinski": {
+                                    "type": "integer"
+                                    },
+                                "acd_logp": {
+                                    "type": "float"
+                                    },
+                                "full_molformula": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
                                         },
-                                    "description" : {
-                                       "type":"string"
-                                       },
-                                    "component_type" : {
-                                        "type":"string"
+                                "aromatic_rings": {
+                                        "type": "integer"
                                         },
-                                    "sequence" : {
-                                        "type":"string"
+                                "hba_lipinski": {
+                                        "type": "integer"
                                         },
-                                    "organism" : {
-                                        "type":"string"
+                                "mw_monoisotopic": {
+                                        "type": "float"
                                         },
-                                    "tax_id" : {
-                                       "type":"integer"
-                                       }
+                                "hba": {
+                                        "type": "integer"
+                                        },
+                                "acd_logd": {
+                                        "type": "float"
+                                        }
+                                }
+                        },
+                        "helm_notation": {
+                                "analyzer": "string_lowercase",
+                                "type": "string"
+                                },
+                        "max_phase": {
+                                "type": "integer"
+                                },
+                        "inorganic_flag": {
+                                "type": "integer"
+                                },
+                        "usan_stem_definition": {
+                                "type": "string"
+                                },
+                        "dosed_ingredient": {
+                                "type": "boolean"
+                                },
+                        "chebi_par_id": {
+                                "analyzer": "string_lowercase",
+                                "type": "string"
+                                },
+                        "withdrawn_reason": {
+                                "type": "string"
+                                },
+                        "molecule_hierarchy": {
+                                "properties": {
+                                    "parent_chembl_id": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        },
+                                    "molecule_chembl_id": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        }
                                     }
                                 },
-                            "helm_notation" : {
-                                "type":"string"
+                        "prodrug": {
+                                "type": "integer"
                                 },
-                            "molecule_chembl_id" : {
-                                "type":"string"
+                        "withdrawn_flag": {
+                                "type": "boolean"
                                 },
-                            "description" : {
-                                "type":"string"
+                        "usan_year": {
+                                "type": "integer"
+                                },
+                        "parenteral": {
+                                "type": "boolean"
+                                },
+                        "black_box_warning": {
+                                "type": "integer"
+                                },
+                        "polymer_flag": {
+                                "type": "boolean"
+                                },
+                        "molecule_synonyms": {
+                                "properties": {
+                                    "molecule_synonym": {
+                                        "type": "string"
+                                        },
+                                    "synonyms": {
+                                        "type": "string"
+                                        },
+                                    "syn_type": {
+                                        "analyzer": "string_lowercase",
+                                        "type": "string"
+                                        }
+                                    }
+                                },
+                        "atc_classifications": {
+                                "analyzer": "string_lowercase",
+                                "type": "string"
+                                },
+                        "molecule_type": {
+                                "type": "string"
+                                },
+                        "first_in_class": {
+                                "type": "integer"
+                                },
+                        "inchi": {
+                                "analyzer": "string_lowercase",
+                                "type": "string"
+                                },
+                        "structure_type": {
+                                "analyzer": "string_lowercase",
+                                "type": "string"
+                                },
+                        "withdrawn_class": {
+                                "type": "string"
+                                },
+                        "inchi_key": {
+                                "analyzer": "string_lowercase",
+                                "type": "string"
+                                },
+                        "topical": {
+                                "type": "boolean"
+                                },
+                        "oral": {
+                                "type": "boolean"
+                                },
+                        "xref": {
+                                "properties": {
+                                    "drugcentral": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                                },
+                                            "name": {
+                                                "type": "string"
+                                                }
+                                            }
+                                        },
+                                    "tg-gates": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                                },
+                                            "name": {
+                                                "type": "string"
+                                                }
+                                            }
+                                        },
+                                    "wikipedia": {
+                                        "properties": {
+                                            "url_stub": {
+                                                "analyzer": "string_lowercase",
+                                                "type": "string"
+                                                }
+                                            }
+                                        },
+                                    "dailymed": {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                                }
+                                            }
+                                        },
+                                    "pubchem": {
+                                        "properties": {
+                                            "sid": {
+                                                "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                        "chirality": {
+                                "type": "integer"
+                                },
+                        "usan_substem": {
+                                "type": "string"
+                                },
+                        "indication_class": {
+                                "type": "string"
+                                },
+                        "withdrawn_country": {
+                                "type": "string"
+                                },
+                        "withdrawn_year": {
+                                "type": "integer"
+                                },
+                        "availability_type": {
+                                "type": "integer"
+                                },
+                        "smiles": {
+                                "analyzer": "string_lowercase",
+                                "type": "string"
+                                },
+                        "natural_product": {
+                                "type": "integer"
+                                },
+                        "pref_name": {
+                                "type": "string"
+                                },
+                        "first_approval": {
+                                "type": "integer"
                                 }
-                            }
-                    },
-                    "black_box_warning": {
-                        "type":"boolean"
-                    },
-                    "availability_type": {
-                        "type":"integer"
-                    },
-                    "inorganic_flag": {
-                        "type":"boolean"
-                    },
-                    "indication_class": {
-                        "type":"string",
-                        "analyzer":"string_lowercase"
-                    },
-                    "atc_classifications": {
-                        "type":"string"
-                    },
-                    "molecule_synonyms": {
-                        "properties": {
-                            "synonyms": {
-                                "type":"string"
-                            },
-                            "syn_type": {
-                                "type":"string"
-                            }
                         }
-                    },
-                    "molecule_hierarchy": {
-                        "properties": {
-                            "molecule_chembl_id": {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                            },
-                            "parent_chembl_id": {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                            }
-                        }
-                    },
-                    "molecule_properties": {
-                        "properties": {
-                            "num_ro5_violations": {
-                                "type":"integer"
-                            },
-                            "med_chem_friendly": {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                            },
-                            "mw_freebase": {
-                                "type":"float"
-                            },
-                            "full_molformula": {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                            },
-                            "alogp": {
-                                "type":"float"
-                            },
-                            "heavy_atoms": {
-                                "type":"integer"
-                            },
-                            "num_alerts": {
-                                "type":"integer"
-                            },
-                            "acd_logd": {
-                                "type":"float"
-                            },
-                            "psa": {
-                                "type":"float"
-                            },
-                            "hba": {
-                                "type":"float"
-                            },
-                            "molecular_species": {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                            },
-                            "mw_monoisotopic": {
-                                "type":"float"
-                            },
-                            "ro3_pass": {
-                                "type":"string",
-                                "analyzer":"string_lowercase"
-                            },
-                            "aromatic_rings": {
-                                "type":"integer"
-                            },
-                            "full_mwt": {
-                                "type":"float"
-                            },
-                            "acd_most_apka": {
-                                "type":"float"
-                            },
-                            "rtb": {
-                                "type":"integer"
-                            },
-                            "acd_logp": {
-                                "type":"float"
-                            },
-                            "qed_weighted": {
-                                "type":"float"
-                            },
-                            "hbd": {
-                                "type":"integer"
-                            },
-                            "acd_most_bpka": {
-                                "type":"float"
-                            }
-                        }
-                    }
                 }
-            }
         }
 
         return mapping
