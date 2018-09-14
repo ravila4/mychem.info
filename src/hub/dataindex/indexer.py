@@ -26,4 +26,4 @@ class DrugIndexer(indexer.Indexer):
                 steps=steps,
                 batch_size=2500,
                 ids=ids,
-                mode="index")
+                mode=mode)
