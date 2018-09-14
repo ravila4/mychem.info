@@ -509,6 +509,7 @@ def restructure_dict(dictionary):
         "products.approved","products.pediatric-extension"])
     restr_dict = value_convert_to_number(restr_dict,
             skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance","bindingdb",
-                          "pka","boiling_point","melting_point","water_solubility","number","half_life","pdb"])
+                          "pka","boiling_point","melting_point","water_solubility","number","half_life",
+                          "pdb","name"])
     return restr_dict
 
