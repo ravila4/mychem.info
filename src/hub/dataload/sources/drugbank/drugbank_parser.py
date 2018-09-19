@@ -2,8 +2,28 @@ import xmltodict
 import json, math
 import collections
 import logging
-from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
+from biothings.utils.dataload import dict_sweep, unlist
 from biothings.utils.dataload import boolean_convert
+from biothings.utils.dataload import to_number
+
+
+def number_convert(d, convert_keys=[], level=0):
+    """Explore document d and specified convert keys to boolean.
+    Use dotfield notation for inner keys"""
+    for key, val in d.items():
+        if isinstance(val, dict):
+            d[key] = number_convert(val, convert_keys)
+        if key in [ak.split(".")[level] for ak in convert_keys if len(ak.split(".")) > level]:
+            if isinstance(val, list) or isinstance(val, tuple):
+                if val and isinstance(val[0],dict):
+                    d[key] = [number_convert(v,convert_keys,level+1) for v in val]
+                else:
+                    d[key] = [to_number(x) for x in val]
+            elif isinstance(val, dict) or isinstance(val, collections.OrderedDict):
+                d[key] = number_convert(val, convert_keys, level+1)
+            else:
+                d[key] = to_number(val)
+    return d
 
 def load_data(xml_file):
     drug_list = []
@@ -57,6 +77,8 @@ def restructure_dict(dictionary):
     carriers_list = []
     transporters_list = []
     atccode_list = []
+    xref_dict = {}
+    xref_pubchem_dict = {}
 
     for key,value in iter(dictionary.items()):
         if key == 'name' and value:
@@ -251,7 +273,7 @@ def restructure_dict(dictionary):
         elif key == 'ahfs-codes' and value:
             for x in value:
                 key = key.replace('-','_')
-                d1.update({key:value[x]})
+                xref_dict.update({key:value[x]})
 
         elif key == 'food-interactions' and value:
             food_interaction_list = []
@@ -349,38 +371,34 @@ def restructure_dict(dictionary):
                     _d = restr_properties_dict(y)
 
         elif key == 'external-identifiers' and value:
+            kegg_dict = {}
             for ele in value['external-identifier']:
                 for x in ele:
                     if x == 'resource':
                         if ele[x] == "Drugs Product Database (DPD)":
-                            d1['dpd'] = ele['identifier']
+                            xref_dict['dpd'] = ele['identifier']
                         elif ele[x] == "KEGG Drug":
-                            d1['kegg_drug'] = ele['identifier']
+                            kegg_dict['did'] = ele['identifier']
+                            xref_dict['kegg'] = kegg_dict
                         elif ele[x] == "KEGG Compound":
-                            d1['kegg_compound'] = ele['identifier']
-                        elif ele[x] == "National Drug Code Directory":
-                            d1['ndc_directory'] = ele['identifier']
+                            kegg_dict['cid'] = ele['identifier']
+                            xref_dict['kegg'] = kegg_dict
                         elif ele[x] == "PharmGKB":
-                            d1['pharmgkb'] = ele['identifier']
-                        elif ele[x] == "UniProtKB":
-                            d1['uniprotkb'] = ele['identifier']
+                            xref_dict['pharmgkb'] = ele['identifier']
                         elif ele[x] == "Wikipedia":
-                                d1['wikipedia'] = ele['identifier']
+                            wiki_dict = {'url_stub': ele['identifier']}
+                            xref_dict['wikipedia'] = wiki_dict
                         elif ele[x] == "ChemSpider":
-                                d1['chemspider'] = ele['identifier']
+                            xref_dict['chemspider'] = ele['identifier']
                         elif ele[x] == "ChEBI":
-                                d1['chebi'] = 'CHEBI:' + str(ele['identifier'])
+                            xref_dict['chebi'] = 'CHEBI:' + str(ele['identifier'])
                         elif ele[x] == "PubChem Compound":
-                                d1['pubchem_compound'] = ele['identifier']
+                            xref_pubchem_dict['cid'] = ele['identifier']
                         elif ele[x] == "PubChem Substance":
-                                d1['pubchem_substance'] = ele['identifier']
-                        elif ele[x] == "UniProtKB":
-                                d1['uniprotkb'] = ele['identifier']
-                        elif ele[x] == "GenBank":
-                                d1['genbank'] = ele['identifier']
+                            xref_pubchem_dict['sid'] = ele['identifier']
                         else:
                             source = ele[x].lower().replace('-','_').replace(' ','_')
-                            d1[source]=ele['identifier']
+                            xref_dict[source] = ele['identifier']
 
         elif key == 'external-links' and value:
             if isinstance(value['external-link'],list):
@@ -397,8 +415,6 @@ def restructure_dict(dictionary):
                     d1[resource.lower().replace('.','_')] = ele['url']
                 except:
                     pass
-
-
 
         elif key == 'patents'and value:
             if isinstance(value,dict):
@@ -499,6 +515,9 @@ def restructure_dict(dictionary):
     d1['transporters'] = transporters_list
     d1['predicted_properties'] = pred_properties_dict
     d1['products'] = products_list
+    if xref_pubchem_dict:
+        xref_dict['pubchem'] = xref_pubchem_dict
+    d1['xref'] = xref_dict
     restr_dict['drugbank'] = d1
     restr_dict = unlist(restr_dict)
     restr_dict = dict_sweep(restr_dict,vals=[None,math.inf,"INF",".", "-", "", "NA", "none", " ",
@@ -507,9 +526,19 @@ def restructure_dict(dictionary):
         "predicted_properties.bioavailability","predicted_properties.ghose_filter",
         "predicted_properties.rule_of_five","products.generic","products.otc",
         "products.approved","products.pediatric-extension"])
-    restr_dict = value_convert_to_number(restr_dict,
-            skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance","bindingdb",
-                          "pka","boiling_point","melting_point","water_solubility","number","half_life",
-                          "pdb","name"])
+    restr_dict = number_convert(restr_dict,
+                                ["drugbank.weight.average",
+                                 "drugbank.weight.monoisotopic",
+                                 "drugbank.patents.number",
+                                 "drugbank.predicted_properties.logp",
+                                 "drugbank.predicted_properties.polar_surface_area_(psa)",
+                                 "drugbank.predicted_properties.logs",
+                                 "drugbank.predicted_properties.polarizability",
+                                 "drugbank.predicted_properties.pka_(strongest_basic)",
+                                 "drugbank.predicted_properties.h_bond_donor_count",
+                                 "drugbank.predicted_properties.molecular_weight",
+                                 "drugbank.predicted_properties.physiological_charge",
+                                 "drugbank.predicted_properties.pka_(strongest_acidic)",
+                                 "drugbank.predicted_properties.monoisotopic_weight",
+                                 "drugbank.predicted_properties.refractivity"])
     return restr_dict
-
