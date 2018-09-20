@@ -28,8 +28,7 @@ job_manager = JobManager(loop,num_workers=config.HUB_MAX_WORKERS,
         max_memory_usage=config.HUB_MAX_MEM_USAGE)
 
 import hub.dataload
-from biothings.utils.hub import schedule, pending, done, start_server, \
-                                HubShell
+from biothings.utils.hub import schedule, pending, done, start_server, HubShell
 import biothings.hub.dataload.uploader as uploader
 import biothings.hub.dataload.dumper as dumper
 import biothings.hub.dataload.source as source

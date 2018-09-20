@@ -47,48 +47,48 @@ class ChebiUploader(BaseDrugUploader):
                 "chebi": {
                     "properties": {
                         "brand_names": {
-                            "type": "text"
+                            "type": "string"
                             },
                         "id": {
                             "analyzer": "string_lowercase",
-                            "type": "text"
+                            "type": "string"
                             },
                         "iupac": {
-                            "type": "text"
+                            "type": "string"
                             },
                         "inchi": {
                             "analyzer": "string_lowercase",
-                            "type": "text"
+                            "type": "string"
                             },
                         "definition": {
-                            "type": "text"
+                            "type": "string"
                             },
                         "star": {
                             "type": "integer"
                             },
                         "smiles": {
                             "analyzer": "string_lowercase",
-                            "type": "text"
+                            "type": "string"
                             },
                         "last_modified": {
-                            "type": "text"
+                            "type": "string"
                             },
                         "inn": {
-                            "type": "text"
+                            "type": "string"
                             },
                         "xref": {
                             "properties": {
                                 "molbase": {
                                     "analyzer": "string_lowercase",
-                                    "type": "text"
+                                    "type": "string"
                                     },
                                 "resid": {
                                     "analyzer": "string_lowercase",
-                                    "type": "text"
+                                    "type": "string"
                                     },
                                 "come": {
                                     "analyzer": "string_lowercase",
-                                    "type": "text"
+                                    "type": "string"
                                     },
                                 "pubchem": {
                                     "properties": {
@@ -102,114 +102,114 @@ class ChebiUploader(BaseDrugUploader):
                                     },
                                 "beilstein": {
                                     "analyzer": "string_lowercase",
-                                    "type": "text"
+                                    "type": "string"
                                     },
                                 "wikipedia": {
                                     "properties": {
                                         "url_stub": {
                                             "analyzer": "string_lowercase",
-                                            "type": "text"
+                                            "type": "string"
                                             }
                                         }
                                     },
                                 "metacyc": {
                                     "analyzer": "string_lowercase",
-                                    "type": "text"
+                                    "type": "string"
                                     },
                                 "biomodels": {
                                     "analyzer": "string_lowercase",
-                                    "type": "text"
+                                    "type": "string"
                                     },
                                 "reactome": {
                                     "analyzer": "string_lowercase",
-                                    "type": "text"
+                                    "type": "string"
                                     },
                                 "um_bbd_compid": {
                                     "analyzer": "string_lowercase",
-                                    "type": "text"
+                                    "type": "string"
                                     },
                                 "lincs": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "uniprot": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "sabio_rk": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "patent": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "pdbechem": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "arrayexpress": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "cas": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "lipid_maps_class": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "kegg_drug": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "knapsack": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "lipid_maps_instance": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "intenz": {
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "kegg_glycan": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "ecmdb": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "hmdb": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "kegg_compound": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "ymdb": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "drugbank": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "rhea": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "gmelin": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         },
                                 "intact": {
                                         "analyzer": "string_lowercase",
-                                        "type": "text"
+                                        "type": "string"
                                         }
                                 }
             },
@@ -221,45 +221,45 @@ class ChebiUploader(BaseDrugUploader):
                     },
             "secondary_chebi_id": {
                     "analyzer": "string_lowercase",
-                    "type": "text"
+                    "type": "string"
                     },
             "formulae": {
                     "analyzer": "string_lowercase",
-                    "type": "text"
+                    "type": "string"
                     },
             "inchikey": {
                     "analyzer": "string_lowercase",
-                    "type": "text"
+                    "type": "string"
                     },
             "name": {
-                    "type": "text"
+                    "type": "string"
                     },
             "charge": {
                     "type": "integer"
                     },
             "synonyms": {
-                    "type": "text"
+                    "type": "string"
                     },
             "citation": {
                     "properties": {
                         "pubmed": {
                             "analyzer": "string_lowercase",
-                            "type": "text"
+                            "type": "string"
                             },
                         "agricola": {
                             "analyzer": "string_lowercase",
-                            "type": "text"
+                            "type": "string"
                             },
                         "pmc": {
                             "analyzer": "string_lowercase",
-                            "type": "text"
+                            "type": "string"
                             },
                         "chinese_abstracts": {
                             "type": "integer"
                             },
                         "citexplore": {
                             "analyzer": "string_lowercase",
-                            "type": "text"
+                            "type": "string"
                             }
                         }
                     }
