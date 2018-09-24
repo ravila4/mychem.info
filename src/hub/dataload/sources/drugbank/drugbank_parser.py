@@ -4,26 +4,8 @@ import collections
 import logging
 from biothings.utils.dataload import dict_sweep, unlist
 from biothings.utils.dataload import boolean_convert
-from biothings.utils.dataload import to_number
+from .utils import fn_convert, to_int, to_float
 
-
-def number_convert(d, convert_keys=[], level=0):
-    """Explore document d and specified convert keys to boolean.
-    Use dotfield notation for inner keys"""
-    for key, val in d.items():
-        if isinstance(val, dict):
-            d[key] = number_convert(val, convert_keys)
-        if key in [ak.split(".")[level] for ak in convert_keys if len(ak.split(".")) > level]:
-            if isinstance(val, list) or isinstance(val, tuple):
-                if val and isinstance(val[0],dict):
-                    d[key] = [number_convert(v,convert_keys,level+1) for v in val]
-                else:
-                    d[key] = [to_number(x) for x in val]
-            elif isinstance(val, dict) or isinstance(val, collections.OrderedDict):
-                d[key] = number_convert(val, convert_keys, level+1)
-            else:
-                d[key] = to_number(val)
-    return d
 
 def load_data(xml_file):
     drug_list = []
@@ -298,7 +280,7 @@ def restructure_dict(dictionary):
                         str1 = y[i]+'_sequences'
                         d1[str1] = y['#text'].replace('\n',' ')
 
-        elif key == 'experimental-properties' and value:
+        elif key == 'expe-properties' and value:
             d1_exp_properties = {}
             def restr_properties_dict(dictionary):
                 for x,y in iter(dictionary.items()):
@@ -519,26 +501,42 @@ def restructure_dict(dictionary):
         xref_dict['pubchem'] = xref_pubchem_dict
     d1['xref'] = xref_dict
     restr_dict['drugbank'] = d1
-    restr_dict = unlist(restr_dict)
+    restr_dict = unlist(restr_dict, ["drugbank.accession_number"])
     restr_dict = dict_sweep(restr_dict,vals=[None,math.inf,"INF",".", "-", "", "NA", "none", " ",
         "Not Available", "unknown","null","None"])
     restr_dict = boolean_convert(restr_dict,["predicted_properties.mddr_like_rule",
         "predicted_properties.bioavailability","predicted_properties.ghose_filter",
         "predicted_properties.rule_of_five","products.generic","products.otc",
         "products.approved","products.pediatric-extension"])
-    restr_dict = number_convert(restr_dict,
-                                ["drugbank.weight.average",
-                                 "drugbank.weight.monoisotopic",
-                                 "drugbank.patents.number",
-                                 "drugbank.predicted_properties.logp",
-                                 "drugbank.predicted_properties.polar_surface_area_(psa)",
-                                 "drugbank.predicted_properties.logs",
-                                 "drugbank.predicted_properties.polarizability",
-                                 "drugbank.predicted_properties.pka_(strongest_basic)",
-                                 "drugbank.predicted_properties.h_bond_donor_count",
-                                 "drugbank.predicted_properties.molecular_weight",
-                                 "drugbank.predicted_properties.physiological_charge",
-                                 "drugbank.predicted_properties.pka_(strongest_acidic)",
-                                 "drugbank.predicted_properties.monoisotopic_weight",
-                                 "drugbank.predicted_properties.refractivity"])
+    # 'int' types
+    restr_dict = fn_convert(restr_dict, to_int,
+                            ["drugbank.pharmacology.snp_adverse_drug_reactions.reaction.pubmed-id",
+                             "drugbank.pharmacology.snp_effects.effect.pubmed-id",
+                             "drugbank.predicted_properties.physiological_charge",
+                             "drugbank.predicted_properties.rotatable_bond_count",
+                             "drugbank.predicted_properties.h_bond_acceptor_count",
+                             "drugbank.predicted_properties.h_bond_donor_count",
+                             "drugbank.predicted_properties.number_of_rings",
+                             "drugbank.guide_to_pharmacology",
+                             "drugbank.iuphar"])
+    # 'float' types
+    restr_dict = fn_convert(restr_dict, to_float,
+                            ["drugbank.experimental_properties.caco2_permeability",
+                             "drugbank.experimental_properties.molecular_weight",
+                             "drugbank.experimental_properties.hydrophobicity",
+                             "drugbank.weight.monoisotopic",
+                             "drugbank.weight.average",
+                             "drugbank.predicted_properties.molecular_weight",
+                             "drugbank.predicted_properties.monoisotopic_weight"])
+    # Mixed types coerced to floats
+    restr_dict = fn_convert(restr_dict, to_float,
+                            ["drugbank.experimental_properties.logp",
+                             "drugbank.experimental_properties.logs",
+                             "drugbank.predicted_properties.logp",
+                             "drugbank.predicted_properties.logs",
+                             "drugbank.predicted_properties.pka_(strongest_basic)",
+                             "drugbank.predicted_properties.pka_(strongest_acidic)",
+                             "drugbank.predicted_properties.refractivity",
+                             "drugbank.predicted_properties.polarizability",
+                             "drugbank.predicted_properties.polar_surface_area_(psa)"])
     return restr_dict
