@@ -31,88 +31,88 @@ class NDCUploader(BaseDrugUploader):
     @classmethod
     def get_mapping(klass):
         mapping = {
-            "ndc" : {
-                "properties" : {
-                    "product_id" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "productndc" : {
-                        "type" : "string"
-                        },
-                    "producttypename" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "proprietaryname" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "proprietarynamesuffix" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "nonproprietaryname" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "dosageformname" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "routename" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "startmarketingdate" : {
-                        "type" : "string"
-                        },
-                    "endmarketingdate" : {
-                        "type" : "string"
-                        },
-                    "marketingcategoryname" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "applicationnumber" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "labelername" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "substancename" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "active_numerator_strength" : {
-                        "type" : "string"                    
-                        },
-                    "active_ingred_unit" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "pharm_classes" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "deaschedule" : {
-                        "type" : "string",
-                        "analyzer":"string_lowercase"
-                        },
-                    "package" : {
-                        "properties" : {
-                            "packagedescription" : {
-                                "type" : "string",
-                                "analyzer":"string_lowercase"
+                "ndc" : {
+                    "properties" : {
+                        "product_id" : {
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            },
+                        "productndc" : {
+                            "type" : "text"
+                            },
+                        "producttypename" : {
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            },
+                        "proprietaryname" : {
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            },
+                        "proprietarynamesuffix" : {
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            },
+                        "nonproprietaryname" : {
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            },
+                        "dosageformname" : {
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            },
+                        "routename" : {
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            },
+                        "startmarketingdate" : {
+                            "type" : "text"
+                            },
+                        "endmarketingdate" : {
+                            "type" : "text"
+                            },
+                        "marketingcategoryname" : {
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            },
+                        "applicationnumber" : {
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            },
+                        "labelername" : {
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            },
+                        "substancename" : {
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
                                 },
-                            "ndcpackagecode" : {
-                                "type" : "string"
+                        "active_numerator_strength" : {
+                                "type" : "text"                    
+                                },
+                        "active_ingred_unit" : {
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
+                                },
+                        "pharm_classes" : {
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
+                                },
+                        "deaschedule" : {
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
+                                },
+                        "package" : {
+                                "properties" : {
+                                    "packagedescription" : {
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
+                                        },
+                                    "ndcpackagecode" : {
+                                        "type" : "text"
+                                        }
+                                    }
                                 }
                         }
-                    }
-                }
             }
         }
 

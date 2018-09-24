@@ -48,294 +48,296 @@ class DrugBankUploader(BaseDrugUploader):
                 "drugbank": {
                     "properties": {
                         "drugs_com": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                         "guide_to_pharmacology": {
                             "type": "integer"
                             },
                         "groups": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                         "uniprotkb": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                         "pharmacology": {
                             "properties": {
                                 "protein_binding": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "indication": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "absorption": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "clearance": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "route_of_elimination": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "volume_of_distribution": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "snp_adverse_drug_reactions": {
                                     "properties": {
                                         "reaction": {
                                             "properties": {
                                                 "protein-name": {
-                                                    "type": "string"
+                                                    "type": "text"
                                                     },
                                                 "gene-symbol": {
-                                                    "analyzer": "string_lowercase",
-                                                    "type": "string"
+                                                    "normalizer": "keyword_lowercase_normalizer",
+                                                    "type": "keyword",
                                                     },
                                                 "pubmed-id": {
                                                     "type": "integer"
                                                     },
                                                 "rs-id": {
-                                                    "analyzer": "string_lowercase",
-                                                    "type": "string"
+                                                    "normalizer": "keyword_lowercase_normalizer",
+                                                    "type": "keyword",
                                                     },
                                                 "description": {
-                                                    "type": "string"
+                                                    "type": "text"
                                                     },
                                                 "allele": {
-                                                    "type": "string"
+                                                    "type": "text"
                                                     },
                                                 "uniprot-id": {
-                                                    "analyzer": "string_lowercase",
-                                                    "type": "string"
+                                                    "normalizer": "keyword_lowercase_normalizer",
+                                                    "type": "keyword",
                                                     },
                                                 "adverse-reaction": {
-                                                    "type": "string"
+                                                    "type": "text"
                                                     }
                                                 }
                                             }
                                         }
                                     },
                                 "toxicity": {
-                                        "type": "string"
+                                        "type": "text"
                                         },
                                 "pharmacodynamics": {
-                                        "type": "string"
+                                        "type": "text"
                                         },
                                 "snp_effects": {
                                         "properties": {
                                             "effect": {
                                                 "properties": {
                                                     "defining-change": {
-                                                        "type": "string"
+                                                        "type": "text"
                                                         },
                                                     "protein-name": {
-                                                        "type": "string"
+                                                        "type": "text"
                                                         },
                                                     "rs-id": {
-                                                        "analyzer": "string_lowercase",
-                                                        "type": "string"
+                                                        "normalizer": "keyword_lowercase_normalizer",
+                                                        "type": "keyword",
                                                         },
                                                     "pubmed-id": {
                                                         "type": "integer"
                                                         },
                                                     "description": {
-                                                        "type": "string"
+                                                        "type": "text"
                                                         },
                                                     "allele": {
-                                                        "type": "string"
+                                                        "type": "text"
                                                         },
                                                     "uniprot-id": {
-                                                        "analyzer": "string_lowercase",
-                                                        "type": "string"
+                                                        "normalizer": "keyword_lowercase_normalizer",
+                                                        "type": "keyword",
                                                         },
                                                     "gene-symbol": {
-                                                        "analyzer": "string_lowercase",
-                                                        "type": "string"
+                                                        "normalizer": "keyword_lowercase_normalizer",
+                                                        "type": "keyword",
                                                         }
                                                     }
                                                 }
                                             }
                                         },
                                 "half_life": {
-                                        "type": "string"
+                                        "type": "text"
                                         },
                                 "description": {
-                                        "type": "string"
+                                        "type": "text"
                                         },
                                 "metabolism": {
-                                        "type": "string"
+                                        "type": "text"
                                         },
                                 "affected_organisms": {
-                                        "type": "string"
+                                        "type": "text"
                                         },
                                 "mechanism_of_action": {
-                                        "type": "string"
+                                        "type": "text"
                                         }
                                 }
                     },
                     "rxlist": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "pubchem_substance": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "pubchem_compound": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "transporters": {
                             "properties": {
                                 "organism": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "id": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "name": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "known_action": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "uniprot": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "source": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "general_function": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "actions": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "specific_function": {
-                                    "type": "string"
+                                    "type": "text"
                                     }
                                 }
                             },
                     "food_interactions": {
-                            "type": "string"
+                            "type": "text"
                             },
                     "inchi_key": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "synonyms": {
-                            "type": "string"
+                            "type": "text",
+                            'copy_to': ['all'],
                             },
                     "patents": {
                             "properties": {
                                 "country": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "approved": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "number": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "expires": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "pediatric-extension": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     }
                                 }
                             },
                     "pdrhealth": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "iupac": {
-                            "type": "string"
+                            "type": "text"
                             },
                     "pharmgkb": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "inchi": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "mixtures": {
                             "properties": {
                                 "name": {
-                                    "type": "string"
+                                    "type": "text",
+                                    'copy_to': ['all'],
                                     },
                                 "ingredients": {
-                                    "type": "string"
+                                    "type": "text"
                                     }
                                 }
                             },
                     "manufacturers": {
-                            "type": "string"
+                            "type": "text"
                             },
                     "iuphar": {
                             "type": "integer"
                             },
                     "smiles": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "pathways": {
                             "properties": {
                                 "enzymes": {
                                     "properties": {
                                         "uniprot-id": {
-                                            "analyzer": "string_lowercase",
-                                            "type": "string"
+                                            "normalizer": "keyword_lowercase_normalizer",
+                                            "type": "keyword",
                                             }
                                         }
                                     },
                                 "drugs": {
                                     "properties": {
                                         "drugbank-id": {
-                                            "analyzer": "string_lowercase",
-                                            "type": "string"
+                                            "normalizer": "keyword_lowercase_normalizer",
+                                            "type": "keyword",
                                             },
                                         "name": {
-                                            "type": "string"
+                                            "type": "text"
                                             }
                                         }
                                     },
                                 "smpdb_id": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "name": {
-                                    "type": "string"
+                                    "type": "text"
                                     }
                                 }
                             },
                     "international_brands": {
                             "properties": {
                                 "company": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "name": {
-                                    "type": "string"
+                                    "type": "text"
                                     }
                                 }
                             },
                     "bindingdb": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "dpd": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "predicted_properties": {
                             "properties": {
@@ -343,8 +345,8 @@ class DrugBankUploader(BaseDrugUploader):
                                     "type": "integer"
                                     },
                                 "smiles": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "h_bond_acceptor_count": {
                                     "type": "integer"
@@ -353,11 +355,11 @@ class DrugBankUploader(BaseDrugUploader):
                                     "type": "float"
                                     },
                                 "traditional_iupac_name": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "inchikey": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "h_bond_donor_count": {
                                     "type": "integer"
@@ -366,14 +368,14 @@ class DrugBankUploader(BaseDrugUploader):
                                     "type": "float"
                                     },
                                 "water_solubility": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "rotatable_bond_count": {
                                     "type": "integer"
                                     },
                                 "inchi": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "refractivity": {
                                     "type": "float"
@@ -406,7 +408,7 @@ class DrugBankUploader(BaseDrugUploader):
                                         "type": "float"
                                         },
                                 "iupac_name": {
-                                        "type": "string"
+                                        "type": "text"
                                         },
                                 "rule_of_five": {
                                         "type": "boolean"
@@ -415,68 +417,68 @@ class DrugBankUploader(BaseDrugUploader):
                                         "type": "boolean"
                                         },
                                 "molecular_formula": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         }
                                 }
                     },
                     "carriers": {
                             "properties": {
                                 "organism": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "id": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "name": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "known_action": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "uniprot": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "source": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "general_function": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "actions": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "specific_function": {
-                                    "type": "string"
+                                    "type": "text"
                                     }
                                 }
                             },
                     "categories": {
                             "properties": {
                                 "mesh-id": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "category": {
-                                    "type": "string"
+                                    "type": "text"
                                     }
                                 }
                             },
                     "name": {
-                            "type": "string"
+                            "type": "text"
                             },
                     "wikipedia": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "kegg_compound": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "weight": {
                             "properties": {
@@ -489,38 +491,39 @@ class DrugBankUploader(BaseDrugUploader):
                                 }
                             },
                     "chembl": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "drugbank_id": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            'copy_to': ['all'],
                             },
                     "taxonomy": {
                             "properties": {
                                 "subclass": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "superclass": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "class": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "substituent": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "description": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "alternative-parent": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "direct-parent": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "kingdom": {
-                                    "type": "string"
+                                    "type": "text"
                                     }
                                 }
                             },
@@ -533,169 +536,170 @@ class DrugBankUploader(BaseDrugUploader):
                                     "type": "boolean"
                                     },
                                 "route": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "fda_application_number": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "started_marketing_on": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "generic": {
                                     "type": "boolean"
                                     },
                                 "dosage_form": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "source": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "ended_marketing_on": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "country": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "strength": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "dpd": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "name": {
-                                    "type": "string"
+                                    "type": "text",
+                                    'copy_to': ['all'],
                                     },
                                 "ndc_product_code": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     }
                                 }
                             },
                     "food-interactions": {
-                            "type": "string"
+                            "type": "text"
                             },
                     "packagers": {
-                            "type": "string"
+                            "type": "text"
                             },
                     "therapeutic_targets_database": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "salts": {
-                            "type": "string"
+                            "type": "text"
                             },
                     "kegg_drug": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "accession_number": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "enzymes": {
                             "properties": {
                                 "organism": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "id": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "name": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "known_action": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "uniprot": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "source": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "general_function": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "actions": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "specific_function": {
-                                    "type": "string"
+                                    "type": "text"
                                     }
                                 }
                             },
                     "targets": {
                             "properties": {
                                 "organism": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "id": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "name": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "known_action": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "uniprot": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "source": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "general_function": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "actions": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "specific_function": {
-                                    "type": "string"
+                                    "type": "text"
                                     }
                                 }
                             },
                     "formula": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "chemspider": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "experimental_properties": {
                             "properties": {
                                 "water_solubility": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "logs": {
                                     "type": "float"
                                     },
                                 "boiling_point": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "caco2_permeability": {
                                     "type": "float"
                                     },
                                 "melting_point": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "pka": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "logp": {
                                     "type": "float"
@@ -705,32 +709,32 @@ class DrugBankUploader(BaseDrugUploader):
                     "drug_interactions": {
                             "properties": {
                                 "drugbank-id": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "description": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "name": {
-                                    "type": "string"
+                                    "type": "text"
                                     }
                                 }
                             },
                     "chebi": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "atc_codes": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "pdb": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                     "ahfs_codes": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             }
                     }
             }

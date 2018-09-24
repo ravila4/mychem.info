@@ -47,165 +47,168 @@ class PharmGkbUploader(BaseDrugUploader):
                 "pharmgkb": {
                     "properties": {
                         "id": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
+                            'copy_to': ['all'],
                             },
                         "dosing_guideline": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                         "inchi": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                         "name": {
-                            "type": "string"
+                            "type": "text",
+                            'copy_to': ['all'],
                             },
                         "smiles": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                         "generic_names": {
-                            "type": "string"
+                            "type": "text",
+                            'copy_to': ['all'],
                             },
                         "brand_mixtures": {
-                            "type": "string"
+                            "type": "text"
                             },
                         "trade_names": {
-                            "type": "string"
+                            "type": "text"
                             },
                         "type": {
-                            "type": "string"
+                            "type": "text"
                             },
                         "xref": {
                             "properties": {
                                 "web_resource": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "uniprotkb": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "pubchem": {
                                     "properties": {
                                         "sid": {
-                                            "analyzer": "string_lowercase",
-                                            "type": "string"
+                                            "normalizer": "keyword_lowercase_normalizer",
+                                            "type": "keyword",
                                             },
                                         "cid": {
-                                            "analyzer": "string_lowercase",
-                                            "type": "string"
+                                            "normalizer": "keyword_lowercase_normalizer",
+                                            "type": "keyword",
                                             }
                                         }
                                     },
                                 "het": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "wikipedia": {
                                     "properties": {
                                         "url_stub": {
-                                            "analyzer": "string_lowercase",
-                                            "type": "string"
+                                            "normalizer": "keyword_lowercase_normalizer",
+                                            "type": "keyword",
                                             }
                                         }
                                     },
                                 "iuphar_ligand": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "meddra": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "atc": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "kegg_compound": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "umls": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "clinicaltrials": {
                                         "properties": {
                                             "gov": {
-                                                "analyzer": "string_lowercase",
-                                                "type": "string"
+                                                "normalizer": "keyword_lowercase_normalizer",
+                                                "type": "keyword",
                                                 }
                                             }
                                         },
                                 "genbank": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "rxnorm": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "chebi": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "cas": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "ttd": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "kegg_drug": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "mesh": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "ndc": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "chemspider": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "hmdb": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "dailymed": {
                                         "properties": {
                                             "setid": {
-                                                "analyzer": "string_lowercase",
-                                                "type": "string"
+                                                "normalizer": "keyword_lowercase_normalizer",
+                                                "type": "keyword",
                                                 }
                                             }
                                         },
                                 "ndfrt": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "bindingdb": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "drugbank": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "pdb": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "dpd": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         }
                                 }
                         }

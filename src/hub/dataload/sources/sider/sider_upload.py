@@ -40,59 +40,59 @@ class SiderUploader(BaseDrugUploader):
     @classmethod
     def get_mapping(klass):
         mapping = {
-            "sider": {
-                "properties": {
-                    "stitch": {
-                        "properties": {
-                            "flat": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                "sider": {
+                    "properties": {
+                        "stitch": {
+                            "properties": {
+                                "flat": {
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
+                                    },
+                                "stereo": {
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
+                                    }
+                                }
                             },
-                            "stereo": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "indication": {
-                        "properties": {
-                            "method_of_detection": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                        "indication": {
+                            "properties": {
+                                "method_of_detection": {
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
+                                    },
+                                "name": {
+                                    "type": "text"
+                                    }
+                                }
                             },
-                            "name": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "meddra": {
-                        "properties": {
-                            "type": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                        "meddra": {
+                            "properties": {
+                                "type": {
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
+                                    },
+                                "umls_id": {
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
+                                    }
+                                }
                             },
-                            "umls_id": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "side_effect": {
-                        "properties": {
-                            "frequency": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
-                            },
-                            "placebo": {
-                                "type": "boolean"
-                            },
-                            "name": {
-                                "type": "string"
+                        "side_effect": {
+                            "properties": {
+                                "frequency": {
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
+                                    },
+                                "placebo": {
+                                    "type": "boolean"
+                                    },
+                                "name": {
+                                    "type": "text"
+                                    }
+                                }
                             }
                         }
                     }
-                }
-            }
         }
         return mapping
 
