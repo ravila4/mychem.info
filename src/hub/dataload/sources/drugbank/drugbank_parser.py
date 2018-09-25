@@ -5,7 +5,7 @@ import logging
 from biothings.utils.dataload import dict_sweep
 from biothings.utils.dataload import boolean_convert
 from biothings.utils.dataload import unlist
-# from .utils import fn_convert, to_int, to_float
+from .utils import fn_convert, to_int, to_float
 # from .utils import unlist
 
 
@@ -512,35 +512,36 @@ def restructure_dict(dictionary):
         "predicted_properties.bioavailability","predicted_properties.ghose_filter",
         "predicted_properties.rule_of_five","products.generic","products.otc",
         "products.approved","products.pediatric-extension"])
-    # # 'int' types
-    # restr_dict = fn_convert(restr_dict, to_int,
-    #                         ["drugbank.pharmacology.snp_adverse_drug_reactions.reaction.pubmed-id",
-    #                          "drugbank.pharmacology.snp_effects.effect.pubmed-id",
-    #                          "drugbank.predicted_properties.physiological_charge",
-    #                          "drugbank.predicted_properties.rotatable_bond_count",
-    #                          "drugbank.predicted_properties.h_bond_acceptor_count",
-    #                          "drugbank.predicted_properties.h_bond_donor_count",
-    #                          "drugbank.predicted_properties.number_of_rings",
-    #                          "drugbank.guide_to_pharmacology",
-    #                          "drugbank.iuphar"])
-    # # 'float' types
-    # restr_dict = fn_convert(restr_dict, to_float,
-    #                         ["drugbank.experimental_properties.caco2_permeability",
-    #                          "drugbank.experimental_properties.molecular_weight",
-    #                          "drugbank.experimental_properties.hydrophobicity",
-    #                          "drugbank.weight.monoisotopic",
-    #                          "drugbank.weight.average",
-    #                          "drugbank.predicted_properties.molecular_weight",
-    #                          "drugbank.predicted_properties.monoisotopic_weight"])
-    # # Mixed types coerced to floats
-    # restr_dict = fn_convert(restr_dict, to_float,
-    #                         ["drugbank.experimental_properties.logp",
-    #                          "drugbank.experimental_properties.logs",
-    #                          "drugbank.predicted_properties.logp",
-    #                          "drugbank.predicted_properties.logs",
-    #                          "drugbank.predicted_properties.pka_(strongest_basic)",
-    #                          "drugbank.predicted_properties.pka_(strongest_acidic)",
-    #                          "drugbank.predicted_properties.refractivity",
-    #                          "drugbank.predicted_properties.polarizability",
-    #                          "drugbank.predicted_properties.polar_surface_area_(psa)"])
+    # 'int' types
+    restr_dict = fn_convert(restr_dict, to_int,
+                            [
+                             # "drugbank.pharmacology.snp_adverse_drug_reactions.reaction.pubmed-id",
+                             # "drugbank.pharmacology.snp_effects.effect.pubmed-id",
+                             "drugbank.predicted_properties.physiological_charge",
+                             "drugbank.predicted_properties.rotatable_bond_count",
+                             "drugbank.predicted_properties.h_bond_acceptor_count",
+                             "drugbank.predicted_properties.h_bond_donor_count",
+                             "drugbank.predicted_properties.number_of_rings",
+                             "drugbank.guide_to_pharmacology",
+                             "drugbank.iuphar"])
+    # 'float' types
+    restr_dict = fn_convert(restr_dict, to_float,
+                            ["drugbank.experimental_properties.caco2_permeability",
+                             "drugbank.experimental_properties.molecular_weight",
+                             "drugbank.experimental_properties.hydrophobicity",
+                             "drugbank.weight.monoisotopic",
+                             "drugbank.weight.average",
+                             "drugbank.predicted_properties.molecular_weight",
+                             "drugbank.predicted_properties.monoisotopic_weight"])
+    # Mixed types coerced to floats
+    restr_dict = fn_convert(restr_dict, to_float,
+                            ["drugbank.experimental_properties.logp",
+                             "drugbank.experimental_properties.logs",
+                             "drugbank.predicted_properties.logp",
+                             "drugbank.predicted_properties.logs",
+                             "drugbank.predicted_properties.pka_(strongest_basic)",
+                             "drugbank.predicted_properties.pka_(strongest_acidic)",
+                             "drugbank.predicted_properties.refractivity",
+                             "drugbank.predicted_properties.polarizability",
+                             "drugbank.predicted_properties.polar_surface_area_(psa)"])
     return restr_dict
