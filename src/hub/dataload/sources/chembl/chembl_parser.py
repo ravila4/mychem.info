@@ -65,8 +65,12 @@ def restructure_dict(dictionary):
     del restr_dict['chembl']['cross_references']
     restr_dict = unlist(restr_dict)
     # Add "CHEBI:" prefix, standardize the way representing CHEBI IDs
-    if 'chebi_par_id' in restr_dict['chembl']:
+    if 'chebi_par_id' in restr_dict['chembl'] and restr_dict['chembl']['chebi_par_id']:
         restr_dict['chembl']['chebi_par_id'] = 'CHEBI:' + str(restr_dict['chembl']['chebi_par_id'])
+    else:
+        # clean, could be a None
+        restr_dict['chembl'].pop("chebi_par_id",None)
+
     restr_dict = dict_sweep(restr_dict, vals=[None,".", "-", "", "NA", "None","none", " ", "Not Available", "unknown","null"])
     restr_dict = value_convert_to_number(restr_dict, skipped_keys=["chebi_par_id","first_approval"])
     restr_dict = boolean_convert(restr_dict, ["topical","oral","parenteral","dosed_ingredient","polymer_flag",
