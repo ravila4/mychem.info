@@ -42,11 +42,11 @@ def find_inchi_key(doc, pubchem_col):
         return _id
     assert _id.startswith('CID')
     assert len(_id) == 12
-    pubchem_id = 'CID' + str(int(_id[4:]))
+    pubchem_id = str(int(_id[4:]))
     d = pubchem_col.find_one({'pubchem.cid':pubchem_id})
     if d:
         _id = d['pubchem']['inchi_key']
     else:
-        _id = pubchem_id
+        _id = 'CID' + pubchem_id
     return _id
 
