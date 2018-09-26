@@ -134,7 +134,7 @@ def restructure_dict(dictionary):
                         d["tautomers_count"] = y
 
     restr_dict = {}
-    restr_dict['_id'] = d["cid"]
+    restr_dict['_id'] = str(d["cid"])
     restr_dict["pubchem"] = d
     restr_dict = value_convert_to_number(restr_dict)
     return restr_dict
