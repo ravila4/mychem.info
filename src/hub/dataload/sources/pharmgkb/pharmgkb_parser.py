@@ -158,7 +158,7 @@ def find_inchi_key(doc, drugbank_col, pubchem_col, chembl_col, chebi_col):
                             # on something you're going to build...). Also, what's the point of
                             # searching chebi.chebi_id in a merged collection, why not just chebi col ???
                             #_d = db.merged_coll.find_one({'chebi.chebi_id':d['_id']})
-                            _id = d["chebi"]["chebi_id"]
+                            _id = d["chebi"]["id"]
                 else:
                     _id = doc['_id']
 
