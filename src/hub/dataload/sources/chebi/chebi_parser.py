@@ -79,7 +79,7 @@ def restructure_dict(dictionary):
     restr_dict['chebi'] = clean_up(restr_dict['chebi'])
     restr_dict = dict_sweep(restr_dict,vals=[None,".", "-", "", "NA", "none", " ", "Not Available",
         "unknown","null","None","NaN"])
-    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=[
+    restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["cid","sid",
         "beilstein","pubmed","sabio_rk","gmelin","molbase", "synonyms", "wikipedia","url_stub"])
     return restr_dict
 
