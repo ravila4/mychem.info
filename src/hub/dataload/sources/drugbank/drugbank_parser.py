@@ -5,8 +5,7 @@ import logging
 from biothings.utils.dataload import dict_sweep
 from biothings.utils.dataload import boolean_convert
 from biothings.utils.dataload import unlist
-from .utils import fn_convert, to_int, to_float
-# from .utils import unlist
+from vconvert import float_convert, int_convert
 
 
 def load_data(xml_file):
@@ -506,42 +505,44 @@ def restructure_dict(dictionary):
     # TODO:  use a targeted approach for unlist
     restr_dict = unlist(restr_dict)
     # restr_dict = unlist(restr_dict, ["drugbank.accession_number"])
-    restr_dict = dict_sweep(restr_dict,vals=[None,math.inf,"INF",".", "-", "", "NA", "none", " ",
-        "Not Available", "unknown","null","None"])
     restr_dict = boolean_convert(restr_dict,["predicted_properties.mddr_like_rule",
         "predicted_properties.bioavailability","predicted_properties.ghose_filter",
         "predicted_properties.rule_of_five","products.generic","products.otc",
         "products.approved","products.pediatric-extension"])
     # 'int' types
-    restr_dict = fn_convert(restr_dict, to_int,
-                            [
-                             # "drugbank.pharmacology.snp_adverse_drug_reactions.reaction.pubmed-id",
-                             # "drugbank.pharmacology.snp_effects.effect.pubmed-id",
-                             "drugbank.predicted_properties.physiological_charge",
-                             "drugbank.predicted_properties.rotatable_bond_count",
-                             "drugbank.predicted_properties.h_bond_acceptor_count",
-                             "drugbank.predicted_properties.h_bond_donor_count",
-                             "drugbank.predicted_properties.number_of_rings",
-                             "drugbank.guide_to_pharmacology",
-                             "drugbank.iuphar"])
+    restr_dict = int_convert(restr_dict,
+                             include_keys=[
+                                 # "drugbank.pharmacology.snp_adverse_drug_reactions.reaction.pubmed-id",
+                                 # "drugbank.pharmacology.snp_effects.effect.pubmed-id",
+                                 "drugbank.predicted_properties.physiological_charge",
+                                 "drugbank.predicted_properties.rotatable_bond_count",
+                                 "drugbank.predicted_properties.h_bond_acceptor_count",
+                                 "drugbank.predicted_properties.h_bond_donor_count",
+                                 "drugbank.predicted_properties.number_of_rings",
+                                 "drugbank.guide_to_pharmacology", # returns NoneType
+                                 "drugbank.iuphar"]) # returns NoneType
     # 'float' types
-    restr_dict = fn_convert(restr_dict, to_float,
-                            ["drugbank.experimental_properties.caco2_permeability",
-                             "drugbank.experimental_properties.molecular_weight",
-                             "drugbank.experimental_properties.hydrophobicity",
-                             "drugbank.weight.monoisotopic",
-                             "drugbank.weight.average",
-                             "drugbank.predicted_properties.molecular_weight",
-                             "drugbank.predicted_properties.monoisotopic_weight"])
+    restr_dict = float_convert(restr_dict,
+                               include_keys=[
+                                   "drugbank.experimental_properties.caco2_permeability",
+                                   "drugbank.experimental_properties.molecular_weight",
+                                   "drugbank.experimental_properties.hydrophobicity",
+                                   "drugbank.weight.monoisotopic",
+                                   "drugbank.weight.average",
+                                   "drugbank.predicted_properties.molecular_weight",
+                                   "drugbank.predicted_properties.monoisotopic_weight"])
     # Mixed types coerced to floats
-    restr_dict = fn_convert(restr_dict, to_float,
-                            ["drugbank.experimental_properties.logp",
-                             "drugbank.experimental_properties.logs",
-                             "drugbank.predicted_properties.logp",
-                             "drugbank.predicted_properties.logs",
-                             "drugbank.predicted_properties.pka_(strongest_basic)",
-                             "drugbank.predicted_properties.pka_(strongest_acidic)",
-                             "drugbank.predicted_properties.refractivity",
-                             "drugbank.predicted_properties.polarizability",
-                             "drugbank.predicted_properties.polar_surface_area_(psa)"])
+    restr_dict = float_convert(restr_dict,
+                               include_keys=[
+                                   "drugbank.experimental_properties.logp",
+                                   "drugbank.experimental_properties.logs",
+                                   "drugbank.predicted_properties.logp",
+                                   "drugbank.predicted_properties.logs",
+                                   "drugbank.predicted_properties.pka_(strongest_basic)",
+                                   "drugbank.predicted_properties.pka_(strongest_acidic)",
+                                   "drugbank.predicted_properties.refractivity",
+                                   "drugbank.predicted_properties.polarizability",
+                                   "drugbank.predicted_properties.polar_surface_area_(psa)"])
+    restr_dict = dict_sweep(restr_dict,vals=[None,math.inf,"INF",".", "-", "", "NA", "none", " ",
+        "Not Available", "unknown","null","None"])
     return restr_dict
