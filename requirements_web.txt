@@ -17,3 +17,7 @@ httplib2>=0.8
 
 # for API-API querying
 requests
+
+# for biothings dependencies that aren't installed by biothings
+pytz
+gitpython
