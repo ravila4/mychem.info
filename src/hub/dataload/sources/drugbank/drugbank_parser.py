@@ -512,15 +512,15 @@ def restructure_dict(dictionary):
     # 'int' types
     restr_dict = int_convert(restr_dict,
                              include_keys=[
-                                 # "drugbank.pharmacology.snp_adverse_drug_reactions.reaction.pubmed-id",
-                                 # "drugbank.pharmacology.snp_effects.effect.pubmed-id",
+                                 "drugbank.pharmacology.snp_adverse_drug_reactions.reaction.pubmed-id",
+                                 "drugbank.pharmacology.snp_effects.effect.pubmed-id",
                                  "drugbank.predicted_properties.physiological_charge",
                                  "drugbank.predicted_properties.rotatable_bond_count",
                                  "drugbank.predicted_properties.h_bond_acceptor_count",
                                  "drugbank.predicted_properties.h_bond_donor_count",
                                  "drugbank.predicted_properties.number_of_rings",
-                                 "drugbank.guide_to_pharmacology", # returns NoneType
-                                 "drugbank.iuphar"]) # returns NoneType
+                                 "drugbank.xref.guide_to_pharmacology",
+                                 "drugbank.xref.iuphar"])
     # 'float' types
     restr_dict = float_convert(restr_dict,
                                include_keys=[
