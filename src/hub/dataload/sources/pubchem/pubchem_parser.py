@@ -136,6 +136,6 @@ def restructure_dict(dictionary):
     restr_dict = {}
     restr_dict['_id'] = str(d["cid"])
     restr_dict["pubchem"] = d
-    restr_dict = value_convert_to_number(restr_dict)
+    restr_dict = value_convert_to_number(restr_dict,skipped_keys=["_id"])
     return restr_dict
 
