@@ -281,7 +281,7 @@ def restructure_dict(dictionary):
                         str1 = y[i]+'_sequences'
                         d1[str1] = y['#text'].replace('\n',' ')
 
-        elif key == 'expe-properties' and value:
+        elif key == 'experimental-properties' and value:
             d1_exp_properties = {}
             def restr_properties_dict(dictionary):
                 for x,y in iter(dictionary.items()):
