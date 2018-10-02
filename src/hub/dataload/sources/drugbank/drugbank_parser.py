@@ -5,7 +5,7 @@ import logging
 from biothings.utils.dataload import dict_sweep
 from biothings.utils.dataload import boolean_convert
 from biothings.utils.dataload import unlist
-from vconvert import float_convert, int_convert
+from vconvert import float_convert, int_convert, unlist
 
 
 def load_data(xml_file):
@@ -502,9 +502,7 @@ def restructure_dict(dictionary):
         xref_dict['pubchem'] = xref_pubchem_dict
     d1['xref'] = xref_dict
     restr_dict['drugbank'] = d1
-    # TODO:  use a targeted approach for unlist
-    restr_dict = unlist(restr_dict)
-    # restr_dict = unlist(restr_dict, ["drugbank.accession_number"])
+    restr_dict = unlist(restr_dict, ["drugbank.accession_number"], [])
     restr_dict = boolean_convert(restr_dict,["predicted_properties.mddr_like_rule",
         "predicted_properties.bioavailability","predicted_properties.ghose_filter",
         "predicted_properties.rule_of_five","products.generic","products.otc",
