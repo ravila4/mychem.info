@@ -53,6 +53,7 @@ def restructure_dict(dictionary):
     restr_dict = dict()
     d1 = dict()
     pred_properties_dict = {}
+    exp_prop_dict = {}
     products_list = []
     categories_list = []
     enzymes_list = []
@@ -282,15 +283,17 @@ def restructure_dict(dictionary):
                         d1[str1] = y['#text'].replace('\n',' ')
 
         elif key == 'experimental-properties' and value:
-            d1_exp_properties = {}
+            key = 'exp_prop'
+
             def restr_properties_dict(dictionary):
+                # Note: the side effect of this function sets a global variable
                 for x,y in iter(dictionary.items()):
                     k1 = dictionary['kind']
                     k1 = k1.lower().replace(' ','_').replace('-','_')
                     if k1 == "isoelectric_point":
                         # make sure value are floats, if intervals, then list(float)
                         try:
-                            d1_exp_properties[k1] = float(dictionary['value'])
+                            exp_prop_dict[k1] = float(dictionary['value'])
                         except ValueError:
                             # not a float, maybe a range ? "5.6 - 7.6"
                             vals = dictionary['value'].split("-")
@@ -299,26 +302,25 @@ def restructure_dict(dictionary):
                                     vals[i] = float(val)
                                 logging.info("Document ID '%s' has a range " % restr_dict["_id"] + \
                                              "as isoelectric_point: %s" % vals)
-                                d1_exp_properties[k1] = vals
+                                exp_prop_dict[k1] = vals
                             except ValueError as e:
                                 # not something we can handle, skip it
                                 logging.warning("Document ID '%s' has non-convertible " % restr_dict["_id"] + \
                                                 " value for isoelectric_point, field ignored: %s" % dictionary['value'])
                                 continue
                     else:
-                        d1_exp_properties[k1] = dictionary['value']
-                return d1_exp_properties
+                        exp_prop_dict[k1] = dictionary['value']
 
             for ele in value:
-                key = key.replace('-','_')
                 if isinstance(value[ele],list):
                     for _d in value[ele]:
-                        _d = restr_properties_dict(_d)
-                        d1.update({key:_d})
+                        restr_properties_dict(_d)
 
-                if isinstance(value[ele],dict) or isinstance(value[ele],collections.OrderedDict):
-                    _d = restr_properties_dict(value[ele])
-                    d1.update({key:_d})
+                elif isinstance(value[ele],dict) or isinstance(value[ele],collections.OrderedDict):
+                    restr_properties_dict(value[ele])
+
+                else:
+                    raise ValueError("Unexpted type for 'experimental-properties'")
 
         elif key == 'calculated-properties' and value:
             def restr_properties_dict(dictionary):
@@ -497,6 +499,7 @@ def restructure_dict(dictionary):
     d1['enzymes'] = enzymes_list
     d1['transporters'] = transporters_list
     d1['predicted_properties'] = pred_properties_dict
+    d1['exp_prop'] = exp_prop_dict
     d1['products'] = products_list
     if xref_pubchem_dict:
         xref_dict['pubchem'] = xref_pubchem_dict
@@ -522,9 +525,9 @@ def restructure_dict(dictionary):
     # 'float' types
     restr_dict = float_convert(restr_dict,
                                include_keys=[
-                                   "drugbank.experimental_properties.caco2_permeability",
-                                   "drugbank.experimental_properties.molecular_weight",
-                                   "drugbank.experimental_properties.hydrophobicity",
+                                   "drugbank.exp_prop.caco2_permeability",
+                                   "drugbank.exp_prop.molecular_weight",
+                                   "drugbank.exp_prop.hydrophobicity",
                                    "drugbank.weight.monoisotopic",
                                    "drugbank.weight.average",
                                    "drugbank.predicted_properties.molecular_weight",
@@ -532,8 +535,8 @@ def restructure_dict(dictionary):
     # Mixed types coerced to floats
     restr_dict = float_convert(restr_dict,
                                include_keys=[
-                                   "drugbank.experimental_properties.logp",
-                                   "drugbank.experimental_properties.logs",
+                                   "drugbank.exp_prop.logp",
+                                   "drugbank.exp_prop.logs",
                                    "drugbank.predicted_properties.logp",
                                    "drugbank.predicted_properties.logs",
                                    "drugbank.predicted_properties.pka_(strongest_basic)",
