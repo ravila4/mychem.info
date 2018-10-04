@@ -62,9 +62,6 @@ class SiderUploader(BaseDrugUploader):
     def load_data(self,data_folder):
         input_file = os.path.join(data_folder,"merged_freq_all_se_indications.tsv")
         self.logger.info("Load data from file '%s'" % input_file)
-        pubchem_col = get_src_db()["pubchem"]
-        assert pubchem_col.count() > 0, "'pubchem' collection is empty (required for inchikey " + \
-                "conversion). Please run 'pubchem' uploader first"
         return self.keylookup(load_data)(input_file)
 
     @classmethod
