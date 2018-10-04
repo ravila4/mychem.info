@@ -14,6 +14,7 @@ graph_mychem.add_node('pubchem')
 graph_mychem.add_node('rxnorm')
 graph_mychem.add_node('unii')
 graph_mychem.add_node('inchikey')
+graph_mychem.add_node('pharmgkb')
 
 graph_mychem.add_edge('inchi', 'drugbank',
                       object=MongoDBEdge('drugbank', 'drugbank.inchi', 'drugbank.drugbank_id', weight=0.1))
@@ -33,11 +34,16 @@ graph_mychem.add_edge('drugbank', 'inchikey',
 graph_mychem.add_edge('pubchem', 'inchikey',
                       object=MongoDBEdge('pubchem', 'pubchem.cid', 'pubchem.inchi_key', weight=0.1))
 
+graph_mychem.add_edge('drugbank', 'drugbank',
+                      object=MongoDBEdge('drugbank', 'drugbank.drugbank_id', 'drugbank.drugbank_id'))
+
+graph_mychem.add_edge('pharmgkb', 'drugbank',
+                      object=MongoDBEdge('pharmgkb', 'pharmgkb.id', 'pharmgkb.xref.drugbank', weight=0.1))
+
 ###############################################################################
 # Sider Nodes and Edges
 ###############################################################################
 # pubchem -> inchikey
-# specified in pharmgkb
 graph_mychem.add_edge('sider', 'inchikey',
                       object=MongoDBEdge('pubchem', 'pubchem.cid', 'pubchem.inchi_key'))
 
@@ -57,16 +63,16 @@ graph_mychem.add_edge('ndc', 'inchikey',
 # chebi -> drugbank -> inchikey
 # chebi -> chembl -> inchikey
 graph_mychem.add_node('chebi')
-graph_mychem.add_node('chebi-short')
+#graph_mychem.add_node('chebi-short')
 
-graph_mychem.add_edge('chebi', 'chebi-short',
-                      object=RegExEdge('^CHEBI:', ''))
-graph_mychem.add_edge('chebi-short', 'chebi',
-                      object=RegExEdge('^', 'CHEBI:'))
-graph_mychem.add_edge('chebi-short', 'drugbank',
-                      object=MongoDBEdge('drugbank', 'drugbank.chebi', 'drugbank.drugbank_id'))
-graph_mychem.add_edge('chebi-short', 'chembl',
-                      object=MongoDBEdge('chembl', 'chembl.chebi_par_id', 'chembl.molecule_chembl_id'))
+#graph_mychem.add_edge('chebi', 'chebi-short',
+#                      object=RegExEdge('^CHEBI:', ''))
+#graph_mychem.add_edge('chebi-short', 'chebi',
+#                      object=RegExEdge('^', 'CHEBI:'))
+#graph_mychem.add_edge('chebi-short', 'drugbank',
+#                      object=MongoDBEdge('drugbank', 'drugbank.chebi', 'drugbank.drugbank_id'))
+#graph_mychem.add_edge('chebi-short', 'chembl',
+#                      object=MongoDBEdge('chembl', 'chembl.chebi_par_id', 'chembl.molecule_chembl_id'))
 
 
 class MyChemKeyLookup(DataTransformMDB):
