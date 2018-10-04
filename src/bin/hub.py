@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
-import asyncio, asyncssh, sys
+import asyncio, asyncssh, sys, os
 import concurrent.futures
 from functools import partial
 from collections import OrderedDict
 
 import config, biothings
+from biothings.utils.version import set_versions                                                                                                                                                     
+app_folder,_src = os.path.split(os.path.split(os.path.split(os.path.abspath(__file__))[0])[0])
+set_versions(config,app_folder)
 biothings.config_for_app(config)
 
 import logging
@@ -28,8 +31,7 @@ job_manager = JobManager(loop,num_workers=config.HUB_MAX_WORKERS,
         max_memory_usage=config.HUB_MAX_MEM_USAGE)
 
 import hub.dataload
-from biothings.utils.hub import schedule, pending, done, start_server, \
-                                HubShell
+from biothings.utils.hub import schedule, pending, done, start_server, HubShell
 import biothings.hub.dataload.uploader as uploader
 import biothings.hub.dataload.dumper as dumper
 import biothings.hub.dataload.source as source
@@ -83,6 +85,7 @@ COMMANDS["upload_all"] = upload_manager.upload_all
 # building/merging
 COMMANDS["whatsnew"] = partial(build_manager.whatsnew,"drug")
 COMMANDS["lsmerge"] = build_manager.list_merge
+COMMANDS["rmmerge"] = build_manager.delete_merge
 COMMANDS["merge"] = partial(build_manager.merge,"drug")
 COMMANDS["merge_demo"] = partial(build_manager.merge,"demo_drug")
 COMMANDS["es_sync_test"] = partial(syncer_manager_test.sync,"es",

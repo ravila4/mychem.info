@@ -45,38 +45,39 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                         "biotherapeutic": {
                             "properties": {
                                 "helm_notation": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "description": {
-                                    "type": "string"
+                                    "type": "text"
                                     },
                                 "biocomponents": {
                                     "properties": {
                                         "organism": {
-                                            "type": "string"
+                                            "type": "text"
                                             },
                                         "tax_id": {
                                             "type": "integer"
                                             },
                                         "sequence": {
-                                            "type": "string"
+                                            "type": "text"
                                             },
                                         "component_id": {
                                             "type": "integer"
                                             },
                                         "description": {
-                                            "type": "string"
+                                            "type": "text"
                                             },
                                         "component_type": {
-                                            "analyzer": "string_lowercase",
-                                            "type": "string"
+                                            "normalizer": "keyword_lowercase_normalizer",
+                                            "type": "keyword",
                                             }
                                         }
                                     },
                                 "molecule_chembl_id": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
+                                    'copy_to': ['all'],
                                     }
                                 }
                             },
@@ -84,11 +85,11 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                             "type": "boolean"
                             },
                         "usan_stem": {
-                            "type": "string"
+                            "type": "text"
                             },
                         "molecule_chembl_id": {
-                            "analyzer": "string_lowercase",
-                            "type": "string"
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                         "molecule_properties": {
                             "properties": {
@@ -105,8 +106,8 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                                     "type": "integer"
                                     },
                                 "molecular_species": {
-                                    "analyzer": "string_lowercase",
-                                    "type": "string"
+                                    "normalizer": "keyword_lowercase_normalizer",
+                                    "type": "keyword",
                                     },
                                 "qed_weighted": {
                                     "type": "float"
@@ -142,8 +143,8 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                                     "type": "float"
                                     },
                                 "full_molformula": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                 "aromatic_rings": {
                                         "type": "integer"
@@ -163,8 +164,8 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                                 }
                         },
                         "helm_notation": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
                                 },
                         "max_phase": {
                                 "type": "integer"
@@ -173,27 +174,27 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                                 "type": "integer"
                                 },
                         "usan_stem_definition": {
-                                "type": "string"
+                                "type": "text"
                                 },
                         "dosed_ingredient": {
                                 "type": "boolean"
                                 },
                         "chebi_par_id": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
                                 },
                         "withdrawn_reason": {
-                                "type": "string"
+                                "type": "text"
                                 },
                         "molecule_hierarchy": {
                                 "properties": {
                                     "parent_chembl_id": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         },
                                     "molecule_chembl_id": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         }
                                     }
                                 },
@@ -218,41 +219,41 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                         "molecule_synonyms": {
                                 "properties": {
                                     "molecule_synonym": {
-                                        "type": "string"
+                                        "type": "text"
                                         },
                                     "synonyms": {
-                                        "type": "string"
+                                        "type": "text"
                                         },
                                     "syn_type": {
-                                        "analyzer": "string_lowercase",
-                                        "type": "string"
+                                        "normalizer": "keyword_lowercase_normalizer",
+                                        "type": "keyword",
                                         }
                                     }
                                 },
                         "atc_classifications": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
                                 },
                         "molecule_type": {
-                                "type": "string"
+                                "type": "text"
                                 },
                         "first_in_class": {
                                 "type": "integer"
                                 },
                         "inchi": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
                                 },
                         "structure_type": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
                                 },
                         "withdrawn_class": {
-                                "type": "string"
+                                "type": "text"
                                 },
                         "inchi_key": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
                                 },
                         "topical": {
                                 "type": "boolean"
@@ -268,7 +269,7 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                                                 "type": "integer"
                                                 },
                                             "name": {
-                                                "type": "string"
+                                                "type": "text"
                                                 }
                                             }
                                         },
@@ -278,22 +279,22 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                                                 "type": "integer"
                                                 },
                                             "name": {
-                                                "type": "string"
+                                                "type": "text"
                                                 }
                                             }
                                         },
                                     "wikipedia": {
                                         "properties": {
                                             "url_stub": {
-                                                "analyzer": "string_lowercase",
-                                                "type": "string"
+                                                "normalizer": "keyword_lowercase_normalizer",
+                                                "type": "keyword",
                                                 }
                                             }
                                         },
                                     "dailymed": {
                                         "properties": {
                                             "name": {
-                                                "type": "string"
+                                                "type": "text"
                                                 }
                                             }
                                         },
@@ -310,13 +311,13 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                                 "type": "integer"
                                 },
                         "usan_substem": {
-                                "type": "string"
+                                "type": "text"
                                 },
                         "indication_class": {
-                                "type": "string"
+                                "type": "text"
                                 },
                         "withdrawn_country": {
-                                "type": "string"
+                                "type": "text"
                                 },
                         "withdrawn_year": {
                                 "type": "integer"
@@ -325,14 +326,14 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                                 "type": "integer"
                                 },
                         "smiles": {
-                                "analyzer": "string_lowercase",
-                                "type": "string"
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword",
                                 },
                         "natural_product": {
                                 "type": "integer"
                                 },
                         "pref_name": {
-                                "type": "string"
+                                "type": "text"
                                 },
                         "first_approval": {
                                 "type": "integer"

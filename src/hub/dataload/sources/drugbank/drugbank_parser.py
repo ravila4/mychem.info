@@ -8,6 +8,7 @@ from biothings.utils.dataload import unlist
 from vconvert import float_convert, int_convert, unlist
 
 
+
 def load_data(xml_file):
     drug_list = []
     def handle(path,item):  #streaming mode of xmltodict
@@ -16,9 +17,9 @@ def load_data(xml_file):
         try:
             _id = doc["drugbank"]['inchi_key']
             doc["_id"] = _id
-            drug_list.append(doc)
         except KeyError:
             pass
+        drug_list.append(doc)
         return True
     with open(xml_file,'rb') as f:
         xmltodict.parse(f,item_depth=2,item_callback=handle,xml_attribs=True)
