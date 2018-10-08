@@ -34,11 +34,12 @@ graph_mychem.add_edge('drugbank', 'inchikey',
 graph_mychem.add_edge('pubchem', 'inchikey',
                       object=MongoDBEdge('pubchem', 'pubchem.cid', 'pubchem.inchi_key', weight=0.1))
 
-graph_mychem.add_edge('drugbank', 'drugbank',
-                      object=MongoDBEdge('drugbank', 'drugbank.drugbank_id', 'drugbank.drugbank_id'))
-
 graph_mychem.add_edge('pharmgkb', 'drugbank',
                       object=MongoDBEdge('pharmgkb', 'pharmgkb.id', 'pharmgkb.xref.drugbank', weight=0.1))
+
+# self-loops to check looked-up values exist in official collection
+graph_mychem.add_edge('drugbank', 'drugbank',
+                      object=MongoDBEdge('drugbank', 'drugbank.drugbank_id', 'drugbank.drugbank_id'))
 
 ###############################################################################
 # Sider Nodes and Edges
