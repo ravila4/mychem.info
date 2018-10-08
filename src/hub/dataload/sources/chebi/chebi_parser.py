@@ -1,8 +1,7 @@
 from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
 
 
-def load_data(sdf_file, drugbank_col=None, chembl_col=None):
-    import biothings.utils.mongo as mongo
+def load_data(sdf_file):# drugbank_col=None, chembl_col=None):
     f = open(sdf_file,'r').read()
     comp_list = f.split("$$$$") #split the compounds and list
     comp_list = [ele.split("\n> <") for ele in comp_list] #split from \n> <
@@ -16,7 +15,7 @@ def load_data(sdf_file, drugbank_col=None, chembl_col=None):
     del comp_list[-1]
     for compound in comp_list:
         restr_dict = restructure_dict(compound)
-        restr_dict["_id"] = find_inchikey(restr_dict,drugbank_col,chembl_col)
+        #restr_dict["_id"] = find_inchikey(restr_dict,drugbank_col,chembl_col)
         yield restr_dict
 
 def clean_up(_dict):
