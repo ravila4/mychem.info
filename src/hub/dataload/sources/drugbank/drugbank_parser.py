@@ -6,6 +6,13 @@ from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
 from biothings.utils.dataload import boolean_convert
 
 
+########################################
+# Mock functions - to be defined later
+########################################
+def exclude_fields(doc, field_lst):
+    return doc
+# mock - end section
+
 def load_data(xml_file):
     drug_list = []
     def handle(path,item):  #streaming mode of xmltodict
@@ -512,5 +519,9 @@ def restructure_dict(dictionary):
             skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance","bindingdb",
                           "pka","boiling_point","melting_point","water_solubility","number","half_life",
                           "pdb","name"])
+    restr_dict = exclude_fields(restr_dict, [
+        "drugbank.drug_interactions",
+        "drugbank.products",
+        "drugbank.mixtures"
+    ])
     return restr_dict
-

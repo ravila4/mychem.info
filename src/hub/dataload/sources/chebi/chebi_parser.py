@@ -1,6 +1,13 @@
 from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
 
 
+########################################
+# Mock functions - to be defined later
+########################################
+def exclude_fields(doc, field_lst):
+    return doc
+# mock - end section
+
 def load_data(sdf_file, drugbank_col=None, chembl_col=None):
     import biothings.utils.mongo as mongo
     f = open(sdf_file,'r').read()
@@ -81,6 +88,14 @@ def restructure_dict(dictionary):
         "unknown","null","None","NaN"])
     restr_dict = value_convert_to_number(unlist(restr_dict),skipped_keys=["cid","sid",
         "beilstein","pubmed","sabio_rk","gmelin","molbase", "synonyms", "wikipedia","url_stub"])
+    restr_dict = exclude_fields(restr_dict, [
+        "chebi.intenz_database_links",
+        "chebi.rhea_database_links",
+        "chebi.uniprot_database_links",
+        "chebi.sabio_rk_database_links",
+        "chebi.patent_database_links",
+        "chebi.reactome_database_links"
+    ])
     return restr_dict
 
 def find_inchikey(doc, drugbank_col, chembl_col):
