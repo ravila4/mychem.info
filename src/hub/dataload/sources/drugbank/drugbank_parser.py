@@ -8,6 +8,11 @@ from biothings.utils.dataload import unlist
 from vconvert import float_convert, int_convert, unlist
 
 
+def my_debug(d):
+    if 'synonyms' in d['drugbank'].keys():
+        for s in d['drugbank']['synonyms']:
+            if not isinstance(s, str):
+                print(d['_id'])
 
 def load_data(xml_file):
     drug_list = []
@@ -24,6 +29,7 @@ def load_data(xml_file):
     with open(xml_file,'rb') as f:
         xmltodict.parse(f,item_depth=2,item_callback=handle,xml_attribs=True)
     for doc in drug_list:
+        my_debug(doc)
         yield doc
 
 def restr_protein_dict(dictionary):
@@ -39,15 +45,17 @@ def restr_protein_dict(dictionary):
             x = x.replace('-','_')
             _dict.update({x:dictionary['known-action']})
         elif x == 'polypeptide':
+            polypeptide_dict = {}
             _li2 = ['general-function','specific-function']
             for i in y:
                 if i ==  "@id":
-                    _dict.update({'uniprot':y[i]})
+                    polypeptide_dict.update({'uniprot':y[i]})
                 elif i == "@source":
-                    _dict.update({'source':y[i]})
+                    polypeptide_dict.update({'source':y[i]})
                 elif i in _li2:
                     j = i.replace('-','_')
-                    _dict.update({j:y[i]})
+                    polypeptide_dict.update({j:y[i]})
+            _dict['polypeptide'] = polypeptide_dict
     return _dict
 
 def restructure_dict(dictionary):
@@ -392,7 +400,7 @@ def restructure_dict(dictionary):
                     for x in ele:
                         try:
                             resource = ele['resource']
-                            d1[resource.lower().replace('.','_')] = ele['url']
+                            xref_dict[resource.lower().replace('.','_')] = ele['url']
                         except:
                             pass
             else:
