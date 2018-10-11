@@ -12,7 +12,6 @@ biothings.config_for_app(config)
 
 def exclude_fields(doc, field_lst):
     if doc['_id'] in config.EXCLUSION_IDS:
-        print("Excluding:  {}".format(doc['_id']))
         for field in field_lst:
             remove_key(doc, field)
     return doc
