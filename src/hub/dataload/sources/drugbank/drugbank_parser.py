@@ -4,14 +4,18 @@ import collections
 import logging
 from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
 from biothings.utils.dataload import boolean_convert
+from vconvert import remove_key
+
+import biothings, config
+biothings.config_for_app(config)
 
 
-########################################
-# Mock functions - to be defined later
-########################################
 def exclude_fields(doc, field_lst):
+    if doc['_id'] in config.EXCLUSION_IDS:
+        print("Excluding:  {}".format(doc['_id']))
+        for field in field_lst:
+            remove_key(doc, field)
     return doc
-# mock - end section
 
 def load_data(xml_file):
     drug_list = []
@@ -23,6 +27,11 @@ def load_data(xml_file):
             doc["_id"] = _id
         except KeyError:
             pass
+        doc = exclude_fields(doc, [
+            "drugbank.drug_interactions",
+            "drugbank.products",
+            "drugbank.mixtures"
+        ])
         drug_list.append(doc)
         return True
     with open(xml_file,'rb') as f:
@@ -519,9 +528,4 @@ def restructure_dict(dictionary):
             skipped_keys=["dpd","chemspider","chebi","pubchem_compound","pubchem_substance","bindingdb",
                           "pka","boiling_point","melting_point","water_solubility","number","half_life",
                           "pdb","name"])
-    restr_dict = exclude_fields(restr_dict, [
-        "drugbank.drug_interactions",
-        "drugbank.products",
-        "drugbank.mixtures"
-    ])
     return restr_dict
