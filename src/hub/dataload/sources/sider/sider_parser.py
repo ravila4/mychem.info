@@ -2,6 +2,18 @@ import pandas as pd
 import csv
 
 from biothings.utils.dataload import dict_sweep, value_convert_to_number
+from vconvert import remove_key
+
+import biothings, config
+biothings.config_for_app(config)
+
+
+def exclude_fields(doc, field_lst):
+    if doc['_id'] in config.EXCLUSION_IDS:
+        print("Excluding:  {}".format(doc['_id']))
+        for field in field_lst:
+            remove_key(doc, field)
+    return doc
 
 def load_data(_file, pubchem_col=None):
     _dict = {}
@@ -25,6 +37,7 @@ def load_data(_file, pubchem_col=None):
             _d = restr_dict(_dict,row)
             _dict['sider'].append(_d)
     _dict["_id"] = find_inchi_key(_dict, pubchem_col)
+    _dict = exclude_fields(_dict, ["sider"])
     yield _dict
 
 def restr_dict(_dict,row):
