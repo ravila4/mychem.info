@@ -1,4 +1,4 @@
-from vconvert import remove_key
+from dotstring import remove_key
 
 import biothings, config
 biothings.config_for_app(config)
