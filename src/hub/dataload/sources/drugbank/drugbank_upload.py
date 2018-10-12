@@ -6,6 +6,7 @@ from .drugbank_parser import load_data
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.common import unzipall
+from mychem_utils import ExcludeFieldsById
 
 
 SRC_META = {
@@ -22,6 +23,11 @@ class DrugBankUploader(BaseDrugUploader):
     storage_class = storage.IgnoreDuplicatedStorage
     __metadata__ = {"src_meta" : SRC_META}
 
+    @ExcludeFieldsById([
+        "drugbank.drug_interactions",
+        "drugbank.products",
+        "drugbank.mixtures"
+    ])
     def load_data(self,data_folder):
         xmlfiles = glob.glob(os.path.join(data_folder,"*.xml"))
         if not xmlfiles:

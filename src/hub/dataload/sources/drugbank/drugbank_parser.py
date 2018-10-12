@@ -4,17 +4,7 @@ import collections
 import logging
 from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
 from biothings.utils.dataload import boolean_convert
-from vconvert import remove_key
 
-import biothings, config
-biothings.config_for_app(config)
-
-
-def exclude_fields(doc, field_lst):
-    if doc['_id'] in config.EXCLUSION_IDS:
-        for field in field_lst:
-            remove_key(doc, field)
-    return doc
 
 def load_data(xml_file):
     drug_list = []
@@ -26,11 +16,6 @@ def load_data(xml_file):
             doc["_id"] = _id
         except KeyError:
             pass
-        doc = exclude_fields(doc, [
-            "drugbank.drug_interactions",
-            "drugbank.products",
-            "drugbank.mixtures"
-        ])
         drug_list.append(doc)
         return True
     with open(xml_file,'rb') as f:
