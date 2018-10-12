@@ -9,6 +9,8 @@ from biothings.utils.mongo import get_src_db
 import biothings.hub.dataload.storage as storage
 from mychem_utils import ExcludeFieldsById
 
+from hub.datatransform.keylookup import MyChemKeyLookup
+
 
 SRC_META = {
         "url": 'https://www.ebi.ac.uk/chebi/',
@@ -20,8 +22,15 @@ SRC_META = {
 class ChebiUploader(BaseDrugUploader):
 
     name = "chebi"
-    storage_class = storage.IgnoreDuplicatedStorage
+    #storage_class = storage.IgnoreDuplicatedStorage
+    storage_class = storage.RootKeyMergerStorage
     __metadata__ = {"src_meta" : SRC_META}
+    keylookup = MyChemKeyLookup(
+            [('inchikey','chebi.inchikey'),
+             ('chebi','chebi.id'),
+             ('drugbank','chebi.xref.drugbank'),
+             ],
+            copy_from_doc=True)
 
     @ExcludeFieldsById([
         "chebi.xref.intenz",
@@ -42,13 +51,13 @@ class ChebiUploader(BaseDrugUploader):
         assert chembl_col.count() > 0, "'chembl' collection is empty (required for inchikey " + \
                 "conversion). Please run 'chembl' uploader first"
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        return load_data(input_file,drugbank_col,chembl_col)
+        return self.keylookup(load_data)(input_file)
 
     def post_update_data(self, *args, **kwargs):
-        for idxname in ["chebi.chebi_id"]:
+        for idxname in ["chebi.id"]:
             self.logger.info("Indexing '%s'" % idxname)
             # background=true or it'll lock the whole database...
-            self.collection.create_index([(idxname,pymongo.HASHED)],background=True)
+            self.collection.create_index([(idxname,pymongo.ASCENDING)],background=True)
 
     @classmethod
     def get_mapping(klass):

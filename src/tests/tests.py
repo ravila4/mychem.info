@@ -190,7 +190,7 @@ class MyChemTest(BiothingTestHelperMixin):
         res = self.json_ok(self.get_ok(self.api + '/query?q=' + s))
         eq_(res['hits'], [])
 
-        res = self.json_ok(self.post_ok(self.api + '/query', {"q": s, "scopes": 'dbsnp'}))
+        res = self.json_ok(self.post_ok(self.api + '/query', {"q": s, "scopes": 'drugbank.drugbank_id'}))
         eq_(res[0]['notfound'], True)
         eq_(len(res), 1)
 

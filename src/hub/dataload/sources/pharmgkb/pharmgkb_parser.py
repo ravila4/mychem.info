@@ -5,7 +5,7 @@ from biothings.utils.dataload import dict_sweep, unlist
 
 csv.field_size_limit(sys.maxsize)
 
-def load_data(tsv_file, drugbank_col=None, pubchem_col=None, chembl_col=None, chebi_col=None):
+def load_data(tsv_file):
     _file = open(tsv_file)
     reader = csv.DictReader(_file,delimiter='\t')
     _dict = {}
@@ -16,7 +16,6 @@ def load_data(tsv_file, drugbank_col=None, pubchem_col=None, chembl_col=None, ch
         _d = clean_up(_d)
         _d = unlist(dict_sweep(_d))
         _dict = {'_id':_id,'pharmgkb':_d}
-        _dict["_id"] = find_inchi_key(_dict,drugbank_col,pubchem_col,chembl_col,chebi_col)
         yield _dict
 
 def restr_dict(d):
@@ -84,6 +83,8 @@ def clean_up(d):
                 # Note:  original pharmgkb keys do not have '.'
                 k = transform_xref_fieldnames(ele[0:idx])
                 v = ele[idx+1:]
+                if k in ["pubchem.cid","pubchem.sid"]:
+                    v = int(v)
                 # Handle nested elements (ex: 'wikipedia.url_stub') here
                 sub_d = sub_field(k, v)
                 _d.update(sub_d)
@@ -92,80 +93,6 @@ def clean_up(d):
         d.pop('external_vocabulary')
     d.update({'xref':_d})
     return d
-
-def find_inchi_key(doc, drugbank_col, pubchem_col, chembl_col, chebi_col):
-    _flag = 0
-    _id = doc["_id"]
-    if not drugbank_col or not pubchem_col or not chembl_col:
-        return _id
-    if 'inchi' in doc["pharmgkb"]:
-        _inchi = doc["pharmgkb"]['inchi']
-        d = drugbank_col.find_one({'drugbank.inchi':_inchi})
-        if d != None:
-            try:
-                _id = d['drugbank']['inchi_key']
-            except KeyError:
-                _id = d['_id']
-        else:
-            d = pubchem_col.find_one({'pubchem.inchi':_inchi})
-            if d != None:
-                try:
-                    _id = d['pubchem']['inchi_key']
-                except KeyError:
-                    _id = d['_id']
-            else:
-                d = chembl_col.find_one({'chembl.inchi':doc["pharmgkb"]['inchi']})
-                if d != None:
-                    try:
-                        _id = d['chembl']['inchi_key']
-                    except KeyError:
-                        _id = d['_id']
-                else:
-                    _flag = 1
-    else:
-        _flag = 1
-
-    if _flag:
-        _flag = 0
-        if 'xref' in doc ["pharmgkb"]:
-            for key in doc["pharmgkb"]['xref']:
-                if key == 'pubchem':
-                    if 'cid' in doc['pharmgkb']['xref']['pubchem'].keys():
-                        cid = doc["pharmgkb"]['xref']['pubchem']['cid']
-                        d = pubchem_col.find_one({'_id':cid})
-                        if d != None:
-                            try:
-                                _id = d['pubchem']['inchi_key']
-                            except KeyError:
-                                _id = d['_id']
-
-                elif key=='drugbank':
-                    db_id = doc["pharmgkb"]['xref'].get(key)
-                    d = drugbank_col.find_one({'_id':db_id})
-                    if d != None:
-                        try:
-                           _id = d['drugbank']['inchi_key']
-                        except KeyError:
-                            _id = d['_id']
-                elif key =='chebi':
-                    chebi = doc["pharmgkb"]['xref'].get(key)
-                    d = chebi_col.find_one({'_id':chebi})
-                    if d != None:
-                        try:
-                           _id = d['chebi']['inchikey']
-                        except KeyError:
-                            # ??? there's no merged collection at this point (you can't rely
-                            # on something you're going to build...). Also, what's the point of
-                            # searching chebi.chebi_id in a merged collection, why not just chebi col ???
-                            #_d = db.merged_coll.find_one({'chebi.chebi_id':d['_id']})
-                            _id = d["chebi"]["id"]
-                else:
-                    _id = doc['_id']
-
-        else:
-            _id = doc['_id']
-
-    return _id
 
 def sub_field(k, v):
     """Return a nested dictionary with field keys k and value v."""

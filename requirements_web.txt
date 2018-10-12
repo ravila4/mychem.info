@@ -3,7 +3,7 @@
 #    pip install -r requirements_web.txt
 
 # biothings
-git+https://github.com/biothings/biothings.api.git@852673bcb9b9f2b8c1e8214749f245d0c1f3076a#egg=biothings
+git+https://github.com/biothings/biothings.api.git@81d303b2d497ebd49c3a50d00927b8e1cd932e4a#egg=biothings
 
 # for utils.common
 psutil
