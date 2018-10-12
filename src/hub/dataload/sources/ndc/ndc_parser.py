@@ -1,9 +1,6 @@
 import csv, os
 from biothings.utils.dataload import dict_sweep, unlist
 
-import biothings, config
-biothings.config_for_app(config)
-
 
 def package_restr_dict(dictionary):
     _d = {}
@@ -95,10 +92,7 @@ def load_data(data_folder, drugbank_col=None):
     for ik,ndclist in inchi_key.items():
         if len(ndclist) == 1:
             ndclist = ndclist.pop() # back to single dict
-        if ik in config.EXCLUSION_IDS:
-            yield {"_id": ik}
-        else:
-            yield {"_id": ik, "ndc": ndclist}
+        yield {"_id": ik, "ndc": ndclist}
 
 def find_inchi_key(doc,drugbank_col):
     if not drugbank_col:
