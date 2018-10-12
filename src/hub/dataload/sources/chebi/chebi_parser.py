@@ -1,15 +1,5 @@
 from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
-from vconvert import remove_key
 
-import biothings, config
-biothings.config_for_app(config)
-
-
-def exclude_fields(doc, field_lst):
-    if doc['_id'] in config.EXCLUSION_IDS:
-        for field in field_lst:
-            remove_key(doc, field)
-    return doc
 
 def load_data(sdf_file, drugbank_col=None, chembl_col=None):
     import biothings.utils.mongo as mongo
@@ -27,14 +17,6 @@ def load_data(sdf_file, drugbank_col=None, chembl_col=None):
     for compound in comp_list:
         restr_dict = restructure_dict(compound)
         restr_dict["_id"] = find_inchikey(restr_dict,drugbank_col,chembl_col)
-        restr_dict = exclude_fields(restr_dict, [
-            "chebi.xref.intenz",
-            "chebi.xref.rhea",
-            "chebi.xref.uniprot",
-            "chebi.xref.sabio_rk",
-            "chebi.xref.patent",
-            "chebi.xref.reactome"
-        ])
         yield restr_dict
 
 def clean_up(_dict):
