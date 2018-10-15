@@ -4,8 +4,7 @@ import collections
 import logging
 from biothings.utils.dataload import dict_sweep
 from biothings.utils.dataload import boolean_convert
-from biothings.utils.dataload import unlist
-from vconvert import float_convert, int_convert, unlist
+from dotstring import float_convert, int_convert, unlist
 
 
 def my_debug(d):
