@@ -7,12 +7,6 @@ from biothings.utils.dataload import boolean_convert
 from dotstring import float_convert, int_convert, unlist
 
 
-def my_debug(d):
-    if 'synonyms' in d['drugbank'].keys():
-        for s in d['drugbank']['synonyms']:
-            if not isinstance(s, str):
-                print(d['_id'])
-
 def load_data(xml_file):
     drug_list = []
     def handle(path,item):  #streaming mode of xmltodict
@@ -28,7 +22,6 @@ def load_data(xml_file):
     with open(xml_file,'rb') as f:
         xmltodict.parse(f,item_depth=2,item_callback=handle,xml_attribs=True)
     for doc in drug_list:
-        my_debug(doc)
         yield doc
 
 def restr_protein_dict(dictionary):
