@@ -7,6 +7,8 @@ from biothings.utils.mongo import get_src_db
 from .pharmgkb_parser import load_data
 from hub.dataload.uploader import BaseDrugUploader
 
+from hub.datatransform.keylookup import MyChemKeyLookup
+
 
 SRC_META = {
         "url": 'https://www.pharmgkb.org/',
@@ -19,27 +21,19 @@ SRC_META = {
 class PharmGkbUploader(BaseDrugUploader):
 
     name = "pharmgkb"
-    storage_class = storage.IgnoreDuplicatedStorage
+    storage_class = storage.RootKeyMergerStorage
     __metadata__ = {"src_meta" : SRC_META}
+    keylookup = MyChemKeyLookup(
+            [('inchi', 'pharmgkb.inchi'),
+             ('pubchem', 'pharmgkb.xref.pubchem.cid'),
+             ('drugbank', 'pharmgkb.xref.drugbank'),
+             ('chebi', 'pharmgkb.xref.chebi')])
 
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)
         input_file = os.path.join(data_folder,"drugs.tsv")
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        # get others source collection for inchi key conversion
-        drugbank_col = get_src_db()["drugbank"]
-        assert drugbank_col.count() > 0, "'drugbank' collection is empty (required for inchikey " + \
-                "conversion). Please run 'drugbank' uploader first"
-        pubchem_col = get_src_db()["pubchem"]
-        assert pubchem_col.count() > 0, "'pubchem' collection is empty (required for inchikey " + \
-                "conversion). Please run 'pubchem' uploader first"
-        chembl_col = get_src_db()["chembl"]
-        assert chembl_col.count() > 0, "'chembl' collection is empty (required for inchikey " + \
-                "conversion). Please run 'chembl' uploader first"
-        chebi_col = get_src_db()["chebi"]
-        assert chebi_col.count() > 0, "'chebi' collection is empty (required for inchikey " + \
-                "conversion). Please run 'chebi' uploader first"
-        return load_data(input_file,drugbank_col,pubchem_col,chembl_col,chebi_col)
+        return self.keylookup(load_data)(input_file)
 
     @classmethod
     def get_mapping(klass):

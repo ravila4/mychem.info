@@ -1,8 +1,7 @@
 from biothings.utils.dataload import dict_sweep, unlist, value_convert_to_number
 
 
-def load_data(sdf_file, drugbank_col=None, chembl_col=None):
-    import biothings.utils.mongo as mongo
+def load_data(sdf_file):# drugbank_col=None, chembl_col=None):
     f = open(sdf_file,'r').read()
     comp_list = f.split("$$$$") #split the compounds and list
     comp_list = [ele.split("\n> <") for ele in comp_list] #split from \n> <
@@ -16,7 +15,6 @@ def load_data(sdf_file, drugbank_col=None, chembl_col=None):
     del comp_list[-1]
     for compound in comp_list:
         restr_dict = restructure_dict(compound)
-        restr_dict["_id"] = find_inchikey(restr_dict,drugbank_col,chembl_col)
         yield restr_dict
 
 def clean_up(_dict):
@@ -83,41 +81,3 @@ def restructure_dict(dictionary):
         "beilstein","pubmed","sabio_rk","gmelin","molbase", "synonyms", "wikipedia","url_stub"])
     return restr_dict
 
-def find_inchikey(doc, drugbank_col, chembl_col):
-    _flag = 0
-    _id = doc["_id"] # default if we can't find anything
-
-    if 'inchikey' in doc["chebi"]:
-        _id = doc["chebi"]['inchikey']
-    elif drugbank_col and chembl_col:
-        if 'xref' in doc['chebi'].keys() and 'drugbank' in doc["chebi"]['xref']:
-            d = drugbank_col.find_one({'_id':doc["chebi"]['xref']['drugbank']})
-            if d != None:
-                try:
-                    _id = d['drugbank']['inchi_key']
-                except KeyError:
-                    # no inchi-key in drugbank
-                    _id = d['_id']
-            else:
-                _flag = 1
-        else:
-            _flag = 1
-
-        if _flag:
-            _flag = 0
-            d = chembl_col.find_one({'chembl.chebi_par_id':doc['_id'][6:]},no_cursor_timeout=True)
-            if d != None:
-                try:
-                    _id = d['chembl']['inchi_key']
-                except:
-                    _id = d['_id']
-            else:
-                d = drugbank_col.find_one({'drugbank.chebi':doc['_id'][6:]})
-                if d != None:
-                    try:
-                        _id = d['chembl']['inchi_key']
-                    except:
-                        _id = d['_id']
-                else:
-                    _id = doc['_id']
-    return _id

@@ -32,7 +32,7 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
         return load_data(input_file)
 
     def post_update_data(self, *args, **kwargs):
-        for idxname in ["chembl.chebi_par_id","chembl.inchi"]:
+        for idxname in ["chembl.chebi_par_id","chembl.inchi","chembl.molecule_chembl_id"]:
             self.logger.info("Indexing '%s'" % idxname)
             # background=true or it'll lock the whole database...
             self.collection.create_index([(idxname,pymongo.HASHED)],background=True)

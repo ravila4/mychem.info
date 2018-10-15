@@ -7,6 +7,9 @@ from .sider_parser import load_data
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.mongo import get_src_db
+from biothings.hub.datatransform import IDStruct
+
+from hub.datatransform.keylookup import MyChemKeyLookup
 
 
 SRC_META = {
@@ -17,25 +20,49 @@ SRC_META = {
         }
 
 
+def preproc(doc):
+    _id = doc["_id"]
+    assert _id.startswith('CID')
+    assert len(_id) == 12
+    return doc
+
+
+class SiderIDStruct(IDStruct):
+    """Custom IDStruct to preprocess _id from sider"""
+
+    def preprocess_id(self,_id):
+        assert _id.startswith('CID')
+        assert len(_id) == 12
+        return int(_id[4:])
+
+    @property
+    def id_lst(self):                                                                                                                                                                                
+        id_set = set()
+        for k in self.forward.keys():
+            for f in self.forward[k]:
+                id_set.add(self.preprocess_id(f))
+        return list(id_set)
+
+    def find_right(self, ids):                                                                                                                                                                       
+        """Find the first id founding by searching the (_, right) identifiers"""
+        inverse = {}
+        for rid in self.inverse:
+            inverse[self.preprocess_id(rid)] = self.inverse[rid]
+        return self.find(inverse,ids)
+
+
 class SiderUploader(BaseDrugUploader):
 
     name = "sider"
     #storage_class = storage.IgnoreDuplicatedStorage
     __metadata__ = {"src_meta" : SRC_META}
+    keylookup = MyChemKeyLookup([("sider","_id")],
+                    idstruct_class=SiderIDStruct)
 
     def load_data(self,data_folder):
         input_file = os.path.join(data_folder,"merged_freq_all_se_indications.tsv")
         self.logger.info("Load data from file '%s'" % input_file)
-        pubchem_col = get_src_db()["pubchem"]
-        assert pubchem_col.count() > 0, "'pubchem' collection is empty (required for inchikey " + \
-                "conversion). Please run 'pubchem' uploader first"
-        return load_data(input_file, pubchem_col)
-
-    def post_update_data(self, *args, **kwargs):
-        # hashed because inchi is too long (and we'll do == ops to hashed are enough)
-        for idxname in ["pubchem.inchi"]:
-            self.logger.info("Indexing '%s'" % idxname)
-            self.collection.create_index([(idxname,pymongo.HASHED)],background=True)
+        return self.keylookup(load_data)(input_file)
 
     @classmethod
     def get_mapping(klass):
