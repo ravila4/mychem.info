@@ -499,7 +499,7 @@ def restructure_dict(dictionary):
     d1['carriers'] = carriers_list
     d1['enzymes'] = enzymes_list
     d1['transporters'] = transporters_list
-    d1['predicted_properties'] = pred_properties_dict
+    d1['pred_prop'] = pred_properties_dict
     d1['exp_prop'] = exp_prop_dict
     d1['products'] = products_list
     if xref_pubchem_dict:
