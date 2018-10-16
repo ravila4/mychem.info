@@ -1,0 +1,13 @@
+{
+    "script": {
+        "lang": "painless",
+        "source": "
+            /*
+                Script to truncate fields.
+            */
+            Map truncated = new HashMap();
+            List chebi_uniprot = new ArrayList();
+            return params
+        "
+    }
+}
