@@ -78,7 +78,7 @@ def restructure_dict(dictionary):
                         for x,y in iter(ele.items()):
                             if x == '#text':
                                 # make sure we always have DB ID as drugbank_id
-                                d1.update({'drugbank_id' : y})
+                                d1.update({'id' : y})
                                 restr_dict['_id'] = y
 
                     if isinstance(ele,str):
@@ -284,7 +284,7 @@ def restructure_dict(dictionary):
                         d1[str1] = y['#text'].replace('\n',' ')
 
         elif key == 'experimental-properties' and value:
-            key = 'exp_prop'
+            key = 'experimental_properties'
 
             def restr_properties_dict(dictionary):
                 # Note: the side effect of this function sets a global variable
@@ -328,10 +328,10 @@ def restructure_dict(dictionary):
                 for x in dictionary:
                     k = dictionary['kind']
                     k = k.lower().replace(' ','_').replace('-','_')
-                    pred_properties_dict[k] = dictionary['value']
-
                     if dictionary['kind'] == "IUPAC Name":
                         d1.update({'iupac':dictionary['value']})
+                    elif dictionary['kind'] == "Traditional IUPAC Name":
+                        d1.update({'traditional_iupac_name':dictionary['value']})
                     elif dictionary['kind'] == "SMILES":
                         d1.update({'smiles':dictionary['value']})
                     elif dictionary['kind'] == "Molecular Formula":
@@ -347,6 +347,8 @@ def restructure_dict(dictionary):
                         d1.update({'weight':{'average':dictionary['value']}})
                     elif dictionary['kind'] == "Monoisotopic Weight":
                         d1['weight'].update({'monoisotopic':dictionary['value']})
+                    else:
+                        pred_properties_dict[k] = dictionary['value']
 
             for x,y in iter(value.items()):
                 if isinstance(y,list):
@@ -424,9 +426,9 @@ def restructure_dict(dictionary):
                     elif x == 'name':
                         _dict.update({x:y})
                     elif x == 'drugs':
-                        _dict.update({x:y['drug']})
+                        pass
                     elif x == 'enzymes':
-                        _dict.update({x:y})
+                        pass
                 return _dict
 
             if isinstance(value['pathway'],list):
@@ -494,57 +496,64 @@ def restructure_dict(dictionary):
                 restr_atccode_dict(value['atc-code'])
 
 
-    d1['atc_codes'] = atccode_list
+    xref_dict['atc_codes'] = atccode_list
     d1['targets'] = targets_list
     d1['carriers'] = carriers_list
     d1['enzymes'] = enzymes_list
     d1['transporters'] = transporters_list
-    d1['pred_prop'] = pred_properties_dict
-    d1['exp_prop'] = exp_prop_dict
+    d1['predicted_properties'] = pred_properties_dict
+    d1['experimental_properties'] = exp_prop_dict
     d1['products'] = products_list
     if xref_pubchem_dict:
         xref_dict['pubchem'] = xref_pubchem_dict
     d1['xref'] = xref_dict
     restr_dict['drugbank'] = d1
     restr_dict = unlist(restr_dict, ["drugbank.accession_number"], [])
-    restr_dict = boolean_convert(restr_dict,["pred_prop.mddr_like_rule",
-        "pred_prop.bioavailability","pred_prop.ghose_filter",
-        "pred_prop.rule_of_five","products.generic","products.otc",
-        "products.approved","products.pediatric-extension"])
+    restr_dict = boolean_convert(restr_dict,[
+        "patents.pediatric-extension",
+        "predicted_properties.mddr_like_rule",
+        "predicted_properties.bioavailability",
+        "predicted_properties.ghose_filter",
+        "predicted_properties.rule_of_five",
+        "products.generic",
+        "products.otc",
+        "products.approved",
+        "products.pediatric-extension"
+    ])
     # 'int' types
     restr_dict = int_convert(restr_dict,
                              include_keys=[
                                  "drugbank.pharmacology.snp_adverse_drug_reactions.reaction.pubmed-id",
                                  "drugbank.pharmacology.snp_effects.effect.pubmed-id",
-                                 "drugbank.pred_prop.physiological_charge",
-                                 "drugbank.pred_prop.rotatable_bond_count",
-                                 "drugbank.pred_prop.h_bond_acceptor_count",
-                                 "drugbank.pred_prop.h_bond_donor_count",
-                                 "drugbank.pred_prop.number_of_rings",
+                                 "drugbank.predicted_properties.physiological_charge",
+                                 "drugbank.predicted_properties.rotatable_bond_count",
+                                 "drugbank.predicted_properties.h_bond_acceptor_count",
+                                 "drugbank.predicted_properties.h_bond_donor_count",
+                                 "drugbank.predicted_properties.number_of_rings",
                                  "drugbank.xref.guide_to_pharmacology",
                                  "drugbank.xref.iuphar"])
     # 'float' types
     restr_dict = float_convert(restr_dict,
                                include_keys=[
-                                   "drugbank.exp_prop.caco2_permeability",
-                                   "drugbank.exp_prop.molecular_weight",
-                                   "drugbank.exp_prop.hydrophobicity",
+                                   "drugbank.experimental_properties.caco2_permeability",
+                                   "drugbank.experimental_properties.molecular_weight",
+                                   "drugbank.experimental_properties.hydrophobicity",
                                    "drugbank.weight.monoisotopic",
                                    "drugbank.weight.average",
-                                   "drugbank.pred_prop.molecular_weight",
-                                   "drugbank.pred_prop.monoisotopic_weight"])
+                                   "drugbank.predicted_properties.molecular_weight",
+                                   "drugbank.predicted_properties.monoisotopic_weight"])
     # Mixed types coerced to floats
     restr_dict = float_convert(restr_dict,
                                include_keys=[
-                                   "drugbank.exp_prop.logp",
-                                   "drugbank.exp_prop.logs",
-                                   "drugbank.pred_prop.logp",
-                                   "drugbank.pred_prop.logs",
-                                   "drugbank.pred_prop.pka_(strongest_basic)",
-                                   "drugbank.pred_prop.pka_(strongest_acidic)",
-                                   "drugbank.pred_prop.refractivity",
-                                   "drugbank.pred_prop.polarizability",
-                                   "drugbank.pred_prop.polar_surface_area_(psa)"])
+                                   "drugbank.experimental_properties.logp",
+                                   "drugbank.experimental_properties.logs",
+                                   "drugbank.predicted_properties.logp",
+                                   "drugbank.predicted_properties.logs",
+                                   "drugbank.predicted_properties.pka_(strongest_basic)",
+                                   "drugbank.predicted_properties.pka_(strongest_acidic)",
+                                   "drugbank.predicted_properties.refractivity",
+                                   "drugbank.predicted_properties.polarizability",
+                                   "drugbank.predicted_properties.polar_surface_area_(psa)"])
     restr_dict = dict_sweep(restr_dict,vals=[None,math.inf,"INF",".", "-", "", "NA", "none", " ",
         "Not Available", "unknown","null","None"])
     return restr_dict
