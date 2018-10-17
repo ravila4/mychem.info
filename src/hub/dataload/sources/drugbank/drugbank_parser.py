@@ -417,6 +417,8 @@ def restructure_dict(dictionary):
             for mixture in value['mixture']:
                 if isinstance(mixture, collections.OrderedDict):
                     if '+' in mixture['ingredients']:
+                        ingredient_lst = mixture['ingredients'].split(" + ")
+                        mixture['ingredients'] = ingredient_lst
                         mixture_lst.append(mixture)
             if mixture_lst:
                 d1.update({key:mixture_lst})
