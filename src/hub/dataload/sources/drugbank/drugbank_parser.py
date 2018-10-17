@@ -37,17 +37,15 @@ def restr_protein_dict(dictionary):
             x = x.replace('-','_')
             _dict.update({x:dictionary['known-action']})
         elif x == 'polypeptide':
-            polypeptide_dict = {}
             _li2 = ['general-function','specific-function']
             for i in y:
                 if i ==  "@id":
-                    polypeptide_dict.update({'uniprot':y[i]})
+                    _dict.update({'uniprot':y[i]})
                 elif i == "@source":
-                    polypeptide_dict.update({'source':y[i]})
+                    _dict.update({'source':y[i]})
                 elif i in _li2:
                     j = i.replace('-','_')
-                    polypeptide_dict.update({j:y[i]})
-            _dict['polypeptide'] = polypeptide_dict
+                    _dict.update({j:y[i]})
     return _dict
 
 def restructure_dict(dictionary):
