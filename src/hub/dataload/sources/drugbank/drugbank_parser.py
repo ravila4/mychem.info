@@ -414,7 +414,14 @@ def restructure_dict(dictionary):
             d1.update({key:value['international-brand']})
 
         elif key == 'mixtures' and value:
-            d1.update({key:value['mixture']})
+            # only accept mixture entries that have more than 1 ingredient
+            mixture_lst = []
+            for mixture in value['mixture']:
+                if isinstance(mixture, collections.OrderedDict):
+                    if '+' in mixture['ingredients']:
+                        mixture_lst.append(mixture)
+            if mixture_lst:
+                d1.update({key:mixture_lst})
 
         elif key == 'pathways' and value:
             _li = []
