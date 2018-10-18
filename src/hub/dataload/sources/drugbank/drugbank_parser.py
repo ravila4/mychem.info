@@ -446,7 +446,8 @@ def restructure_dict(dictionary):
 
             elif isinstance(value['pathway'],dict) or isinstance(value['pathway'],OrderedDict):
                 _dict = restr_pathway_dict(value['pathway'])
-                d1.update({key:_dict})
+                _li.append(_dict)
+                d1.update({key:_li})
 
         elif key == 'targets' and value:
             if isinstance(value['target'],list):
@@ -515,7 +516,12 @@ def restructure_dict(dictionary):
         xref_dict['pubchem'] = xref_pubchem_dict
     d1['xref'] = xref_dict
     restr_dict['drugbank'] = d1
-    restr_dict = unlist(restr_dict, ["drugbank.accession_number"], [])
+    restr_dict = unlist(restr_dict, [
+        "drugbank.accession_number",
+        "drugbank.drugbank_id",
+        "drugbank.chebi",
+        "drugbank.inchi"
+    ], [])
     restr_dict = boolean_convert(restr_dict,[
         "patents.pediatric-extension",
         "predicted_properties.mddr_like_rule",
