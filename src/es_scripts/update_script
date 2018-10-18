@@ -5,7 +5,7 @@ HOST="localhost:9200"
 VERBOSE=0
 
 function usage {
-    printf "Usage: $sname [-hvs] <script JSON path>\n"
+    printf "Usage: $sname [-hvs] <script JSON path> <script name>\n"
     printf "  -h|--help                Display help\n"
     printf "  -v|--verbose             Verbose on\n"
     printf "  -s|--host                'Server:Port' string to store script on, defaults to 'localhost:9200'\n"
@@ -32,24 +32,30 @@ case $flag in
 esac
 done
 
-if [ "$#" -ge 1 ]; then
+if [ "$#" -ge 2 ]; then
     if [[ -n $1 ]] && [[ -e $1 ]]; then
         script_path=$1
     else
         printf "ERROR: Script JSON must exist\n\n"
         usage 1
     fi
+    if [[ -n $2 ]] && [[ -e $2 ]]; then
+        script_name=$2
+    else
+        printf "ERROR: Script name must be specified\n\n"
+        usage 1
+    fi
 else
-    printf "ERROR: Script JSON path required\n\n"
+    printf "ERROR: Script JSON path AND script name required\n\n"
     usage 1
 fi
 
 if [ "$VERBOSE" -eq 1 ]; then
     printf "\n\n"
-    echo curl -H'Content-Type: application/json' -XPOST 'http://'"${HOST}"'/_scripts/truncate-large-fields'
+    echo curl -H'Content-Type: application/json' -XPOST 'http://'"${HOST}"'/_scripts/'"${script_name}"
     printf "\n\n${script}\n\n"
 fi
 
 cd
 
-curl -XPOST 'http://'"${HOST}"'/_scripts/truncate-large-fields' -H'Content-Type: application/json' -d @"${script_path}"
+curl -XPOST 'http://'"${HOST}"'/_scripts/'"${script_name}" -H'Content-Type: application/json' -d @"${script_path}"

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+../update_script truncate.json truncate-large-fields
