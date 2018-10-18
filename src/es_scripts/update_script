@@ -3,9 +3,11 @@
 sname=$0
 HOST="localhost:9200"
 VERBOSE=0
+CURL_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 function usage {
-    printf "Usage: $sname [-hvs] <script JSON path> <script name>\n"
+    printf "Usage: $sname [-dhvs] <script JSON path> <script name>\n"
+    printf "  -d|--dir                 Directory that curl is run in\n"
     printf "  -h|--help                Display help\n"
     printf "  -v|--verbose             Verbose on\n"
     printf "  -s|--host                'Server:Port' string to store script on, defaults to 'localhost:9200'\n"
@@ -17,6 +19,10 @@ do
 case $flag in
     -s=*|--host=*)
     HOST="${flag#*=}"
+    shift
+    ;;
+    -d=*|--dir=*)
+    CURL_DIR="${flag#*=}"
     shift
     ;;
     -v|--verbose)
@@ -39,7 +45,7 @@ if [ "$#" -ge 2 ]; then
         printf "ERROR: Script JSON must exist\n\n"
         usage 1
     fi
-    if [[ -n $2 ]] && [[ -e $2 ]]; then
+    if [[ -n $2 ]]; then
         script_name=$2
     else
         printf "ERROR: Script name must be specified\n\n"
@@ -54,8 +60,9 @@ if [ "$VERBOSE" -eq 1 ]; then
     printf "\n\n"
     echo curl -H'Content-Type: application/json' -XPOST 'http://'"${HOST}"'/_scripts/'"${script_name}"
     printf "\n\n${script}\n\n"
+    printf "Curl directory: ${CURL_DIR}\n\n"
 fi
 
-cd
+cd ${CURL_DIR}
 
 curl -XPOST 'http://'"${HOST}"'/_scripts/'"${script_name}" -H'Content-Type: application/json' -d @"${script_path}"

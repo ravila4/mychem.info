@@ -7,7 +7,7 @@
             */
             Map truncated = new HashMap();
             List chebi_uniprot = new ArrayList();
-            return params
+            return params[0]
         "
     }
 }
