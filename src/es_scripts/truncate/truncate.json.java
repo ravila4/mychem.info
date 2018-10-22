@@ -109,9 +109,14 @@
                     truncated.put('drugbank.mixtures', true);
                 }
             }
-            ret.put('_truncated', truncated);
-            ret.putAll(params._source);
-            return ret;
+            if (truncated.isEmpty()) {
+                return params._source;
+            }
+            else {
+                ret.put('_truncated', truncated);
+                ret.putAll(params._source);
+                return ret;
+            }
         "
     }
 }
