@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from biothings.web.api.es.query_builder import ESQueryBuilder
+import logging
 
 class ESQueryBuilder(ESQueryBuilder):
     # Implement app specific queries here
@@ -9,12 +10,14 @@ class ESQueryBuilder(ESQueryBuilder):
             _query = self.queries.match({scopes[0]:{"query": "{}".format(term), "operator": "and"}})
         else:
             _query = self.queries.multi_match({"query":"{}".format(term), "fields":scopes, "operator":"and"})
-        _query['script_fields'] = {'_source': {'script': {'id': 'truncate-large-fields'}}}
+        if not (self.es_options._source == True):
+            _query['script_fields'] = {'_source': {'script': {'id': 'truncate-large-fields'}}}
         return _query
 
     def add_extra_filters(self, q):
         ''' Override me to add more filters '''
-        q['script_fields'] = {'_source': {'script': {'id': 'truncate-large-fields'}}}
+        if not (self.es_options._source == True):
+            q['script_fields'] = {'_source': {'script': {'id': 'truncate-large-fields'}}}
         return q
 
     def _annotation_GET_query(self, bid):
