@@ -50,7 +50,7 @@ dump_manager = dumper.DumperManager(job_manager=job_manager)
 sources_path = hub.dataload.__sources_dict__
 smanager = source.SourceManager(sources_path,dump_manager,upload_manager)
 
-dump_manager.schedule_all()
+#dump_manager.schedule_all()
 upload_manager.poll('upload',lambda doc: shell.launch(partial(upload_manager.upload_src,doc["_id"])))
 
 build_manager = builder.BuilderManager(builder_class=MyChemDataBuilder,job_manager=job_manager)
