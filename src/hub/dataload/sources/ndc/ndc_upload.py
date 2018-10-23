@@ -32,7 +32,8 @@ class NDCUploader(BaseDrugUploader):
             if type(doc["ndc"]) == list:
                 inchi_key.setdefault(doc["_id"],doc["ndc"])
             else:
-                inchi_key.setdefault(doc["_id"],[]).append(doc["ndc"])
+                if not doc["ndc"] in inchi_key.setdefault(doc["_id"],[]):
+                    inchi_key.setdefault(doc["_id"],[]).append(doc["ndc"])
         l = []
         for ik,ndc in inchi_key.items():
             if len(ndc) == 1:
