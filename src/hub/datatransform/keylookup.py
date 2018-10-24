@@ -17,36 +17,29 @@ graph_mychem.add_node('inchikey')
 graph_mychem.add_node('pharmgkb')
 
 graph_mychem.add_edge('inchi', 'drugbank',
-                      object=MongoDBEdge('drugbank', 'drugbank.inchi', 'drugbank.drugbank_id', weight=0.1))
+                      object=MongoDBEdge('drugbank', 'drugbank.inchi', 'drugbank.drugbank_id'))
 
 graph_mychem.add_edge('inchi', 'chembl',
-                      object=MongoDBEdge('chembl', 'chembl.inchi', 'chembl.molecule_chembl_id', weight=0.2))
+                      object=MongoDBEdge('chembl', 'chembl.inchi', 'chembl.molecule_chembl_id'))
 
 graph_mychem.add_edge('inchi', 'pubchem',
-                      object=MongoDBEdge('pubchem', 'pubchem.inchi', 'pubchem.cid', weight=1.0))
+                      object=MongoDBEdge('pubchem', 'pubchem.inchi', 'pubchem.cid'))
 
 graph_mychem.add_edge('chembl', 'inchikey',
-                      object=MongoDBEdge('chembl', 'chembl.molecule_chembl_id', 'chembl.inchi_key', weight=0.2))
+                      object=MongoDBEdge('chembl', 'chembl.molecule_chembl_id', 'chembl.inchi_key'))
 
 graph_mychem.add_edge('drugbank', 'inchikey',
-                      object=MongoDBEdge('drugbank', 'drugbank.drugbank_id', 'drugbank.inchi_key', weight=0.1))
+                      object=MongoDBEdge('drugbank', 'drugbank.drugbank_id', 'drugbank.inchi_key'))
 
 graph_mychem.add_edge('pubchem', 'inchikey',
-                      object=MongoDBEdge('pubchem', 'pubchem.cid', 'pubchem.inchi_key', weight=0.1))
+                      object=MongoDBEdge('pubchem', 'pubchem.cid', 'pubchem.inchi_key'))
 
 graph_mychem.add_edge('pharmgkb', 'drugbank',
-                      object=MongoDBEdge('pharmgkb', 'pharmgkb.id', 'pharmgkb.xref.drugbank', weight=0.1))
+                      object=MongoDBEdge('pharmgkb', 'pharmgkb.id', 'pharmgkb.xref.drugbank'))
 
 # self-loops to check looked-up values exist in official collection
 graph_mychem.add_edge('drugbank', 'drugbank',
                       object=MongoDBEdge('drugbank', 'drugbank.drugbank_id', 'drugbank.drugbank_id'))
-
-###############################################################################
-# Sider Nodes and Edges
-###############################################################################
-# pubchem -> inchikey
-graph_mychem.add_edge('sider', 'inchikey',
-                      object=MongoDBEdge('pubchem', 'pubchem.cid', 'pubchem.inchi_key'))
 
 ###############################################################################
 # NDC Nodes and Edges
@@ -56,7 +49,7 @@ graph_mychem.add_edge('sider', 'inchikey',
 graph_mychem.add_node('ndc')
 
 graph_mychem.add_edge('ndc', 'inchikey',
-                      object=MongoDBEdge('drugbank', 'drugbank.products.ndc_product_code', 'drugbank.inchi_key', weight=0.1))
+                      object=MongoDBEdge('drugbank', 'drugbank.products.ndc_product_code', 'drugbank.inchi_key'))
 
 ###############################################################################
 # Chebi Nodes and Edges
