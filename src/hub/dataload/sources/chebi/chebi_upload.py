@@ -4,6 +4,7 @@ import zipfile
 import pymongo
 
 from .chebi_parser import load_data
+from .exclusion_ids import exclusion_ids
 from hub.dataload.uploader import BaseDrugUploader
 from biothings.utils.mongo import get_src_db
 import biothings.hub.dataload.storage as storage
@@ -32,13 +33,12 @@ class ChebiUploader(BaseDrugUploader):
              ],
             copy_from_doc=True)
 
-    @ExcludeFieldsById([
+    @ExcludeFieldsById(exclusion_ids, [
         "chebi.xref.intenz",
         "chebi.xref.rhea",
         "chebi.xref.uniprot",
         "chebi.xref.sabio_rk",
         "chebi.xref.patent",
-        "chebi.xref.reactome"
     ])
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)

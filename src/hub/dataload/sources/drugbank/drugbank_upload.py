@@ -3,6 +3,7 @@ import glob
 import pymongo
 
 from .drugbank_parser import load_data
+from .exclusion_ids import exclusion_ids
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.common import unzipall
@@ -23,7 +24,7 @@ class DrugBankUploader(BaseDrugUploader):
     storage_class = storage.IgnoreDuplicatedStorage
     __metadata__ = {"src_meta" : SRC_META}
 
-    @ExcludeFieldsById([
+    @ExcludeFieldsById(exclusion_ids, [
         "drugbank.drug_interactions",
         "drugbank.products",
         "drugbank.mixtures"

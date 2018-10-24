@@ -7,7 +7,6 @@ from .sider_parser import load_data
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.mongo import get_src_db
-from mychem_utils import ExcludeFieldsById
 from biothings.hub.datatransform import IDStruct
 
 from hub.datatransform.keylookup import MyChemKeyLookup
@@ -60,7 +59,6 @@ class SiderUploader(BaseDrugUploader):
     keylookup = MyChemKeyLookup([("sider","_id")],
                     idstruct_class=SiderIDStruct)
 
-    @ExcludeFieldsById(["sider"])
     def load_data(self,data_folder):
         input_file = os.path.join(data_folder,"merged_freq_all_se_indications.tsv")
         self.logger.info("Load data from file '%s'" % input_file)
