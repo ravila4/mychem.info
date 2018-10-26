@@ -4,12 +4,14 @@ import zipfile
 import pymongo
 
 from .sider_parser import load_data
+from .sider_parser import percent_float
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.mongo import get_src_db
 from biothings.hub.datatransform import IDStruct
 
 from hub.datatransform.keylookup import MyChemKeyLookup
+from dotstring import key_value
 
 
 SRC_META = {
@@ -62,7 +64,13 @@ class SiderUploader(BaseDrugUploader):
     def load_data(self,data_folder):
         input_file = os.path.join(data_folder,"merged_freq_all_se_indications.tsv")
         self.logger.info("Load data from file '%s'" % input_file)
-        return self.keylookup(load_data)(input_file)
+        docs = self.keylookup(load_data)(input_file)
+        for doc in docs:
+            # sort the 'sider' list by "sider.side_effect.frequency"
+            doc['sider'] = sorted(doc['sider'],
+                                  key=lambda x: percent_float(key_value(x, "side_effect.frequency")),
+                                  reverse=True)
+            yield doc
 
     @classmethod
     def get_mapping(klass):
