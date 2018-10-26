@@ -41,6 +41,9 @@ def percent_float(gen):
     default_value = 101
 
     s = next(gen)
+    # if no element then return default value
+    if not s:
+        return default_value
     # drop the %
     s = s.replace("%", "")
     if '-' in s:

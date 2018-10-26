@@ -5,13 +5,13 @@ import pymongo
 
 from .sider_parser import load_data
 from .sider_parser import percent_float
+from .utils import key_value
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.mongo import get_src_db
 from biothings.hub.datatransform import IDStruct
 
 from hub.datatransform.keylookup import MyChemKeyLookup
-from dotstring import key_value
 
 
 SRC_META = {
