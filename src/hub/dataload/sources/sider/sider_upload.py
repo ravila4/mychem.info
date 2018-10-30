@@ -4,8 +4,7 @@ import zipfile
 import pymongo
 
 from .sider_parser import load_data
-from .sider_parser import percent_float
-from .utils import key_value
+from .sider_parser import sort_key
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.mongo import get_src_db
@@ -66,10 +65,9 @@ class SiderUploader(BaseDrugUploader):
         self.logger.info("Load data from file '%s'" % input_file)
         docs = self.keylookup(load_data)(input_file)
         for doc in docs:
-            # sort the 'sider' list by "sider.side_effect.frequency"
+            # sort the 'sider' list by "sider.side_effect.frequency" and "sider.side_effect.name"
             doc['sider'] = sorted(doc['sider'],
-                                  key=lambda x: percent_float(key_value(x, "side_effect.frequency")),
-                                  reverse=True)
+                                  key=lambda x: sort_key(x))
             yield doc
 
     @classmethod

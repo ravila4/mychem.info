@@ -2,6 +2,7 @@ import pandas as pd
 import csv
 
 from biothings.utils.dataload import dict_sweep, value_convert_to_number
+from .utils import key_value
 
 
 def load_data(_file):
@@ -35,32 +36,34 @@ def restr_dict(_dict,row):
     _d = dict_sweep(value_convert_to_number(_d))
     return _d
 
-def percent_float(gen):
+def sort_key(doc):
     """helper function - sort by 'sider.side_effect.frequency' """
-    # take the first element from the generator
-    default_value = 101
+    # take the first element from the document
+    default_value = -101
 
-    s = next(gen)
-    # if no element then return default value
+    s = next(key_value(doc, "side_effect.frequency"))
+    n = str(next(key_value(doc, "side_effect.name")))
+
+    # if no element then return default value, name
     if not s:
-        return default_value
+        return default_value, n
     # drop the %
     s = s.replace("%", "")
     if '-' in s:
         bounds = s.split("-")
         if len(bounds) != 2:
-            return default_value
+            return default_value, n
         try:
             lower = float(bounds[0])
             upper = float(bounds[1])
         except ValueError:
-            return default_value
+            return default_value, n
         avg = (upper + lower) / 2
-        return avg
+        return -1 * avg, n
     else:
-        # convert to a float (return -1 if unsuccessful)
+        # convert to a float (return default_value, name if unsuccessful)
         try:
-            return float(s)
+            return -1 * float(s), n
         except ValueError:
             # default value sends an item to the top of the list
-            return default_value
+            return default_value, n
