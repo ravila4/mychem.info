@@ -30,60 +30,58 @@
             Map truncated = new HashMap();
             Map ret = new HashMap();
             /* chebi docs */
-            if (params._source.containsKey('chebi') && (params._source.chebi.containsKey('xref'))) {
-                if (params._source.chebi.xref.containsKey('uniprot')) {
-                    def chebiUniprot = params._source.chebi.xref.uniprot;
-                    if ((chebiUniprot instanceof List) && (chebiUniprot.length > 1000)) {
-                        List newChebiUniprot = new ArrayList();
-                        for (int i=0; i<1000; i++) {newChebiUniprot.add(chebiUniprot[i]);}
-                        params._source.chebi.xref.uniprot = newChebiUniprot;
-                        truncated.put('chebi.xref.uniprot', true);
-                    }
+            if (params.doc.containsKey('chebi.xref.uniprot')) {
+                def chebiUniprot = params.doc.chebi.xref.uniprot;
+                if ((chebiUniprot instanceof List) && (chebiUniprot.length > 1000)) {
+                    List newChebiUniprot = new ArrayList();
+                    for (int i=0; i<1000; i++) {newChebiUniprot.add(chebiUniprot[i]);}
+                    params._source.chebi.xref.uniprot = newChebiUniprot;
+                    truncated.put('chebi.xref.uniprot', true);
                 }
-                if (params._source.chebi.xref.containsKey('intenz')) {
-                    def chebiIntenz = params._source.chebi.xref.intenz;
-                    if ((chebiIntenz instanceof List) && (chebiIntenz.length > 2000)) {
-                        List newChebiIntenz = new ArrayList();
-                        for (int i=0; i<2000; i++) {newChebiIntenz.add(chebiIntenz[i]);}
-                        params._source.chebi.xref.intenz = newChebiIntenz;
-                        truncated.put('chebi.xref.intenz', true);
-                    }
+            }
+            if (params.doc.containsKey('chebi.xref.intenz')) {
+                def chebiIntenz = params.doc.chebi.xref.intenz;
+                if ((chebiIntenz instanceof List) && (chebiIntenz.length > 2000)) {
+                    List newChebiIntenz = new ArrayList();
+                    for (int i=0; i<2000; i++) {newChebiIntenz.add(chebiIntenz[i]);}
+                    params._source.chebi.xref.intenz = newChebiIntenz;
+                    truncated.put('chebi.xref.intenz', true);
                 }
-                if (params._source.chebi.xref.containsKey('rhea')) {
-                    def chebiRHEA = params._source.chebi.xref.rhea;
-                    if ((chebiRHEA instanceof List) && (chebiRHEA.length > 1000)) {
-                        List newChebiRHEA = new ArrayList();
-                        for (int i=0; i<1000; i++) {newChebiRHEA.add(chebiRHEA[i]);}
-                        params._source.chebi.xref.rhea = newChebiRHEA;
-                        truncated.put('chebi.xref.rhea', true);
-                    }
+            }
+            if (params.doc.containsKey('chebi.xref.rhea')) {
+                def chebiRHEA = params.doc.chebi.xref.rhea;
+                if ((chebiRHEA instanceof List) && (chebiRHEA.length > 1000)) {
+                    List newChebiRHEA = new ArrayList();
+                    for (int i=0; i<1000; i++) {newChebiRHEA.add(chebiRHEA[i]);}
+                    params._source.chebi.xref.rhea = newChebiRHEA;
+                    truncated.put('chebi.xref.rhea', true);
                 }
-                if (params._source.chebi.xref.containsKey('sabio_rk')) {
-                    def chebiSabio = params._source.chebi.xref.sabio_rk;
-                    if ((chebiSabio instanceof List) && (chebiSabio.length > 1000)) {
-                        List newChebiSabio = new ArrayList();
-                        for (int i=0; i<1000; i++) {newChebiSabio.add(chebiSabio[i]);}
-                        params._source.chebi.xref.sabio_rk = newChebiSabio;
-                        truncated.put('chebi.xref.sabio_rk', true);
-                    }
+            }
+            if (params.doc.containsKey('chebi.xref.sabio_rk')) {
+                def chebiSabio = params.doc.chebi.xref.sabio_rk;
+                if ((chebiSabio instanceof List) && (chebiSabio.length > 1000)) {
+                    List newChebiSabio = new ArrayList();
+                    for (int i=0; i<1000; i++) {newChebiSabio.add(chebiSabio[i]);}
+                    params._source.chebi.xref.sabio_rk = newChebiSabio;
+                    truncated.put('chebi.xref.sabio_rk', true);
                 }
-                if (params._source.chebi.xref.containsKey('patent')) {
-                    def chebiPatent = params._source.chebi.xref.patent;
-                    if ((chebiPatent instanceof List) && (chebiPatent.length > 1000)) {
-                        List newChebiPatent = new ArrayList();
-                        for (int i=0; i<1000; i++) {newChebiPatent.add(chebiPatent[i]);}
-                        params._source.chebi.xref.patent = newChebiPatent;
-                        truncated.put('chebi.xref.patent', true);
-                    }
+            }
+            if (params.doc.containsKey('chebi.xref.patent')) {
+                def chebiPatent = params.doc.chebi.xref.patent;
+                if ((chebiPatent instanceof List) && (chebiPatent.length > 1000)) {
+                    List newChebiPatent = new ArrayList();
+                    for (int i=0; i<1000; i++) {newChebiPatent.add(chebiPatent[i]);}
+                    params._source.chebi.xref.patent = newChebiPatent;
+                    truncated.put('chebi.xref.patent', true);
                 }
-                if (params._source.chebi.xref.containsKey('reactome')) {
-                    def chebiReactome = params._source.chebi.xref.reactome;
-                    if ((chebiReactome instanceof List) && (chebiReactome.length > 1000)) {
-                        List newChebiReactome = new ArrayList();
-                        for (int i=0; i<1000; i++) {newChebiReactome.add(chebiReactome[i]);}
-                        params._source.chebi.xref.reactome = newChebiReactome;
-                        truncated.put('chebi.xref.reactome', true);
-                    }
+            }
+            if (params.doc.containsKey('chebi.xref.reactome')) {
+                def chebiReactome = params.doc.chebi.xref.reactome;
+                if ((chebiReactome instanceof List) && (chebiReactome.length > 1000)) {
+                    List newChebiReactome = new ArrayList();
+                    for (int i=0; i<1000; i++) {newChebiReactome.add(chebiReactome[i]);}
+                    params._source.chebi.xref.reactome = newChebiReactome;
+                    truncated.put('chebi.xref.reactome', true);
                 }
             }
             if (params._source.containsKey('aeolus') && (params._source.aeolus.containsKey('outcomes')) && (params._source.aeolus.outcomes instanceof List) && (params._source.aeolus.outcomes.length > 5000))  {
