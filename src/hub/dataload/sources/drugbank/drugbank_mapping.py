@@ -574,7 +574,7 @@ drugbank_mapping = {
                         }
                     }
                 },
-                "xref": {
+                "xrefs": {
                     "properties": {
                         "ahfs_codes": {
                             "normalizer": "keyword_lowercase_normalizer",
