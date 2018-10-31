@@ -19,7 +19,7 @@ def load_data(sdf_file):# drugbank_col=None, chembl_col=None):
 
 def clean_up(_dict):
     _temp = dict()
-    _xref = dict()
+    _xrefs = dict()
     _citation = dict()
     for key, value in iter(_dict.items()):
         key = key.lower().replace(' ','_').replace('-','_')
@@ -46,16 +46,16 @@ def clean_up(_dict):
         if key == 'wikipedia_database_links':
             key = 'wikipedia'
             value = {'url_stub': value}
-            _xref[key] = value
+            _xrefs[key] = value
         elif key == 'beilstein_registry_numbers':
             key = 'beilstein'
-            _xref[key] = value
+            _xrefs[key] = value
         elif '_database_links' in key:
             key = key.replace('_database_links', '')
-            _xref[key] = value
+            _xrefs[key] = value
         elif '_registry_numbers' in key:
             key = key.replace('_registry_numbers', '')
-            _xref[key] = value
+            _xrefs[key] = value
         elif '_citation_links' in key:
             key = key.replace('_citation_links', '')
             if key == 'pubmed_central':
@@ -64,8 +64,8 @@ def clean_up(_dict):
         else:
             _temp[key] = value
 
-    if _xref.keys():
-        _temp['xref'] = _xref
+    if _xrefs.keys():
+        _temp['xrefs'] = _xrefs
     if _citation.keys():
         _temp['citation'] = _citation
     return _temp

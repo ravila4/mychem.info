@@ -25,9 +25,9 @@ class PharmGkbUploader(BaseDrugUploader):
     __metadata__ = {"src_meta" : SRC_META}
     keylookup = MyChemKeyLookup(
             [('inchi', 'pharmgkb.inchi'),
-             ('pubchem', 'pharmgkb.xref.pubchem.cid'),
-             ('drugbank', 'pharmgkb.xref.drugbank'),
-             ('chebi', 'pharmgkb.xref.chebi')])
+             ('pubchem', 'pharmgkb.xrefs.pubchem.cid'),
+             ('drugbank', 'pharmgkb.xrefs.drugbank'),
+             ('chebi', 'pharmgkb.xrefs.chebi')])
 
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)
@@ -74,7 +74,7 @@ class PharmGkbUploader(BaseDrugUploader):
                         "type": {
                             "type": "text"
                             },
-                        "xref": {
+                        "xrefs": {
                             "properties": {
                                 "web_resource": {
                                     "normalizer": "keyword_lowercase_normalizer",

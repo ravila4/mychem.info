@@ -60,8 +60,8 @@ def restructure_dict(dictionary):
     carriers_list = []
     transporters_list = []
     atccode_list = []
-    xref_dict = {}
-    xref_pubchem_dict = {}
+    xrefs_dict = {}
+    xrefs_pubchem_dict = {}
 
     for key,value in iter(dictionary.items()):
         if key == 'name' and value:
@@ -256,7 +256,7 @@ def restructure_dict(dictionary):
         elif key == 'ahfs-codes' and value:
             for x in value:
                 key = key.replace('-','_')
-                xref_dict.update({key:value[x]})
+                xrefs_dict.update({key:value[x]})
 
         elif key == 'food-interactions' and value:
             food_interaction_list = []
@@ -362,29 +362,29 @@ def restructure_dict(dictionary):
                 for x in ele:
                     if x == 'resource':
                         if ele[x] == "Drugs Product Database (DPD)":
-                            xref_dict['dpd'] = ele['identifier']
+                            xrefs_dict['dpd'] = ele['identifier']
                         elif ele[x] == "KEGG Drug":
                             kegg_dict['did'] = ele['identifier']
-                            xref_dict['kegg'] = kegg_dict
+                            xrefs_dict['kegg'] = kegg_dict
                         elif ele[x] == "KEGG Compound":
                             kegg_dict['cid'] = ele['identifier']
-                            xref_dict['kegg'] = kegg_dict
+                            xrefs_dict['kegg'] = kegg_dict
                         elif ele[x] == "PharmGKB":
-                            xref_dict['pharmgkb'] = ele['identifier']
+                            xrefs_dict['pharmgkb'] = ele['identifier']
                         elif ele[x] == "Wikipedia":
                             wiki_dict = {'url_stub': ele['identifier']}
-                            xref_dict['wikipedia'] = wiki_dict
+                            xrefs_dict['wikipedia'] = wiki_dict
                         elif ele[x] == "ChemSpider":
-                            xref_dict['chemspider'] = ele['identifier']
+                            xrefs_dict['chemspider'] = ele['identifier']
                         elif ele[x] == "ChEBI":
-                            xref_dict['chebi'] = 'CHEBI:' + str(ele['identifier'])
+                            xrefs_dict['chebi'] = 'CHEBI:' + str(ele['identifier'])
                         elif ele[x] == "PubChem Compound":
-                            xref_pubchem_dict['cid'] = ele['identifier']
+                            xrefs_pubchem_dict['cid'] = ele['identifier']
                         elif ele[x] == "PubChem Substance":
-                            xref_pubchem_dict['sid'] = ele['identifier']
+                            xrefs_pubchem_dict['sid'] = ele['identifier']
                         else:
                             source = ele[x].lower().replace('-','_').replace(' ','_')
-                            xref_dict[source] = ele['identifier']
+                            xrefs_dict[source] = ele['identifier']
 
         elif key == 'external-links' and value:
             if isinstance(value['external-link'],list):
@@ -392,7 +392,7 @@ def restructure_dict(dictionary):
                     for x in ele:
                         try:
                             resource = ele['resource']
-                            xref_dict[resource.lower().replace('.','_')] = ele['url']
+                            xrefs_dict[resource.lower().replace('.','_')] = ele['url']
                         except:
                             pass
             else:
@@ -504,7 +504,7 @@ def restructure_dict(dictionary):
                 restr_atccode_dict(value['atc-code'])
 
 
-    xref_dict['atc_codes'] = atccode_list
+    xrefs_dict['atc_codes'] = atccode_list
     d1['targets'] = targets_list
     d1['carriers'] = carriers_list
     d1['enzymes'] = enzymes_list
@@ -512,9 +512,9 @@ def restructure_dict(dictionary):
     d1['predicted_properties'] = pred_properties_dict
     d1['experimental_properties'] = exp_prop_dict
     d1['products'] = products_list
-    if xref_pubchem_dict:
-        xref_dict['pubchem'] = xref_pubchem_dict
-    d1['xref'] = xref_dict
+    if xrefs_pubchem_dict:
+        xrefs_dict['pubchem'] = xrefs_pubchem_dict
+    d1['xrefs'] = xrefs_dict
     restr_dict['drugbank'] = d1
     restr_dict = unlist(restr_dict, [
         "drugbank.accession_number",
@@ -543,8 +543,8 @@ def restructure_dict(dictionary):
                                  "drugbank.predicted_properties.h_bond_acceptor_count",
                                  "drugbank.predicted_properties.h_bond_donor_count",
                                  "drugbank.predicted_properties.number_of_rings",
-                                 "drugbank.xref.guide_to_pharmacology",
-                                 "drugbank.xref.iuphar"])
+                                 "drugbank.xrefs.guide_to_pharmacology",
+                                 "drugbank.xrefs.iuphar"])
     # 'float' types
     restr_dict = float_convert(restr_dict,
                                include_keys=[

@@ -150,15 +150,15 @@ def to_list(_key):
     else:
         return _key
 
-def xref_2_inchikey(xref_dict):
-    xref_key_list = ['unii', 'drugbank_id', 'chembl_id', 'chebi', 'pubchem_cid']
+def xrefs_2_inchikey(xrefs_dict):
+    xrefs_key_list = ['unii', 'drugbank_id', 'chembl_id', 'chebi', 'pubchem_cid']
     mychem_filed_dict = {'unii': 'unii.unii:', 'chebi': 'chebi.chebi_id:"', 'pubchem_cid': 'pubchem.cid:"CID','chembl_id': 'chembl.molecule_chembl_id:"', 'drugbank_id': 'drugbank.accession_number:"'}
     mychem_query = 'http://mychem.info/v1/query?q='
     result = None
-    for _key in xref_key_list:
-        if _key in xref_dict:
-            for _xref in to_list(xref_dict[_key]):
-                query_url = mychem_query + mychem_filed_dict[_key] + _xref + '"'
+    for _key in xrefs_key_list:
+        if _key in xrefs_dict:
+            for _xrefs in to_list(xrefs_dict[_key]):
+                query_url = mychem_query + mychem_filed_dict[_key] + _xrefs + '"'
                 json_doc = requests.get(query_url).json()
                 if 'hits' in json_doc and json_doc['hits']:
                     if len(json_doc['hits']) == 1:
@@ -191,11 +191,11 @@ def load_data():
                     "drug_dosage": drug_dosage.get(struc_id, {}),
                     "synonyms": synonyms.get(struc_id, {}),
                     "structures": structures.get(struc_id, {}),
-                    "xref": identifiers.get(struc_id, {})
+                    "xrefs": identifiers.get(struc_id, {})
                 }
             }
         else:
-            _id = xref_2_inchikey(identifiers.get(struc_id, {}))
+            _id = xrefs_2_inchikey(identifiers.get(struc_id, {}))
             if not _id:
                 _id = 'DrugCentral:' + str(struc_id)
             _doc = {
@@ -209,7 +209,7 @@ def load_data():
                     "drug_dosage": drug_dosage.get(struc_id, {}),
                     "synonyms": synonyms.get(struc_id, {}),
                     "structures": structures.get(struc_id, {}),
-                    "xref": identifiers.get(struc_id, {})
+                    "xrefs": identifiers.get(struc_id, {})
                 }
             }
         _doc = (dict_sweep(unlist(_doc), [None]))

@@ -261,7 +261,7 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                         "oral": {
                                 "type": "boolean"
                                 },
-                        "xref": {
+                        "xrefs": {
                                 "properties": {
                                     "drugcentral": {
                                         "properties": {
