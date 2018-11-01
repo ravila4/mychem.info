@@ -56,7 +56,7 @@ class SiderUploader(BaseDrugUploader):
     name = "sider"
     #storage_class = storage.IgnoreDuplicatedStorage
     __metadata__ = {"src_meta" : SRC_META}
-    keylookup = MyChemKeyLookup([("sider","_id")],
+    keylookup = MyChemKeyLookup([("pubchem","_id")],
                     idstruct_class=SiderIDStruct)
 
     def load_data(self,data_folder):

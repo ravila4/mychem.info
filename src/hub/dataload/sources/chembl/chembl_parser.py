@@ -24,6 +24,7 @@ def restructure_xref(xref_list):
     """
     xref_output = defaultdict(list)
     for _record in xref_list:
+        # note that the 'xref' field names are from the chembl datasource, not the parser
         if 'xref_src' in _record and _record['xref_src'] == 'PubChem':
             assert _record['xref_name'].startswith('SID: ')
             xref_output['pubchem'].append({'sid': int(_record['xref_id'])})
@@ -59,7 +60,7 @@ def restructure_dict(dictionary):
     if _flag == 0:
         restr_dict['chembl'] = dictionary
     if 'cross_references' in restr_dict['chembl'] and restr_dict['chembl']['cross_references']:
-        restr_dict['chembl']['xref'] = restructure_xref(restr_dict['chembl']['cross_references'])
+        restr_dict['chembl']['xrefs'] = restructure_xref(restr_dict['chembl']['cross_references'])
 
     del restr_dict['chembl']['molecule_structures']
     del restr_dict['chembl']['cross_references']

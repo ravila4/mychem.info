@@ -355,7 +355,7 @@ class DrugCentralUploader(uploader.DummySourceUploader):
                             "type": "text",
                             'copy_to': ['all'],
                             },
-                    "xref": {
+                    "xrefs": {
                             "properties": {
                                 "pubchem_cid": {
                                     "normalizer": "keyword_lowercase_normalizer",
