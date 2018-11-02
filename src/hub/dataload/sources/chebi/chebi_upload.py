@@ -34,11 +34,11 @@ class ChebiUploader(BaseDrugUploader):
             copy_from_doc=True)
 
     @ExcludeFieldsById(exclusion_ids, [
-        "chebi.xref.intenz",
-        "chebi.xref.rhea",
-        "chebi.xref.uniprot",
-        "chebi.xref.sabio_rk",
-        "chebi.xref.patent",
+        "chebi.xrefs.intenz",
+        "chebi.xrefs.rhea",
+        "chebi.xrefs.uniprot",
+        "chebi.xrefs.sabio_rk",
+        "chebi.xrefs.patent",
     ])
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)

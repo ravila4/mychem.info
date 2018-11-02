@@ -4,10 +4,12 @@ import zipfile
 import pymongo
 
 from .sider_parser import load_data
+from .exclusion_ids import exclusion_ids
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.mongo import get_src_db
 from biothings.hub.datatransform import IDStruct
+from mychem_utils import ExcludeFieldsById
 
 from hub.datatransform.keylookup import MyChemKeyLookup
 
@@ -59,6 +61,7 @@ class SiderUploader(BaseDrugUploader):
     keylookup = MyChemKeyLookup([("pubchem","_id")],
                     idstruct_class=SiderIDStruct)
 
+    @ExcludeFieldsById(exclusion_ids, ["sider"])
     def load_data(self,data_folder):
         input_file = os.path.join(data_folder,"merged_freq_all_se_indications.tsv")
         self.logger.info("Load data from file '%s'" % input_file)
