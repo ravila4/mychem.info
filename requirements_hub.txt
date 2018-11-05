@@ -15,19 +15,7 @@
 #       require their own modules to run. Check their
 #       __METADATA__ setting for required modules.
 
-elasticsearch==2.0.0
-requests==2.8.1
-mongokit>=0.9.1.1
-pymongo>=3.2
-bitarray==0.8.1    # used in utils.validate module
-asyncssh==1.7.1 # ssh hub console
-boto # interaction with AWS
-jsonpointer==1.10 # applying JSON patches
 xmltodict==0.11.0 # drugbank parsing
 beautifulsoup4==4.5.1 # drugbank dumper
 lxml # bs4 html parsing (note: no version avail to set it fixed)
 pandas==0.19.1 # sider parser
-aiocron
-IPython
-pympler
-
