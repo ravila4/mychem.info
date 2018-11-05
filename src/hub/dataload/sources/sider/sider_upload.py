@@ -59,6 +59,7 @@ class SiderUploader(BaseDrugUploader):
     __metadata__ = {"src_meta" : SRC_META}
     keylookup = MyChemKeyLookup([("pubchem","_id")],
                     idstruct_class=SiderIDStruct)
+    max_lst_size = 2000
 
     def load_data(self,data_folder):
         input_file = os.path.join(data_folder,"merged_freq_all_se_indications.tsv")
@@ -68,6 +69,7 @@ class SiderUploader(BaseDrugUploader):
             # sort the 'sider' list by "sider.side_effect.frequency" and "sider.side_effect.name"
             doc['sider'] = sorted(doc['sider'],
                                   key=lambda x: sort_key(x))
+            doc['sider'] = doc['sider'][:self.max_lst_size]
             yield doc
 
     @classmethod
