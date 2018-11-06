@@ -62,9 +62,3 @@ DATA_TARGET_SERVER_PASSWORD = ''
 
 DATA_ARCHIVE_ROOT = '/path/to/data/folder'
 DIFF_PATH = os.path.join(DATA_ARCHIVE_ROOT,"diff")
-
-# *****************************************************************************
-# ID Exclusion List
-# *****************************************************************************
-from exclusion_ids import exclusion_ids
-EXCLUSION_IDS = exclusion_ids

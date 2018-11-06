@@ -1,12 +1,12 @@
-# _id, count
+# _id, name, count
 exclusion_data = [
-("NOOLISFMXDJSKH-KXUCPTDWSA-N", 3137),
-("PUZPDOWCWNUUKD-UHFFFAOYSA-M", 1566),
-("CIWBSHSKHKDKBQ-JLAZNSOCSA-N", 1377),
-("FAPWRFPIFSIZLT-UHFFFAOYSA-M", 1296),
-("PUZPDOWCWNUUKD-UHFFFAOYSA-M", 1566),
-("WCUXLLCKKVVCTQ-UHFFFAOYSA-M", 1007),
-("LFQSCWFLJHTTHZ-UHFFFAOYSA-N", 3398),
+("NOOLISFMXDJSKH-KXUCPTDWSA-N", "(Menthol),(Menthol),(Menthol)", 3137),
+("PUZPDOWCWNUUKD-UHFFFAOYSA-M", "(Neutral Sodium Fluoride),(Sodium fluoride),(Sodium Fluoride),(Sodium fluoride)", 1566),
+("CIWBSHSKHKDKBQ-JLAZNSOCSA-N", "(Vitamin C),(Ascorbic Acid),(Vitamin C)", 1377),
+("FAPWRFPIFSIZLT-UHFFFAOYSA-M", "(sodium chloride),(Sodium Chloride),(Sodium Chloride),(Sodium Chloride)", 1296),
+("PUZPDOWCWNUUKD-UHFFFAOYSA-M", "(Neutral Sodium Fluoride),(Sodium fluoride),(Sodium Fluoride),(Sodium fluoride)", 1566),
+("WCUXLLCKKVVCTQ-UHFFFAOYSA-M", "(Potassium Chloride),(Potassium Chloride),(Potassium Chloride)", 1007),
+("LFQSCWFLJHTTHZ-UHFFFAOYSA-N", "(ethanol),(Ethanol),(ethanol),(ALCOHOL),(Ethanol),(Ethanol)", 3398)
     ]
 
-exclusion_ids = [x for x, y in exclusion_data]
+exclusion_ids = [x for x, _, _ in exclusion_data]

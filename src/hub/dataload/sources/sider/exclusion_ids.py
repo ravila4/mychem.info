@@ -1,8 +1,8 @@
-# _id, count
+# _id, name, count
 exclusion_data = [
-("FDEXGLDEAIYGJL-PGRJIUKWSA-N", 2292),
-("NQOPXAFKSVKFNL-ILZDJORESA-N", 1733),
-("FLSVFIUHBMFIDF-BPUDTRNYSA-N", 1311)
+("FDEXGLDEAIYGJL-PGRJIUKWSA-N", "(N/A)", 2292),
+("NQOPXAFKSVKFNL-ILZDJORESA-N", "(N/A)", 1733),
+("FLSVFIUHBMFIDF-BPUDTRNYSA-N", "(N/A)", 1311)
 ]
 
-exclusion_ids = [x for x, y in exclusion_data]
+exclusion_ids = [x for x, _, _ in exclusion_data]

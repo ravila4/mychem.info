@@ -1,9 +1,9 @@
-# _id, count
+# _id, name, count
 exclusion_data = [
-("XLOMVQKBTHCTTD-UHFFFAOYSA-N", 3427),
-("DXGLGDHPHMLXJC-UHFFFAOYSA-N", 3003),
-("LFQSCWFLJHTTHZ-UHFFFAOYSA-N", 2948),
-("NOOLISFMXDJSKH-KXUCPTDWSA-N", 2501)
-]
+("XLOMVQKBTHCTTD-UHFFFAOYSA-N", "(octinoxate, zinc oxide),(Zinc oxide),(Zinc oxide)", 3427),
+("DXGLGDHPHMLXJC-UHFFFAOYSA-N", "(Solbar Thirty SPF30),(Oxybenzone),(Oxybenzone)", 3003),
+("LFQSCWFLJHTTHZ-UHFFFAOYSA-N", "(ethanol),(Ethanol),(ethanol),(ALCOHOL),(Ethanol),(Ethanol)", 2948),
+("NOOLISFMXDJSKH-KXUCPTDWSA-N", "(Menthol),(Menthol),(Menthol)", 2501),
+    ]
 
-exclusion_ids = [x for x, y in exclusion_data]
+exclusion_ids = [x for x, _, _ in exclusion_data]
