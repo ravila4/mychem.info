@@ -9,7 +9,7 @@ jQuery(document).ready(function() {
     if( jQuery(' .metadata-table ').length ) {
         // get the metadata information
         jQuery.ajax({
-            url: "mychem.info/v1/metadata",
+            url: "//mychem.info/v1/metadata",
             dataType: "JSONP",
             jsonpCallback: "callback",
             type: "GET",
@@ -30,7 +30,7 @@ jQuery(document).ready(function() {
                     }
                 });
                 jQuery.ajax({
-                    url: "mychem.info/v1/metadata/fields",
+                    url: "//mychem.info/v1/metadata/fields",
                     dataType: "JSONP",
                     jsonpCallback: "callback",
                     type: "GET",
@@ -62,7 +62,7 @@ jQuery(document).ready(function() {
     if ((jQuery('#all-releases').length)) {
         // load releases
         jQuery.ajax({
-            url: 'biothings-releases.s3-website-us-west-2.amazonaws.com/mychem.info/versions.json',
+            url: '//biothings-releases.s3-website-us-west-2.amazonaws.com/mychem.info/versions.json',
             cache: false,
             type: "GET",
             dataType: "json",
