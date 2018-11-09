@@ -9,7 +9,7 @@ jQuery(document).ready(function() {
     if( jQuery(' .metadata-table ').length ) {
         // get the metadata information
         jQuery.ajax({
-            url: "https://mychem.info/v1/metadata",
+            url: "mychem.info/v1/metadata",
             dataType: "JSONP",
             jsonpCallback: "callback",
             type: "GET",
@@ -19,11 +19,18 @@ jQuery(document).ready(function() {
                 jQuery.each(jQuery(' .metadata-table tbody tr '), function(index, row) {
                     var thisRow = jQuery(' .metadata-table tbody tr:nth-child(' + (index + 1).toString() + ')');
                     var thisKey = thisRow.children(' :nth-child(4) ').text();
-                    if(thisKey in data["src_version"]) {thisRow.children(' :nth-child(2) ').html(data["src_version"][thisKey]);}
-                    if(thisKey in data["stats"]) {thisRow.children(' :nth-child(3) ').html(numberWithCommas(data["stats"][thisKey]));}
+                    if (thisKey in data["src"]) {
+                        if  ('version' in data['src'][thisKey]) {
+                            thisRow.children(' :nth-child(2) ').html(data["src"][thisKey]["version"]);
+                        }
+                        if (('stats' in data['src'][thisKey]) && 
+                            (thisKey in data['src'][thisKey]['stats'])) {
+                            thisRow.children(' :nth-child(3) ').html(numberWithCommas(data['src'][thisKey]["stats"][thisKey]));
+                        }
+                    }
                 });
                 jQuery.ajax({
-                    url: "https://mychem.info/v1/metadata/fields",
+                    url: "mychem.info/v1/metadata/fields",
                     dataType: "JSONP",
                     jsonpCallback: "callback",
                     type: "GET",
@@ -55,7 +62,7 @@ jQuery(document).ready(function() {
     if ((jQuery('#all-releases').length)) {
         // load releases
         jQuery.ajax({
-            url: 'https://biothings-releases.s3-website-us-west-2.amazonaws.com/mychem.info/versions.json',
+            url: 'biothings-releases.s3-website-us-west-2.amazonaws.com/mychem.info/versions.json',
             cache: false,
             type: "GET",
             dataType: "json",
