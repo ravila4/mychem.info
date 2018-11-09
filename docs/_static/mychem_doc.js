@@ -15,7 +15,9 @@ jQuery(document).ready(function() {
             type: "GET",
             success: function(data) {
                 // Set the total number of chems
-                jQuery(' .metadata-table p strong ').html(numberWithCommas(data["stats"]["total"]));
+                if (('stats' in data) && ('total' in data['stats'])) {
+                    jQuery(' .metadata-table p strong ').html(numberWithCommas(data["stats"]["total"]));
+                }
                 jQuery.each(jQuery(' .metadata-table tbody tr '), function(index, row) {
                     var thisRow = jQuery(' .metadata-table tbody tr:nth-child(' + (index + 1).toString() + ')');
                     var thisKey = thisRow.children(' :nth-child(4) ').text();
