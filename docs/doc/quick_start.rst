@@ -41,14 +41,14 @@ URL
 
     http://mychem.info/v1/chem/<chem_id>
 
-*\<chem_id\>* is any of several common chemical identifiers: 
-
-* `InChiKey <https://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey>`_,
-* `DrugBank accession number <https://www.drugbank.ca/documentation>`_, 
-* `ChEMBLID <https://www.ebi.ac.uk/chembl/faq#faq40>`_,
-* `ChEBI identifier <http://www.ebi.ac.uk/chebi/aboutChebiForward.do>`_, 
-* `PubChem CID <https://pubchem.ncbi.nlm.nih.gov/search/help_search.html#Cid>`_, 
-* `UNII <https://www.fda.gov/ForIndustry/DataStandards/SubstanceRegistrationSystem-UniqueIngredientIdentifierUNII/>`_.
+``<chem_id>`` can be any one of several common chemical identifiers:
+ 
+    * `InChIKey <https://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey>`_,
+    * `DrugBank accession number <https://www.drugbank.ca/documentation>`_, 
+    * `ChEMBLID <https://www.ebi.ac.uk/chembl/faq#faq40>`_,
+    * `ChEBI identifier <http://www.ebi.ac.uk/chebi/aboutChebiForward.do>`_, 
+    * `PubChem CID <https://pubchem.ncbi.nlm.nih.gov/search/help_search.html#Cid>`_, 
+    * `UNII <https://www.fda.gov/ForIndustry/DataStandards/SubstanceRegistrationSystem-UniqueIngredientIdentifierUNII/>`_.
 
 Examples
 """"""""

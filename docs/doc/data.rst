@@ -23,11 +23,12 @@ keep them up-to-date, so that you don't have to do it:
 .. _SIDER: http://sideeffects.embl.de/
 .. _UNII: https://fdasis.nlm.nih.gov/srs/
 
+
 .. raw:: html
 
     <div class='metadata-table'>
 
-Total Chemicals loaded: **99**
+Total Chemicals loaded: **N/A**
 
 +--------------------------------+---------------+---------------------------+----------------------------+
 | Source                         | version       | # of chemicals            | key name*                  |
@@ -55,6 +56,7 @@ Total Chemicals loaded: **99**
 | `UNII`_                        | \-            | 0                         | unii                       |
 +--------------------------------+---------------+---------------------------+----------------------------+
 
+
 .. raw:: html
 
     </div>
@@ -66,7 +68,7 @@ The most updated information can be accessed `here <http://mychem.info/v1/metada
 .. note:: Each data source may have its own usage restrictions. Please refer to the data source pages above for their specific restrictions.
 
 
-.. _chem_object:
+.. _chemical_object:
 
 Chemical object
 ---------------
@@ -74,7 +76,8 @@ Chemical object
 Chemical annotation data are both stored and returned as a chemical object, which
 is essentially a collection of fields (attributes) and their values:
 
-.. code-block :: json
+.. code-block:: json
+
 
     {
       "_id": "KTUFNOKKBVMGRW-UHFFFAOYSA-N",
@@ -102,7 +105,13 @@ check out `this example chemical <http://mychem.info/v1/chem/KTUFNOKKBVMGRW-UHFF
 _id field
 ---------
 
-Each individual chemical object contains an "**_id**" field as the primary key. 
+Each individual chemical object contains an "**_id**" field as the primary key.  Where possible, MyChem.info chemical objects use `InChIKey <https://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey>`_ (a 27 character hash of the International Chemical Identifier) as their "**_id**".  If an InChIKey isn't available, any one of the following datasource IDs may be used:
+
+    * `DrugBank accession number <https://www.drugbank.ca/documentation>`_,
+    * `ChEMBLID <https://www.ebi.ac.uk/chembl/faq#faq40>`_,
+    * `ChEBI identifier <http://www.ebi.ac.uk/chebi/aboutChebiForward.do>`_,
+    * `PubChem CID <https://pubchem.ncbi.nlm.nih.gov/search/help_search.html#Cid>`_,
+    * `UNII <https://www.fda.gov/ForIndustry/DataStandards/SubstanceRegistrationSystem-UniqueIngredientIdentifierUNII/>`__.
 
 _score field
 ------------

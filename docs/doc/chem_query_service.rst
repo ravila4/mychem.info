@@ -29,7 +29,7 @@ q
 
 fields
 """"""
-    Optional, a comma-separated string to limit the fields returned from the matching chemical hits. The supported field names can be found from any chemical object (e.g. `here <http://mychem.info/v1/chem/chr16:g.28883241A%3EG>`_). Note that it supports dot notation, and wildcards as well, e.g., you can pass "dbnsfp", "dbnsfp.genename", or "dbnsfp.aa.*". If "fields=all", all available fields will be returned. Default: "all".
+    Optional, a comma-separated string to limit the fields returned from the matching chemical hits. The supported field names can be found from any chemical object (e.g. `here <http://mychem.info/v1/chem/MNJVRJDLRVPLFE-UHFFFAOYSA-N>`_). Note that it supports dot notation, and wildcards as well, e.g., you can pass "drugbank", "drugbank.name", or "dbnsfp.products.*". If "fields=all", all available fields will be returned. Default: "all".
 
 size
 """"
@@ -43,8 +43,8 @@ from
 
 ::
 
-    q=cdk*&size=50                     first 50 hits
-    q=cdk*&size=50&from=50             the next 50 hits
+    q=drugbank.name:acid*&size=50                     first 50 hits
+    q=drugbank.name:acid*&size=50&from=50             the next 50 hits
 
 fetch_all
 """""""""
@@ -60,7 +60,7 @@ sort
 
 facets
 """"""
-    Optional, a single field or comma-separated fields to return facets, for example, "facets=cadd", "facets=cadd,dbsnp.vartype". See `examples of faceted queries here <#faceted-queries>`_.
+    Optional, a single field or comma-separated fields to return facets, can only be used on non-free text fields.  E.g. "facets=chembl.molecule_properties.full_mwt".  See `examples of faceted queries here <#faceted-queries>`_.
 
 facet_size
 """"""""""
@@ -89,21 +89,20 @@ Simple queries
 
 search for everything::
 
-    q=rs58991260                        # search for rsid
+    q=imatinib                        # search all default fields for term
 
 
 Fielded queries
 """""""""""""""
 ::
 
-    q=chr1:69000-70000                        # for a genomic range
-    q=dbsnp.vartype:snp                       # for matching value on a specific field
+    q=chebi.xref.uniprot:P80175               # for matching value on a specific field
     
-    q=dbnsfp.polyphen2.hdiv.pred:(D P)        # multiple values for a field
-    q=dbnsfp.polyphen2.hdiv.pred:(D OR P)     # multiple values for a field using OR
+    q=drugbank.name:(acid alcohol)            # multiple values for a field
+    q=drugbank.name:(acid OR alcohol)         # multiple values for a field using OR
     
-    q=_exists_:dbsnp                          # having dbsnp field
-    q=_missing_:exac                          # missing exac field
+    q=_exists_:pubchem                        # having pubchem field
+    q=NOT _exists_:drugbank                   # missing drugbank field
     
 
 .. Hint:: For a list of available fields, see :ref:`here <available_fields>`. 
@@ -113,21 +112,18 @@ Range queries
 """""""""""""
 ::
 
-    q=dbnsfp.polyphen2.hdiv.score:>0.99
-    q=dbnsfp.polyphen2.hdiv.score:>=0.99
-    q=exac.af:<0.00001
-    q=exac.af:<=0.00001
+    q=pubchem.exact_mass:<200
+    q=pubchem.exact_mass:>=500
     
-    q=exac.ac.ac_adj:[76640 TO 80000]        # bounded (including 76640 and 80000)
-    q=exac.ac.ac_adj:{76640 TO 80000}        # unbounded
+    q=pubchem.exact_mass:[200 TO 500]         # bounded (including 200 and 500)
+    q=pubchem.exact_mass:{200 TO 500}        # unbounded
     
 
 Wildcard queries
 """"""""""""""""
 Wildcard character "*" or "?" is supported in either simple queries or fielded queries::
     
-    q=dbnsfp.genename:CDK?
-    q=dbnsfp.genename:CDK*
+    q=drugbank.name:acid*
 
 .. note:: Wildcard character can not be the first character. It will be ignored.
 
@@ -138,27 +134,44 @@ If you want to return ALL results of a very large query, sometimes the paging me
 This is a two-step process that turns off database sorting to allow very fast retrieval of all query results.  To begin a scrolling query, you first call the query
 endpoint as you normally would, but with an extra parameter **fetch_all** = TRUE.  For example, a GET request to::
 
-    http://mychem.info/v1/query?q=cadd.phred:>50&fetch_all=TRUE
+    http://mychem.info/v1/query?q=_exists_:drugbank&fields=drugbank.name&fetch_all=TRUE
 
 Returns the following object:
 
 .. code-block:: json
 
+
     {
-      "_scroll_id": "c2NhbjsxMDs5MjQ2OTc2Ok5nM0d0czYzUlcyU0dUU1dFemo5Mmc7MTE1NTgyNjA6RV9La1c5WklSQy16cVFuRXFzcEV3dzs5MjQ2ODc0Ok5uQkVpaEg5Uk9pYjA4ZVQ3RVh5TWc7OTI0Njg3MTpObkJFaWhIOVJPaWIwOGVUN0VYeU1nOzkyNDY4NzI6Tm5CRWloSDlST2liMDhlVDdFWHlNZzs5MjQ3Mjc3OjRNV2NtY1A5VFdPLUotSmM4a0w1Z0E7OTI0Njk3NzpOZzNHdHM2M1JXMlNHVFNXRXpqOTJnOzkyNDY4NzM6Tm5CRWloSDlST2liMDhlVDdFWHlNZzs5MjQ3MDgxOjE3MEZxVWRXU3BTdC1DMmdYeHdHNXc7MTE1NTgyNTk6RV9La1c5WklSQy16cVFuRXFzcEV3dzsxO3RvdGFsX2hpdHM6NTg3NTk7",
+      "_scroll_id": "cXVlcnlUaGVuRmV0Y2g7MTA7Njg4ODAwOTI6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDA5MTpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDkzOkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTQ6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDEwMDpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDk2OkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTg6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDA5NzpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDk5OkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTU6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzswOw==",
+      "max_score": 1.0,
+      "took": 2042,
+      "total": 11290,
       "hits": [
+        {
+          "_id": "SDUQYLNIPVEERB-QPPQHZFASA-N",
+          "_score": 1.0,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Gemcitabine"
+          }
+        },
+        {
+          "_id": "SESFRYSPDFLNCH-UHFFFAOYSA-N",
+          "_score": 1.0,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Benzyl Benzoate"
+          }
+        },
         .
         .
         .
       ],
-      "max_score": 0.0,
-      "took": 84,
-      "total": 58759
     }
 
-At this point, the first 1000 hits have been returned (of ~58,000 total), and a scroll has been set up for your query.  To get the next batch of 1000 unordered results, simply execute a GET request to the following address, supplying the _scroll_id from the first step into the **scroll_id** parameter in the second step::
+At this point, the first 1000 hits have been returned (of ~11,000 total), and a scroll has been set up for your query.  To get the next batch of 1000 unordered results, simply execute a GET request to the following address, supplying the _scroll_id from the first step into the **scroll_id** parameter in the second step::
 
-    http://mychem.info/v1/query?scroll_id=c2NhbjsxMDsxMTU1NjY5MTpxSnFkTFdVQlJ6T1dRVzNQaWRzQkhROzExNTU4MjYxOkVfS2tXOVpJUkMtenFRbkVxc3BFd3c7MTE1NTY2OTI6cUpxZExXVUJSek9XUVczUGlkc0JIUTsxMTU1NjY5MDpxSnFkTFdVQlJ6T1dRVzNQaWRzQkhROzkyNDcyNzg6NE1XY21jUDlUV08tSi1KYzhrTDVnQTs5MjQ2OTc4Ok5nM0d0czYzUlcyU0dUU1dFemo5Mmc7OTI0NzI3OTo0TVdjbWNQOVRXTy1KLUpjOGtMNWdBOzkyNDY4NzU6Tm5CRWloSDlST2liMDhlVDdFWHlNZzs5MjQ3MTEyOlpQb3M5cDh6VDMyNnczenFhMW1hcVE7OTI0NzA4MjoxNzBGcVVkV1NwU3QtQzJnWHh3RzV3OzE7dG90YWxfaGl0czo1ODc1OTs=
+    http://mychem.info/v1/query?scroll_id=cXVlcnlUaGVuRmV0Y2g7MTA7Njg4ODAwOTI6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDA5MTpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDkzOkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTQ6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDEwMDpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDk2OkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTg6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDA5NzpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDk5OkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTU6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzswOw==
 
 .. Hint:: Your scroll will remain active for 1 minute from the last time you requested results from it.  If your scroll expires before you get the last batch of results, you must re-request the scroll_id by setting **fetch_all** = TRUE as in step 1.
 
@@ -167,9 +180,9 @@ Boolean operators and grouping
 
 You can use **AND**/**OR**/**NOT** boolean operators and grouping to form complicated queries::
 
-    q=dbnsfp.polyphen2.hdiv.score:>0.99 AND chrom:1                        AND operator
-    q=_exists_:dbsnp AND NOT dbsnp.vartype:indel                           NOT operator
-    q=_exists_:dbsnp AND (NOT dbsnp.vartype:indel)                         grouping with ()
+    q=_exists_:drugbank AND _exists_:pubchem                               AND operator
+    q=_exists_:drugbank AND NOT _exists_:pubchem                           NOT operator
+    q=_exists_:drugbank OR (_exists_:chebi AND _exists_:pubchem)           grouping with ()
     
     
 Escaping reserved characters
@@ -185,109 +198,170 @@ Returned object
 
 A GET request like this::
 
-    http://mychem.info/v1/query?q=chr1:69500-70000&fields=cadd.gene
+    http://mychem.info/v1/query?q=drugbank.name:acid&fields=drugbank.name
 
 should return hits as:
 
 .. code-block:: json
 
+    {
+      "max_score": 7.929331,
+      "took": 102,
+      "total": 1063,
+      "hits": [
         {
-          "hits": [
-            {
-              "_id": "chr1:g.69511A>G",
-              "_score": 7.2999496,
-              "cadd": {
-                "gene": {
-                  "ccds_id": "CCDS30547.1",
-                  "cds": {
-                    "cdna_pos": 421,
-                    "cds_pos": 421,
-                    "rel_cdna_pos": 0.46,
-                    "rel_cds_pos": 0.46
-                  },
-                  "feature_id": "ENST00000335137",
-                  "gene_id": "ENSG00000186092",
-                  "genename": "OR4F5",
-                  "prot": {
-                    "domain": "tmhmm",
-                    "protpos": 141,
-                    "rel_prot_pos": 0.46
-                  }
-                }
-              }
-            },
-            {
-              "_id": "chr1:g.69538G>A",
-              "_score": 0.78757036,
-              "cadd": {
-                "gene": {
-                  "ccds_id": "CCDS30547.1",
-                  "cds": {
-                    "cdna_pos": 448,
-                    "cds_pos": 448,
-                    "rel_cdna_pos": 0.49,
-                    "rel_cds_pos": 0.49
-                  },
-                  "feature_id": "ENST00000335137",
-                  "gene_id": "ENSG00000186092",
-                  "genename": "OR4F5",
-                  "prot": {
-                    "domain": "ndomain",
-                    "protpos": 150,
-                    "rel_prot_pos": 0.49
-                  }
-                }
-              }
-            }
-          ],
-          "max_score": 7.2999496,
-          "took": 2325,
-          "total": 2
+          "_id": "BDAGIHXWWSANSR-UHFFFAOYSA-N",
+          "_score": 7.929331,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Formic Acid"
+          }
+        },
+        {
+          "_id": "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
+          "_score": 7.929331,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Acetylsalicylic acid"
+          }
+        },
+        {
+          "_id": "KGBXLFKZBHKPEV-UHFFFAOYSA-N",
+          "_score": 7.929331,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Boric acid"
+          }
+        },
+        {
+          "_id": "LPEPZBJOKDYZAD-UHFFFAOYSA-N",
+          "_score": 7.929331,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Flufenamic Acid"
+          }
+        },
+        {
+          "_id": "JXMIBUGMYLQZGO-UHFFFAOYSA-N",
+          "_score": 7.929331,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Iotroxic acid"
+          }
+        },
+        {
+          "_id": "HXQVQGWHFRNKMS-UHFFFAOYSA-M",
+          "_score": 7.929331,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Ethylmercurithiosalicylic acid"
+          }
+        },
+        {
+          "_id": "LOAUVZALPPNFOQ-UHFFFAOYSA-N",
+          "_score": 7.929331,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Quinaldic Acid"
+          }
+        },
+        {
+          "_id": "LDKRAXXVBWHMRH-UHFFFAOYSA-N",
+          "_score": 7.929331,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Phosphonoacetohydroxamic Acid"
+          }
+        },
+        {
+          "_id": "GWYFCOCPABKNJV-UHFFFAOYSA-N",
+          "_score": 7.929331,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Isovaleric Acid"
+          }
+        },
+        {
+          "_id": "HJZKOAYDRQLPME-UHFFFAOYSA-N",
+          "_score": 7.929331,
+          "drugbank": {
+            "_license": "https://goo.gl/kvVASD",
+            "name": "Oxidronic acid"
+          }
         }
+      ]
+    }
 
 "**total**" in the output gives the total number of matching hits, while the actual hits are returned under "**hits**" field. "**size**" parameter controls how many hits will be returned in one request (default is 10). Adjust "**size**" parameter and "**from**" parameter to retrieve the additional hits.
 
 Faceted queries
 ----------------
-If you need to perform a faceted query, you can pass an optional "`facets <#facets>`_" parameter. For example, if you want to get the facets on species, you can pass "facets=taxid":
+If you need to perform a faceted query, you can pass an optional "`facets <#facets>`_" parameter.
 
 A GET request like this::
 
-    http://mychem.info/v1/query?q=cadd.gene.gene_id:ENSG00000113368&facets=cadd.polyphen.cat&size=0
+    http://mychem.info/v1/query?q=drugbank.name:acid&fields=drugbank.name&facets=drugbank.targets.organism&size=0
 
 should return hits as:
 
 .. code-block:: json
         
-        {
-          "facets": {
-            "cadd.polyphen.cat": {
-              "_type": "terms",
-              "missing": 797,
-              "other": 0,
-              "terms": [
-                {
-                  "count": 1902,
-                  "term": "benign"
-                },
-                {
-                  "count": 998,
-                  "term": "probably_damaging"
-                },
-                {
-                  "count": 762,
-                  "term": "possibly_damaging"
-                }
-              ],
-              "total": 3662
+    {
+      "facets": {
+        "drugbank.targets.organism": {
+          "other": 1782,
+          "_type": "terms",
+          "missing": 8,
+          "total": 1483,
+          "terms": [
+            {
+              "count": 545,
+              "term": "human"
+            },
+            {
+              "count": 250,
+              "term": "strain"
+            },
+            {
+              "count": 155,
+              "term": "escherichia"
+            },
+            {
+              "count": 154,
+              "term": "coli"
+            },
+            {
+              "count": 138,
+              "term": "k12"
+            },
+            {
+              "count": 79,
+              "term": "atcc"
+            },
+            {
+              "count": 54,
+              "term": "pseudomonas"
+            },
+            {
+              "count": 43,
+              "term": "dsm"
+            },
+            {
+              "count": 34,
+              "term": "bacillus"
+            },
+            {
+              "count": 31,
+              "term": "sp"
             }
-          },
-          "hits": [],
-          "max_score": 0.0,
-          "took": 29,
-          "total": 4459
+          ]
         }
-
+      },
+      "max_score": 0.0,
+      "took": 12,
+      "total": 1063,
+      "hits": []
+    }
 
 
 Batch queries via POST
@@ -308,16 +382,16 @@ Query parameters
 
 q
 """
-    Required, multiple query terms seperated by comma (also support "+" or white space), but no wildcard, e.g., 'q=rs58991260,rs2500'
+    Required, multiple query terms seperated by comma (also support "+" or white space), but no wildcard, e.g., 'q=SDUQYLNIPVEERB-QPPQHZFASA-N,SESFRYSPDFLNCH-UHFFFAOYSA-N'
 
 scopes
 """"""
-    Optional, specify one or more fields (separated by comma) as the search "scopes", e.g., "scopes=dbsnp.rsid", "scopes=dbsnp.rsid,dbnsfp.genename".  The available "fields" can be passed to "**scopes**" parameter are
+    Optional, specify one or more fields (separated by comma) as the search "scopes", e.g., "scopes=drugbank".  The available "fields" can be passed to "**scopes**" parameter are
     :ref:`listed here <available_fields>`. Default: 
 
 fields
 """"""
-    Optional, a comma-separated string to limit the fields returned from the matching chem hits. The supported field names can be found from any chemical object. Note that it supports dot notation, and wildcards as well, e.g., you can pass "dbnsfp", "dbnsfp.genename", or "dbnsfp.aa.*". If "fields=all", all available fields will be returned. Default: "all".
+    Optional, a comma-separated string to limit the fields returned from the matching chem hits. The supported field names can be found from any chemical object. Note that it supports dot notation, and wildcards as well, e.g., you can pass "drugbank", "drugbank.name", or "dbnsfp.products.*". If "fields=all", all available fields will be returned. Default: "all".
 
 email
 """"""
@@ -332,7 +406,7 @@ piece of code. Here is a sample python snippet::
     import httplib2
     h = httplib2.Http()
     headers = {'content-type': 'application/x-www-form-urlencoded'}
-    params = 'q=rs58991260,rs2500&scopes=dbsnp.rsid'
+    params = 'q=CHEBI:175901,CHEBI:41237&scopes=drugbank.chebi&fields=drugbank.name'
     res, con = h.request('http://mychem.info/v1/query', 'POST', params, headers=headers)
 
 
@@ -343,51 +417,27 @@ Returned result (the value of "con" variable above) from above example code shou
 
 .. code-block:: json
 
-        [
-        {'_id': 'chr1:g.218631822G>A',
-          'dbsnp': {'allele_origin': 'unspecified',
-           'alleles': [{'allele': 'G', 'freq': 0.9784},
-            {'allele': 'A', 'freq': 0.02157}],
-           'alt': 'A',
-           'chrom': '1',
-           'class': 'SNV',
-           'dbsnp_build': 129,
-           'flags': ['ASP', 'G5', 'G5A', 'GNO', 'KGPhase1', 'KGPhase3', 'SLO'],
-           'gmaf': 0.02157,
-           'hg19': {'end': 218631823, 'start': 218631822},
-           'ref': 'G',
-           'rsid': 'rs58991260',
-           'validated': True,
-           'var_subtype': 'ts',
-           'vartype': 'snp'},
-          'query': 'rs58991260',
-          'wellderly': {'alleles': [{'allele': 'A', 'freq': 0.0025},
-            {'allele': 'G', 'freq': 0.9975}],
-           'alt': 'A',
-           'chrom': '1',
-           'gene': 'TGFB2',
-           'genotypes': [{'count': 1, 'freq': 0.005, 'genotype': 'G/A'},
-            {'count': 199, 'freq': 0.995, 'genotype': 'G/G'}],
-           'hg19': {'end': 218631822, 'start': 218631822},
-           'pos': 218631822,
-           'ref': 'G',
-           'vartype': 'snp'}},
-         {'_id': 'chr11:g.66397320A>G',
-          'dbsnp': {'allele_origin': 'unspecified',
-           'alleles': [{'allele': 'A'}, {'allele': 'G'}],
-           'alt': 'G',
-           'chrom': '11',
-           'class': 'SNV',
-           'dbsnp_build': 36,
-           'flags': ['ASP', 'INT', 'RV', 'U3'],
-           'hg19': {'end': 66397321, 'start': 66397320},
-           'ref': 'A',
-           'rsid': 'rs2500',
-           'validated': False,
-           'var_subtype': 'ts',
-           'vartype': 'snp'},
-          'query': 'rs2500'}
-        ]
+
+    [
+      {
+        "query": "CHEBI:175901",
+        "_score": 16.388842,
+        "drugbank": {
+          "_license": "https://goo.gl/kvVASD",
+          "name": "Gemcitabine"
+        },
+        "_id": "SDUQYLNIPVEERB-QPPQHZFASA-N"
+      },
+      {
+        "query": "CHEBI:41237",
+        "_score": 16.388842,
+        "drugbank": {
+          "_license": "https://goo.gl/kvVASD",
+          "name": "Benzyl Benzoate"
+        },
+        "_id": "SESFRYSPDFLNCH-UHFFFAOYSA-N"
+      }
+    ]
 
 .. Tip:: "query" field in returned object indicates the matching query term.
 

@@ -1,16 +1,9 @@
 .. PythonPackages
 
-Third-party packages
-********************
-
-This page lists the third-party packages/modules built upon the `MyChem.info <http://mychem.info>`_ services.
-
-.. _myvariant_python:
-
 MyChem python module
 -----------------------
 
-Link to biothings client
+You can access the MyChem.info services programmatically with our `biothings_client <https://pypi.org/project/biothings-client/>`_ unified python client.
 
 .. raw:: html
 

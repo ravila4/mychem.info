@@ -1,7 +1,7 @@
 Chemical annotation service
 *************************************
 
-This page describes the reference for the MyVariant.info chemical annotation web 
+This page describes the reference for the MyChem.info chemical annotation web 
 service.  It's also recommended to try it live on our `interactive API page <http://mychem.info/tryapi/>`_.
 
 
@@ -15,17 +15,17 @@ Service endpoint
 GET request
 ==================
 
-Obtaining the chem annotation via our web service is as simple as calling this URL::
+Obtaining the chemical annotation via our web service is as simple as calling this URL::
 
     http://mychem.info/v1/chem/<chemid>
 
-**chemid** above is an HGVS name based chemical id using genomic location based on hg19 human genome assembly.
+**chemid** above is any one of several common chemical identifiers: `InChIKey <https://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey>`_, `DrugBank accession number <https://www.drugbank.ca/documentation>`_, `ChEMBLID <https://www.ebi.ac.uk/chembl/faq#faq40>`_, `ChEBI identifier <http://www.ebi.ac.uk/chebi/aboutChebiForward.do>`_, `PubChem CID <https://pubchem.ncbi.nlm.nih.gov/search/help_search.html#Cid>`_, `UNII <https://www.fda.gov/ForIndustry/DataStandards/SubstanceRegistrationSystem-UniqueIngredientIdentifierUNII/>`_.
 
-By default, this will return the complete chemical annotation object in JSON format. See `here <#returned-object>`_ for an example and :ref:`here <chemical_object>` for more details. If the input **variantid** is not valid, 404 (NOT FOUND) will be returned.
+By default, this will return the complete chemical annotation object in JSON format. See `here <#returned-object>`_ for an example and :ref:`here <chemical_object>` for more details. If the input **chemid** is not valid, 404 (NOT FOUND) will be returned.
 
 Optionally, you can pass a "**fields**" parameter to return only the annotation you want (by filtering returned object fields)::
 
-    http://mychem.info/v1/chem/chr1:g.35367G>A?fields=cadd
+    http://mychem.info/v1/chem/KTUFNOKKBVMGRW-UHFFFAOYSA-N?fields=drugbank
 
 "**fields**" accepts any attributes (a.k.a fields) available from the chemical object. Multiple attributes should be separated by commas. If an attribute is not available for a specific chemical object, it will be ignored. Note that the attribute names are case-sensitive.
 
@@ -37,7 +37,7 @@ Query parameters
 
 fields
 """"""""
-    Optional, can be a comma-separated fields to limit the fields returned from the chemical object. If "fields=all", all available fields will be returned. Note that it supports dot notation as well, e.g., you can pass "cadd.gene". Default: "fields=all".
+    Optional, can be a comma-separated fields to limit the fields returned from the chemical object. If "fields=all", all available fields will be returned. Note that it supports dot notation as well, e.g., you can pass "drugbank.name". Default: "fields=all".
 
 callback
 """""""""
@@ -58,7 +58,7 @@ Returned object
 
 A GET request like this::
 
-    http://mychem.info/v1/chem/chr1:g.35367G>A
+    http://mychem.info/v1/chem/KTUFNOKKBVMGRW-UHFFFAOYSA-N?fields=pubchem
 
 should return a chemical object below:
 
@@ -85,12 +85,12 @@ Query parameters
 
 ids
 """""
-    Required. Accept multiple HGVS chemical ids separated by comma, e.g., "ids=chr1:g.35367C>T,chr7:g.55241707G>T,chr16:g.28883241A>G". Note that currently we only take the input ids up to **1000** maximum, the rest will be omitted.
+    Required. Accept multiple chemical ids separated by comma, e.g., "ids=SDUQYLNIPVEERB-QPPQHZFASA-N,SESFRYSPDFLNCH-UHFFFAOYSA-N,SHGAZHPCJJPHSC-ZVCIMWCZSA-N". Note that currently we only take the input ids up to **1000** maximum, the rest will be omitted.
 
 fields
 """""""
     Optional, can be a comma-separated fields to limit the fields returned from the matching hits. 
-    If “fields=all”, all available fields will be returned. Note that it supports dot notation as well, e.g., you can pass "dbnsfp", "dbnsfp.genename", or "dbnsfp.aa.*". Default: "all".
+    If “fields=all”, all available fields will be returned. Note that it supports dot notation as well, e.g., you can pass "drugbank" or "drugbank.name". Default: "all".
 
 email
 """"""
@@ -105,7 +105,7 @@ piece of code, still trivial of course. Here is a sample python snippet::
     import httplib2
     h = httplib2.Http()
     headers = {'content-type': 'application/x-www-form-urlencoded'}
-    params = 'ids=chr16:g.28883241A>G,chr1:g.35367G>A&fields=dbnsfp.genename,cadd.gene'
+    params = 'ids=SDUQYLNIPVEERB-QPPQHZFASA-N,SESFRYSPDFLNCH-UHFFFAOYSA-N&fields=drugbank.name'
     res, con = h.request('http://mychem.info/v1/chem', 'POST', params, headers=headers)
 
 Returned object
@@ -118,46 +118,20 @@ Returned result (the value of "con" variable above) from above example code shou
 
     [
       {
-        "_id": "chr16:g.28883241A>G",
-        "cadd": {
-          "gene": {
-            "ccds_id": "CCDS53996.1",
-            "cds": {
-              "cdna_pos": 1889,
-              "cds_pos": 1450,
-              "rel_cdna_pos": 0.61,
-              "rel_cds_pos": 0.64
-            },
-            "feature_id": "ENST00000322610",
-            "gene_id": "ENSG00000178188",
-            "genename": "SH2B1",
-            "prot": {
-              "protpos": 484, "rel_prot_pos": 0.64
-            }
-          }
-        },
-        "dbnsfp": {
-          "genename": "SH2B1"
-        },
-        "query": "chr16:g.28883241A>G"
+        "_id": "SDUQYLNIPVEERB-QPPQHZFASA-N",
+        "query": "SDUQYLNIPVEERB-QPPQHZFASA-N",
+        "drugbank": {
+          "_license": "https://goo.gl/kvVASD",
+          "name": "Gemcitabine"
+        }
       },
       {
-        "_id": "chr1:g.35367G>A",
-        "cadd": {
-          "gene": {
-            "cds": {
-              "cdna_pos": 476, 
-              "rel_cdna_pos": 0.4
-            },
-            "feature_id": "ENST00000417324",
-            "gene_id": "ENSG00000237613",
-            "genename": "FAM138A"
-          }
-        },
-        "dbnsfp": {
-          "genename": "FAM138A"
-        },
-        "query": "chr1:g.35367G>A"
+        "_id": "SESFRYSPDFLNCH-UHFFFAOYSA-N",
+        "query": "SESFRYSPDFLNCH-UHFFFAOYSA-N",
+        "drugbank": {
+          "_license": "https://goo.gl/kvVASD",
+          "name": "Benzyl Benzoate"
+        }
       }
     ]
 
