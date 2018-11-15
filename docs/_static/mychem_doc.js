@@ -64,7 +64,7 @@ jQuery(document).ready(function() {
     if ((jQuery('#all-releases').length)) {
         // load releases
         jQuery.ajax({
-            url: '//biothings-releases.s3-website-us-west-2.amazonaws.com/mychem.info/versions.json',
+            url: '//biothings-releases.s3.amazonaws.com/mychem.info/versions.json',
             cache: false,
             type: "GET",
             dataType: "json",
