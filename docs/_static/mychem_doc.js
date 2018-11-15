@@ -103,7 +103,7 @@ function displayReleases() {
         var tDate = val.toString().split(" ").slice(1,4); tDate[1] += ","; tDate = tDate.join(" ");
         html += '<div class="release-pane"><p class="release-date">' + tDate + '</p>'; 
         jQuery.each(Releases[val], function (rIndex, rVal) {
-            html += '<div><a href="javascript:;" class="release-link" data-url="' + rVal.url + '">' + rVal.assembly + ' version <span class="release-version">' + rVal['target_version'] + '</span></a><div class="release-info"></div></div>';
+            html += '<div><a href="javascript:;" class="release-link" data-url="' + rVal.url + '">Build version <span class="release-version">' + rVal['target_version'] + '</span></a><div class="release-info"></div></div>';
         });
         html += '</div>'
     });
