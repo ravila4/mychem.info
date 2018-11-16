@@ -69,6 +69,7 @@ class SiderUploader(BaseDrugUploader):
             # sort the 'sider' list by "sider.side_effect.frequency" and "sider.side_effect.name"
             doc['sider'] = sorted(doc['sider'],
                                   key=lambda x: sort_key(x))
+            # take at most self.max_lst_size elements from the 'sider' field
             doc['sider'] = doc['sider'][:self.max_lst_size]
             yield doc
 
