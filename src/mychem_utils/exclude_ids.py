@@ -3,6 +3,15 @@ from mychem_utils.dotstring import remove_key
 
 
 class ExcludeFieldsById(object):
+    """
+    This class provides a framework to exclude fields for certain
+    identifiers. An identifier list is kept for each source and is
+    passed into a decorator class that truncates records. The
+    identifier list also contains data on the maximum field size for
+    each record. A list of fields to truncate is passed into the
+    decorator. The 'drugbank', 'chebi', 'sider', and 'ndc' data
+    sources were manually tested with this branch.
+    """
 
     def __init__(self, exclusion_ids, field_lst, min_list_size=1000):
         """

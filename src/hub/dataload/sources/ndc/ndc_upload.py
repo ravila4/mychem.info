@@ -24,6 +24,7 @@ class NDCUploader(BaseDrugUploader):
     __metadata__ = {"src_meta" : SRC_META}
     keylookup = MyChemKeyLookup([("ndc","ndc.productndc")])
 
+    # See the comment on the ExcludeFieldsById for use of this class.
     @ExcludeFieldsById(exclusion_ids, ["ndc"])
     def load_data(self,data_folder):
         docs = self.keylookup(load_data)(data_folder)

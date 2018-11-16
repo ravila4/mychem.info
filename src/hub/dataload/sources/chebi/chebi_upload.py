@@ -33,6 +33,7 @@ class ChebiUploader(BaseDrugUploader):
              ],
             copy_from_doc=True)
 
+    # See the comment on the ExcludeFieldsById for use of this class.
     @ExcludeFieldsById(exclusion_ids, [
         "chebi.xrefs.intenz",
         "chebi.xrefs.rhea",

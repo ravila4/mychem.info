@@ -25,6 +25,7 @@ class DrugBankUploader(BaseDrugUploader):
     storage_class = storage.IgnoreDuplicatedStorage
     __metadata__ = {"src_meta" : SRC_META}
 
+    # See the comment on the ExcludeFieldsById for use of this class.
     @ExcludeFieldsById(exclusion_ids, [
         "drugbank.drug_interactions",
         "drugbank.products",
