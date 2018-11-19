@@ -35,7 +35,7 @@ graph_mychem.add_edge('pubchem', 'inchikey',
                       object=MongoDBEdge('pubchem', 'pubchem.cid', 'pubchem.inchi_key'))
 
 graph_mychem.add_edge('pharmgkb', 'drugbank',
-                      object=MongoDBEdge('pharmgkb', 'pharmgkb.id', 'pharmgkb.xref.drugbank'))
+                      object=MongoDBEdge('pharmgkb', 'pharmgkb.id', 'pharmgkb.xrefs.drugbank'))
 
 # self-loops to check looked-up values exist in official collection
 graph_mychem.add_edge('drugbank', 'drugbank',

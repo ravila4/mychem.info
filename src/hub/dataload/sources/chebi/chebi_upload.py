@@ -27,7 +27,7 @@ class ChebiUploader(BaseDrugUploader):
     keylookup = MyChemKeyLookup(
             [('inchikey','chebi.inchikey'),
              ('chebi','chebi.id'),
-             ('drugbank','chebi.xref.drugbank'),
+             ('drugbank','chebi.xrefs.drugbank'),
              ],
             copy_from_doc=True)
 
@@ -87,7 +87,7 @@ class ChebiUploader(BaseDrugUploader):
                         "inn": {
                             "type": "text"
                             },
-                        "xref": {
+                        "xrefs": {
                             "properties": {
                                 "molbase": {
                                     "normalizer": "keyword_lowercase_normalizer",

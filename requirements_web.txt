@@ -21,3 +21,6 @@ requests
 # for biothings dependencies that aren't installed by biothings
 pytz
 gitpython
+
+# for dotstring utilities
+git+https://github.com/greg-k-taylor/dotstring.git@v0.1.2#egg=dotstring

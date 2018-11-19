@@ -19,8 +19,8 @@ def load_data(tsv_file):
         yield _dict
 
 def restr_dict(d):
-    def _restr_xref(xref):
-        """Restructure field names related to the pharmgkb.xref field"""
+    def _restr_xrefs(xrefs):
+        """Restructure field names related to the pharmgkb.xrefs field"""
         # Rename fields
         rename_fields = [
             ('National Drug Code Directory', 'ndc'),
@@ -28,7 +28,7 @@ def restr_dict(d):
             ('FDA Drug Label at DailyMed', 'dailymed.setid'),
             ]
         res = []
-        for v in xref:
+        for v in xrefs:
             for rf_orig, rf_new in rename_fields:
                 if rf_orig in v:
                     v = v.replace(rf_orig, rf_new)
@@ -58,10 +58,10 @@ def restr_dict(d):
             k = 'id'
             _d.update({k:val})
         elif key == "Cross-references":
-            k = "xref"
+            k = "xrefs"
             val = val.split(',"')
             val = list(map(lambda each:each.strip('"'), val))  #python 3 compatible
-            val = _restr_xref(val)
+            val = _restr_xrefs(val)
             _d.update({k:val})
         elif key == "External Vocabulary":
             # external_vocabulary - remove parenthesis and text within
@@ -74,24 +74,24 @@ def restr_dict(d):
     return _d
 
 def clean_up(d):
-    _li = ['xref','external_vocabulary']
+    _li = ['xrefs','external_vocabulary']
     _d= {}
     for key, val in iter(d.items()):
         if key in _li:
             for ele in val:
                 idx = ele.find(':')
                 # Note:  original pharmgkb keys do not have '.'
-                k = transform_xref_fieldnames(ele[0:idx])
+                k = transform_xrefs_fieldnames(ele[0:idx])
                 v = ele[idx+1:]
                 if k in ["pubchem.cid","pubchem.sid"]:
                     v = int(v)
                 # Handle nested elements (ex: 'wikipedia.url_stub') here
                 sub_d = sub_field(k, v)
                 _d.update(sub_d)
-    # 'xref' and 'external_vocabulary' are merged
+    # 'xrefs' and 'external_vocabulary' are merged
     if 'external_vocabulary' in d.keys():
         d.pop('external_vocabulary')
-    d.update({'xref':_d})
+    d.update({'xrefs':_d})
     return d
 
 def sub_field(k, v):
@@ -112,7 +112,7 @@ def remove_paren(v):
         return v[0:idx]
     return v
 
-def transform_xref_fieldnames(k):
+def transform_xrefs_fieldnames(k):
     fields = [
         ('Chemical Abstracts Service', 'cas'),
         ('Therapeutic Targets Database', 'ttd'),
