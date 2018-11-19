@@ -59,41 +59,22 @@ HUB_ENV = ""
 SNAPSHOT_REPOSITORY = "drug_repository"
 # ES snapshot name accessible (usually using a URL)
 # These two snapshot configs should point to
-# the same location in a way. The different is the first 
+# the same location in a way. The different is the first
 # used access controller to write data, and the second is read-only
 READONLY_SNAPSHOT_REPOSITORY ="drug_url"
 
 # S3 bucket, root of all biothings releases information
-S3_RELEASE_BUCKET = "biothings-releases"  
+S3_RELEASE_BUCKET = "biothings-releases"
 # bucket/folder containing releases
 S3_DIFF_BUCKET = "biothings-diffs"
 # what sub-folder should be used within diff bucket to upload diff files
 S3_APP_FOLDER = "mychem.info"
 
-# default logger for the hub
-import logging
-from biothings.utils.loggers import setup_default_log
-LOGGER_NAME = "hub"
-logging.basicConfig(level=logging.DEBUG)
-logger = logging
-
-# If you need notifications to hipchat, fill with "token",
-# "roomid" and "from" keys to broadcast m#essage to a Hipchat room.
-# 'host' is a hipchat's subdomain, and 'usertoken' is a valid user
-# (real user) token, used to attach file to messages (hipchat requires
-# a real user to do that...)
-HIPCHAT_CONFIG = {
-        #    'token': 'abdce',
-        #    'roomid': 123456,
-        #    'from': 'hub',
-        #    'host' : 'xxxx.hipchat.com',
-        #    'usertoken' : 'abcdefghijkl'
-        }    
-
 SLACK_WEBHOOK = None
 
 # SSH port for hub console
-HUB_SSH_PORT = 8022
+HUB_SSH_PORT = 7022
+HUB_API_PORT = 7080
 
 ################################################################################
 # HUB_PASSWD
@@ -101,7 +82,6 @@ HUB_SSH_PORT = 8022
 # The format is a dictionary of 'username': 'cryptedpassword'
 # Generate crypted passwords with 'openssl passwd -crypt'
 HUB_PASSWD = {"guest":"9RKfd8gDuNf0Q"}
-
 
 # Pre-prod/test ES definitions
 ES_CONFIG = {
@@ -139,11 +119,19 @@ ES_CONFIG = {
 # other instances can use (production, standalones)
 BIOTHINGS_ROLE = "slave"
 
+# don't bother with elements order in a list when diffing,
+# mygene optmized uploaders can't produce different results
+# when parsing data (parallelization)
+import importlib
+import biothings.utils.jsondiff
+importlib.reload(biothings.utils.jsondiff)
+biothings.utils.jsondiff.UNORDERED_LIST = True
+
 # key/secret to access AWS S3 (only used when publishing releases, role=master)
 AWS_KEY = ''
 AWS_SECRET = ''
 
-ES_TIMEOUT = 300                                                                                                                                                                                      
+ES_TIMEOUT = 300
 ES_RETRY = True
 ES_MAX_RETRY = 10
 
@@ -160,7 +148,7 @@ ES_MAX_RETRY = 10
 # any other variables in this file as required. Variables defined as ValueError() exceptions
 # *must* be defined
 #
-from biothings import ConfigurationError
+from biothings import ConfigurationError, ConfigurationDefault
 # To be defined at application-level:
 
 # Individual source database connection
@@ -196,6 +184,12 @@ HUB_DB_BACKEND = ConfigurationError("Define Hub DB connection")
 
 # Path to a folder to store all downloaded files, logs, caches, etc...
 DATA_ARCHIVE_ROOT = ConfigurationError("Define path to folder which will contain all downloaded data, cache files, etc...")
+
+# Path to a folder to store all 3rd party parsers, dumpers, etc...
+DATA_PLUGIN_FOLDER = ConfigurationDefault(
+        default="./plugins",
+        desc="Define path to folder which will contain all 3rd party parsers, dumpers, etc...")
+
 # this dir must be created manually
 LOG_FOLDER = ConfigurationError("Define path to folder which will contain log files")
 # Usually inside DATA_ARCHIVE_ROOT
@@ -213,3 +207,9 @@ RELEASE_PATH = ConfigurationError("Define path to folder which will contain outp
 # Usually inside DATA_ARCHIVE_ROOT
 #RELEASE_PATH = os.path.join(DATA_ARCHIVE_ROOT,"release")
 
+# default hub logger
+from biothings.utils.loggers import setup_default_log
+import logging
+logger = ConfigurationDefault(
+        default=logging,
+        desc="Provide a default hub logger instance (use setup_default_log(name,log_folder)")

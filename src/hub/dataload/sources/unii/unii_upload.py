@@ -8,7 +8,9 @@ import biothings.hub.dataload.storage as storage
 
 SRC_META = {
         "url": 'https://fdasis.nlm.nih.gov/srs/',
-        "license_url" : "?",
+        "license": "public domain",
+        "license_url" : "https://www.nlm.nih.gov/copyright.html",
+        "license_url_short": "http://bit.ly/2Pg8Oo9"
         }
 
 
