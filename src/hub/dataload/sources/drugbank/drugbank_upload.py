@@ -24,13 +24,13 @@ class DrugBankUploader(BaseDrugUploader):
     name = "drugbank"
     storage_class = storage.IgnoreDuplicatedStorage
     __metadata__ = {"src_meta" : SRC_META}
-
     # See the comment on the ExcludeFieldsById for use of this class.
-    @ExcludeFieldsById(exclusion_ids, [
+    exclude_fields = ExcludeFieldsById(exclusion_ids, [
         "drugbank.drug_interactions",
         "drugbank.products",
         "drugbank.mixtures"
     ])
+
     def load_data(self,data_folder):
         xmlfiles = glob.glob(os.path.join(data_folder,"*.xml"))
         if not xmlfiles:
@@ -41,7 +41,7 @@ class DrugBankUploader(BaseDrugUploader):
         assert len(xmlfiles) == 1, "Expecting one xml file, got %s" % repr(xmlfiles)
         input_file = xmlfiles.pop()
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        return load_data(input_file)
+        return self.exclude_fields(load_data)(input_file)
 
     def post_update_data(self, *args, **kwargs):
         for idxname in ["drugbank.drugbank_id","drugbank.chebi","drugbank.inchi"]:

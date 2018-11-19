@@ -60,13 +60,13 @@ class SiderUploader(BaseDrugUploader):
     __metadata__ = {"src_meta" : SRC_META}
     keylookup = MyChemKeyLookup([("pubchem","_id")],
                     idstruct_class=SiderIDStruct)
-
     # See the comment on the ExcludeFieldsById for use of this class.
-    @ExcludeFieldsById(exclusion_ids, ["sider"])
+    exclude_fields = ExcludeFieldsById(exclusion_ids, ["sider"])
+
     def load_data(self,data_folder):
         input_file = os.path.join(data_folder,"merged_freq_all_se_indications.tsv")
         self.logger.info("Load data from file '%s'" % input_file)
-        return self.keylookup(load_data)(input_file)
+        return self.exclude_fields(self.keylookup(load_data))(input_file)
 
     @classmethod
     def get_mapping(klass):

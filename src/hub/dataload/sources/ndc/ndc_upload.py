@@ -23,11 +23,11 @@ class NDCUploader(BaseDrugUploader):
     storage_class = (storage.BasicStorage,storage.CheckSizeStorage)
     __metadata__ = {"src_meta" : SRC_META}
     keylookup = MyChemKeyLookup([("ndc","ndc.productndc")])
-
     # See the comment on the ExcludeFieldsById for use of this class.
-    @ExcludeFieldsById(exclusion_ids, ["ndc"])
+    exclude_fields = ExcludeFieldsById(exclusion_ids, ["ndc"])
+
     def load_data(self,data_folder):
-        docs = self.keylookup(load_data)(data_folder)
+        docs = self.exclude_fields(self.keylookup(load_data))(data_folder)
         inchi_key = {}
         for doc in docs:
             # IK found, but other productndc could also match the same

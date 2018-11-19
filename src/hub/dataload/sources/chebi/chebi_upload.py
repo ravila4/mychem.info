@@ -32,15 +32,15 @@ class ChebiUploader(BaseDrugUploader):
              ('drugbank','chebi.xrefs.drugbank'),
              ],
             copy_from_doc=True)
-
     # See the comment on the ExcludeFieldsById for use of this class.
-    @ExcludeFieldsById(exclusion_ids, [
+    exclude_fields = ExcludeFieldsById(exclusion_ids, [
         "chebi.xrefs.intenz",
         "chebi.xrefs.rhea",
         "chebi.xrefs.uniprot",
         "chebi.xrefs.sabio_rk",
         "chebi.xrefs.patent",
     ])
+
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)
         input_file = os.path.join(data_folder,"ChEBI_complete.sdf")
@@ -52,7 +52,7 @@ class ChebiUploader(BaseDrugUploader):
         assert chembl_col.count() > 0, "'chembl' collection is empty (required for inchikey " + \
                 "conversion). Please run 'chembl' uploader first"
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        return self.keylookup(load_data)(input_file)
+        return self.exclude_fields(self.keylookup(load_data))(input_file)
 
     def post_update_data(self, *args, **kwargs):
         for idxname in ["chebi.id"]:
