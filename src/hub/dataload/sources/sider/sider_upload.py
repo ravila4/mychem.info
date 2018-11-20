@@ -70,11 +70,7 @@ class SiderUploader(BaseDrugUploader):
             doc['sider'] = sorted(doc['sider'],
                                   key=lambda x: sort_key(x))
             # take at most self.max_lst_size elements from the 'sider' field
-            # the following documents will be removed:
-            # id, name, count
-            # "FDEXGLDEAIYGJL-PGRJIUKWSA-N", #"(N/A)", 2292),
-            # "NQOPXAFKSVKFNL-ILZDJORESA-N", #"(N/A)", 1733),
-            # "FLSVFIUHBMFIDF-BPUDTRNYSA-N", #"(N/A)", 1311)
+            # See the 'truncated_docs.tsv' file for a list of ids that are affected
             if len(doc['sider']) > self.max_lst_size:
                 doc['sider'] = doc['sider'][:self.max_lst_size]
 
