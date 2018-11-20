@@ -5,12 +5,14 @@ from mychem_utils.dotstring import remove_key
 class ExcludeFieldsById(object):
     """
     This class provides a framework to exclude fields for certain
-    identifiers. An identifier list is kept for each source and is
-    passed into a decorator class that truncates records. The
-    identifier list also contains data on the maximum field size for
-    each record. A list of fields to truncate is passed into the
-    decorator. The 'drugbank', 'chebi', 'sider', and 'ndc' data
-    sources were manually tested with this branch.
+    identifiers. Up to three arguments are passed to this class, an
+    identifier list, a list of fields to remove, and minimum list
+    size.  The identifier list is a list of document identifiers to act
+    on.  The list of fields are fields that will be removed; they are
+    specified using a dotstring notation.  The minimum list size is
+    the minimum number of elements that should be in a list in order
+    for it to be removed.  The 'drugbank', 'chebi', and 'ndc' data
+    sources were manually tested with this class.
     """
 
     def __init__(self, exclusion_ids, field_lst, min_list_size=1000):
@@ -24,8 +26,8 @@ class ExcludeFieldsById(object):
 
     def __call__(self, f):
         """
-        Truncate specified fields for on all documents on call.
-        :param f: function to apply to
+        Truncate specified fields on documents on call.
+        :param f: function to apply to, this function should return documents
         :return:
         """
         def wrapped_f(*args):

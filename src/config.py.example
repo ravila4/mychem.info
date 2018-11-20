@@ -62,3 +62,4 @@ DATA_TARGET_SERVER_PASSWORD = ''
 
 DATA_ARCHIVE_ROOT = '/path/to/data/folder'
 DIFF_PATH = os.path.join(DATA_ARCHIVE_ROOT,"diff")
+
