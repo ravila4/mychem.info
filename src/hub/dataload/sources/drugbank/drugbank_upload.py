@@ -3,10 +3,12 @@ import glob
 import pymongo
 
 from .drugbank_parser import load_data
+from .exclusion_ids import exclusion_ids
 from .drugbank_mapping import drugbank_mapping
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.common import unzipall
+from mychem_utils import ExcludeFieldsById
 
 
 SRC_META = {
@@ -22,6 +24,12 @@ class DrugBankUploader(BaseDrugUploader):
     name = "drugbank"
     storage_class = storage.IgnoreDuplicatedStorage
     __metadata__ = {"src_meta" : SRC_META}
+    # See the comment on the ExcludeFieldsById for use of this class.
+    exclude_fields = ExcludeFieldsById(exclusion_ids, [
+        "drugbank.drug_interactions",
+        "drugbank.products",
+        "drugbank.mixtures"
+    ])
 
     def load_data(self,data_folder):
         xmlfiles = glob.glob(os.path.join(data_folder,"*.xml"))
@@ -33,7 +41,7 @@ class DrugBankUploader(BaseDrugUploader):
         assert len(xmlfiles) == 1, "Expecting one xml file, got %s" % repr(xmlfiles)
         input_file = xmlfiles.pop()
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        return load_data(input_file)
+        return self.exclude_fields(load_data)(input_file)
 
     def post_update_data(self, *args, **kwargs):
         for idxname in ["drugbank.drugbank_id","drugbank.chebi","drugbank.inchi"]:

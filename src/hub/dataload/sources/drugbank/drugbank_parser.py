@@ -4,7 +4,7 @@ import collections
 import logging
 from biothings.utils.dataload import dict_sweep
 from biothings.utils.dataload import boolean_convert
-from .dotstring import float_convert, int_convert, unlist
+from mychem_utils.dotstring import float_convert, int_convert, unlist
 
 
 def load_data(xml_file):

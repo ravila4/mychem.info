@@ -204,3 +204,24 @@ def unlist(d, include_keys=[], exclude_keys=[]):
                     unlist_helper(val, include_keys, exclude_keys, keys + [key])
     unlist_helper(d, include_keys, exclude_keys, [])
     return d
+
+def list_length(d, field):
+    """Return the length of a list specified by field.
+
+    If field represents a list in the document, then return its length.
+    Otherwise return 0.
+
+    :param d: a dictionary
+    :param field: the dotstring field specifying a list
+    """
+    default_value = 0
+
+    try:
+        lst = next(key_value(d, field))
+    except StopIterator:
+        return default_value
+
+    if isinstance(lst, list):
+        return len(lst)
+    else:
+        return default_value

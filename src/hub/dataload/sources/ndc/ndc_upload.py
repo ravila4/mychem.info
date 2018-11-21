@@ -3,10 +3,11 @@ import glob
 import pymongo
 
 from .ndc_parser import load_data
+from .exclusion_ids import exclusion_ids
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.common import unzipall
-from biothings.utils.mongo import get_src_db, check_document_size
+from mychem_utils import ExcludeFieldsById
 
 from hub.datatransform.keylookup import MyChemKeyLookup
 
@@ -22,9 +23,11 @@ class NDCUploader(BaseDrugUploader):
     storage_class = (storage.BasicStorage,storage.CheckSizeStorage)
     __metadata__ = {"src_meta" : SRC_META}
     keylookup = MyChemKeyLookup([("ndc","ndc.productndc")])
+    # See the comment on the ExcludeFieldsById for use of this class.
+    exclude_fields = ExcludeFieldsById(exclusion_ids, ["ndc"])
 
     def load_data(self,data_folder):
-        docs = self.keylookup(load_data)(data_folder)
+        docs = self.exclude_fields(self.keylookup(load_data))(data_folder)
         inchi_key = {}
         for doc in docs:
             # IK found, but other productndc could also match the same
@@ -130,4 +133,3 @@ class NDCUploader(BaseDrugUploader):
         }
 
         return mapping
-
