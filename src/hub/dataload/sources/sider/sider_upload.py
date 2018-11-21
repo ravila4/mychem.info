@@ -4,6 +4,7 @@ import zipfile
 import pymongo
 
 from .sider_parser import load_data
+from .sider_parser import sort_key
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.mongo import get_src_db
@@ -58,11 +59,22 @@ class SiderUploader(BaseDrugUploader):
     __metadata__ = {"src_meta" : SRC_META}
     keylookup = MyChemKeyLookup([("pubchem","_id")],
                     idstruct_class=SiderIDStruct)
+    max_lst_size = 2000
 
     def load_data(self,data_folder):
         input_file = os.path.join(data_folder,"merged_freq_all_se_indications.tsv")
         self.logger.info("Load data from file '%s'" % input_file)
-        return self.keylookup(load_data)(input_file)
+        docs = self.keylookup(load_data)(input_file)
+        for doc in docs:
+            # sort the 'sider' list by "sider.side_effect.frequency" and "sider.side_effect.name"
+            doc['sider'] = sorted(doc['sider'],
+                                  key=lambda x: sort_key(x))
+            # take at most self.max_lst_size elements from the 'sider' field
+            # See the 'truncated_docs.tsv' file for a list of ids that are affected
+            if len(doc['sider']) > self.max_lst_size:
+                doc['sider'] = doc['sider'][:self.max_lst_size]
+
+            yield doc
 
     @classmethod
     def get_mapping(klass):
