@@ -12,7 +12,8 @@ import biothings.hub.dataload.storage as storage
 SRC_META = {
         "url": "https://pubchem.ncbi.nlm.nih.gov/",
         "license_url" : "https://www.ncbi.nlm.nih.gov/home/about/policies/",
-        "license_url_short" : "https://goo.gl/Ztr5rl"
+        "license_url_short" : "http://bit.ly/2AqoLOc",
+        "license": "public domain"
         }
 
 

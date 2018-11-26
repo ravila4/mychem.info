@@ -16,7 +16,7 @@ from hub.datatransform.keylookup import MyChemKeyLookup
 SRC_META = {
         "url": 'http://sideeffects.embl.de/',
         "license_url" : "ftp://xi.embl.de/SIDER/LICENSE",
-        "license_url_short" : "https://goo.gl/8b7ZCQ",
+        "license_url_short" : "http://bit.ly/2SjPTpx",
         "license": "CC BY-NC-SA 3.0"
         }
 
@@ -37,14 +37,14 @@ class SiderIDStruct(IDStruct):
         return int(_id[4:])
 
     @property
-    def id_lst(self):                                                                                                                                                                                
+    def id_lst(self):
         id_set = set()
         for k in self.forward.keys():
             for f in self.forward[k]:
                 id_set.add(self.preprocess_id(f))
         return list(id_set)
 
-    def find_right(self, ids):                                                                                                                                                                       
+    def find_right(self, ids):
         """Find the first id founding by searching the (_, right) identifiers"""
         inverse = {}
         for rid in self.inverse:

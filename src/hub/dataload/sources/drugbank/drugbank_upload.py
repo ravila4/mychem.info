@@ -14,7 +14,7 @@ from mychem_utils import ExcludeFieldsById
 SRC_META = {
         "url" : "http://www.drugbank.ca",
         "license_url" : "https://www.drugbank.ca/releases/latest",
-        "license_url_short" : "https://goo.gl/kvVASD",
+        "license_url_short" : "http://bit.ly/2PSfZTD",
         "license" : "CC BY-NC 4.0",
         }
 

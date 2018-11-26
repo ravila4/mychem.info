@@ -13,7 +13,9 @@ from hub.datatransform.keylookup import MyChemKeyLookup
 
 SRC_META = {
         "url" : "http://www.fda.gov/Drugs/InformationOnDrugs/ucm142438.htm",
-        "license_url" : "?",
+        "license_url" : "https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/default.htm#linking",
+        "lincese_url_short": "http://bit.ly/2KAojBn",
+        "license": "public domain"
         }
 
 
@@ -103,7 +105,7 @@ class NDCUploader(BaseDrugUploader):
                                 "type": "keyword",
                                 },
                         "active_numerator_strength" : {
-                                "type" : "text"                    
+                                "type" : "text"
                                 },
                         "active_ingred_unit" : {
                                 "normalizer": "keyword_lowercase_normalizer",

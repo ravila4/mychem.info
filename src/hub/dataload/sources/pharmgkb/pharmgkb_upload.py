@@ -13,7 +13,7 @@ from hub.datatransform.keylookup import MyChemKeyLookup
 SRC_META = {
         "url": 'https://www.pharmgkb.org/',
         "license_url": "https://www.pharmgkb.org/page/dataUsagePolicy",
-        "license_url_short": "https://goo.gl/6ZW4iX",
+        "license_url_short": "http://bit.ly/2zqM8aJ",
         "license": "CC BY-SA 4.0"
         }
 
