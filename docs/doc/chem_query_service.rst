@@ -97,15 +97,15 @@ Fielded queries
 ::
 
     q=chebi.xref.uniprot:P80175               # for matching value on a specific field
-    
+
     q=drugbank.name:(acid alcohol)            # multiple values for a field
     q=drugbank.name:(acid OR alcohol)         # multiple values for a field using OR
-    
+
     q=_exists_:pubchem                        # having pubchem field
     q=NOT _exists_:drugbank                   # missing drugbank field
-    
 
-.. Hint:: For a list of available fields, see :ref:`here <available_fields>`. 
+
+.. Hint:: For a list of available fields, see :ref:`here <available_fields>`.
 
 
 Range queries
@@ -114,15 +114,15 @@ Range queries
 
     q=pubchem.exact_mass:<200
     q=pubchem.exact_mass:>=500
-    
+
     q=pubchem.exact_mass:[200 TO 500]         # bounded (including 200 and 500)
     q=pubchem.exact_mass:{200 TO 500}        # unbounded
-    
+
 
 Wildcard queries
 """"""""""""""""
 Wildcard character "*" or "?" is supported in either simple queries or fielded queries::
-    
+
     q=drugbank.name:acid*
 
 .. note:: Wildcard character can not be the first character. It will be ignored.
@@ -130,7 +130,7 @@ Wildcard character "*" or "?" is supported in either simple queries or fielded q
 
 Scrolling queries
 """""""""""""""""
-If you want to return ALL results of a very large query, sometimes the paging method described `above <#from>`_ can take too long.  In these cases, you can use a scrolling query.  
+If you want to return ALL results of a very large query, sometimes the paging method described `above <#from>`_ can take too long.  In these cases, you can use a scrolling query.
 This is a two-step process that turns off database sorting to allow very fast retrieval of all query results.  To begin a scrolling query, you first call the query
 endpoint as you normally would, but with an extra parameter **fetch_all** = TRUE.  For example, a GET request to::
 
@@ -151,7 +151,7 @@ Returns the following object:
           "_id": "SDUQYLNIPVEERB-QPPQHZFASA-N",
           "_score": 1.0,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Gemcitabine"
           }
         },
@@ -159,7 +159,7 @@ Returns the following object:
           "_id": "SESFRYSPDFLNCH-UHFFFAOYSA-N",
           "_score": 1.0,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Benzyl Benzoate"
           }
         },
@@ -183,14 +183,14 @@ You can use **AND**/**OR**/**NOT** boolean operators and grouping to form compli
     q=_exists_:drugbank AND _exists_:pubchem                               AND operator
     q=_exists_:drugbank AND NOT _exists_:pubchem                           NOT operator
     q=_exists_:drugbank OR (_exists_:chebi AND _exists_:pubchem)           grouping with ()
-    
-    
+
+
 Escaping reserved characters
 """"""""""""""""""""""""""""
 If you need to use these reserved characters in your query, make sure to escape them using a back slash ("\\")::
-    
+
     + - = && || > < ! ( ) { } [ ] ^ " ~ * ? : \ /
-    
+
 
 
 Returned object
@@ -213,7 +213,7 @@ should return hits as:
           "_id": "BDAGIHXWWSANSR-UHFFFAOYSA-N",
           "_score": 7.929331,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Formic Acid"
           }
         },
@@ -221,7 +221,7 @@ should return hits as:
           "_id": "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
           "_score": 7.929331,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Acetylsalicylic acid"
           }
         },
@@ -229,7 +229,7 @@ should return hits as:
           "_id": "KGBXLFKZBHKPEV-UHFFFAOYSA-N",
           "_score": 7.929331,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Boric acid"
           }
         },
@@ -237,7 +237,7 @@ should return hits as:
           "_id": "LPEPZBJOKDYZAD-UHFFFAOYSA-N",
           "_score": 7.929331,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Flufenamic Acid"
           }
         },
@@ -245,7 +245,7 @@ should return hits as:
           "_id": "JXMIBUGMYLQZGO-UHFFFAOYSA-N",
           "_score": 7.929331,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Iotroxic acid"
           }
         },
@@ -253,7 +253,7 @@ should return hits as:
           "_id": "HXQVQGWHFRNKMS-UHFFFAOYSA-M",
           "_score": 7.929331,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Ethylmercurithiosalicylic acid"
           }
         },
@@ -261,7 +261,7 @@ should return hits as:
           "_id": "LOAUVZALPPNFOQ-UHFFFAOYSA-N",
           "_score": 7.929331,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Quinaldic Acid"
           }
         },
@@ -269,7 +269,7 @@ should return hits as:
           "_id": "LDKRAXXVBWHMRH-UHFFFAOYSA-N",
           "_score": 7.929331,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Phosphonoacetohydroxamic Acid"
           }
         },
@@ -277,7 +277,7 @@ should return hits as:
           "_id": "GWYFCOCPABKNJV-UHFFFAOYSA-N",
           "_score": 7.929331,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Isovaleric Acid"
           }
         },
@@ -285,7 +285,7 @@ should return hits as:
           "_id": "HJZKOAYDRQLPME-UHFFFAOYSA-N",
           "_score": 7.929331,
           "drugbank": {
-            "_license": "https://goo.gl/kvVASD",
+            "_license": "http://bit.ly/2PSfZTD",
             "name": "Oxidronic acid"
           }
         }
@@ -305,7 +305,7 @@ A GET request like this::
 should return hits as:
 
 .. code-block:: json
-        
+
     {
       "facets": {
         "drugbank.targets.organism": {
@@ -387,7 +387,7 @@ q
 scopes
 """"""
     Optional, specify one or more fields (separated by comma) as the search "scopes", e.g., "scopes=drugbank".  The available "fields" can be passed to "**scopes**" parameter are
-    :ref:`listed here <available_fields>`. Default: 
+    :ref:`listed here <available_fields>`. Default:
 
 fields
 """"""
@@ -423,7 +423,7 @@ Returned result (the value of "con" variable above) from above example code shou
         "query": "CHEBI:175901",
         "_score": 16.388842,
         "drugbank": {
-          "_license": "https://goo.gl/kvVASD",
+          "_license": "http://bit.ly/2PSfZTD",
           "name": "Gemcitabine"
         },
         "_id": "SDUQYLNIPVEERB-QPPQHZFASA-N"
@@ -432,7 +432,7 @@ Returned result (the value of "con" variable above) from above example code shou
         "query": "CHEBI:41237",
         "_score": 16.388842,
         "drugbank": {
-          "_license": "https://goo.gl/kvVASD",
+          "_license": "http://bit.ly/2PSfZTD",
           "name": "Benzyl Benzoate"
         },
         "_id": "SESFRYSPDFLNCH-UHFFFAOYSA-N"

@@ -1,7 +1,7 @@
 Chemical annotation service
 *************************************
 
-This page describes the reference for the MyChem.info chemical annotation web 
+This page describes the reference for the MyChem.info chemical annotation web
 service.  It's also recommended to try it live on our `interactive API page <http://mychem.info/tryapi/>`_.
 
 
@@ -89,7 +89,7 @@ ids
 
 fields
 """""""
-    Optional, can be a comma-separated fields to limit the fields returned from the matching hits. 
+    Optional, can be a comma-separated fields to limit the fields returned from the matching hits.
     If “fields=all”, all available fields will be returned. Note that it supports dot notation as well, e.g., you can pass "drugbank" or "drugbank.name". Default: "all".
 
 email
@@ -121,7 +121,7 @@ Returned result (the value of "con" variable above) from above example code shou
         "_id": "SDUQYLNIPVEERB-QPPQHZFASA-N",
         "query": "SDUQYLNIPVEERB-QPPQHZFASA-N",
         "drugbank": {
-          "_license": "https://goo.gl/kvVASD",
+          "_license": "http://bit.ly/2PSfZTD",
           "name": "Gemcitabine"
         }
       },
@@ -129,7 +129,7 @@ Returned result (the value of "con" variable above) from above example code shou
         "_id": "SESFRYSPDFLNCH-UHFFFAOYSA-N",
         "query": "SESFRYSPDFLNCH-UHFFFAOYSA-N",
         "drugbank": {
-          "_license": "https://goo.gl/kvVASD",
+          "_license": "http://bit.ly/2PSfZTD",
           "name": "Benzyl Benzoate"
         }
       }
