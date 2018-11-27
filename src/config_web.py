@@ -18,6 +18,7 @@ ES_DOC_TYPE = 'drug'
 #ES_SIZE_CAP = 10
 # scrolls are smaller
 #ES_SCROLL_SIZE = 10
+ES_SCROLL_TIME = '10m'
 
 API_VERSION = 'v1'
 
@@ -64,7 +65,7 @@ GA_ACTION_ANNOTATION_GET = 'drug_get'
 GA_ACTION_ANNOTATION_POST = 'drug_post'
 GA_TRACKER_URL = 'c.biothings.io'
 
-ANNOTATION_ID_REGEX_LIST = [(re.compile(r'db[0-9]+', re.I), 'drugbank.drugbank_id'),
+ANNOTATION_ID_REGEX_LIST = [(re.compile(r'db[0-9]+', re.I), 'drugbank.id'),
                             (re.compile(r'chembl[0-9]+', re.I), 'chembl.molecule_chembl_id'),
                             (re.compile(r'chebi\:[0-9]+', re.I), ['chebi.id', 'chebi.secondary_chebi_id']),
                             (re.compile(r'cid[0-9]+', re.I), 'pubchem.cid'),

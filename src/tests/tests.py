@@ -53,8 +53,8 @@ class MyChemTest(BiothingTestHelperMixin):
         P34981 = self.query_has_hits(q='drugbank.targets.uniprot:P34981')
         assert 'drugbank' in P34981['hits'][0]
         assert 'targets' in P34981['hits'][0]['drugbank']
-        assert 'uniprot' in P34981['hits'][0]['drugbank']['targets']
-        assert P34981['hits'][0]['drugbank']['targets']['uniprot'] == 'P34981'
+        assert 'uniprot' in P34981['hits'][0]['drugbank']['targets'][0]
+        assert P34981['hits'][0]['drugbank']['targets'][0]['uniprot'] == 'P34981'
 
         #C0242339 = self.json_ok(self.get_ok(self.api + '/query?q=drugcentral.drug_use.indication.umls_cui:C0242339'))
         #assert 'drugcentral' in C0242339
@@ -76,23 +76,23 @@ class MyChemTest(BiothingTestHelperMixin):
         self.json_ok(self.post_ok(self.api + '/query', {'q': self.inchikey_id}))
 
         res = self.json_ok(self.post_ok(self.api + '/query', {'q': self.drugbank_id,
-                                                              'scopes': 'drugbank.drugbank_id'}))
+                                                              'scopes': 'drugbank.id'}))
         eq_(len(res), 1)
         eq_(res[0]['_id'], 'RRUDCFGSUDOHDG-UHFFFAOYSA-N')
 
         res = self.json_ok(self.post_ok(self.api + '/query', {'q': self.drugbank_id + ',DB00441',
-                                                              'scopes': 'drugbank.drugbank_id'}))
+                                                              'scopes': 'drugbank.id'}))
         eq_(len(res), 2)
         eq_(res[0]['_id'], 'RRUDCFGSUDOHDG-UHFFFAOYSA-N')
         eq_(res[1]['_id'], 'SDUQYLNIPVEERB-QPPQHZFASA-N')
 
         res = self.json_ok(self.post_ok(self.api + '/query', {'q': self.drugbank_id,
-                                                              'scopes': 'drugbank.drugbank_id',
-                                                              'fields': 'drugbank.drugbank_id'}))
+                                                              'scopes': 'drugbank.id',
+                                                              'fields': 'drugbank.id'}))
         assert len(res) == 1
         assert 'query' in res[0]
-        assert 'drugbank' in res[0] and 'drugbank_id' in res[0]['drugbank']
-        assert res[0]['query'] == res[0]['drugbank']['drugbank_id'] 
+        assert 'drugbank' in res[0] and 'id' in res[0]['drugbank']
+        assert res[0]['query'] == res[0]['drugbank']['id'] 
         
         self.post_status_code(self.api + '/query', {}, status_code=400)
 
@@ -118,8 +118,8 @@ class MyChemTest(BiothingTestHelperMixin):
         # test different drug identifiers
         drugbank = self.json_ok(self.get_ok(self.api + '/drug/' + self.drugbank_id))
         assert 'drugbank' in drugbank
-        assert 'drugbank_id' in drugbank['drugbank']
-        assert drugbank['drugbank']['drugbank_id'] == self.drugbank_id
+        assert 'id' in drugbank['drugbank']
+        assert drugbank['drugbank']['id'] == self.drugbank_id
 
         chembl = self.json_ok(self.get_ok(self.api + '/drug/' + self.chembl_id))
         assert 'chembl' in chembl
@@ -190,11 +190,11 @@ class MyChemTest(BiothingTestHelperMixin):
         res = self.json_ok(self.get_ok(self.api + '/query?q=' + s))
         eq_(res['hits'], [])
 
-        res = self.json_ok(self.post_ok(self.api + '/query', {"q": s, "scopes": 'drugbank.drugbank_id'}))
+        res = self.json_ok(self.post_ok(self.api + '/query', {"q": s, "scopes": 'drugbank.id'}))
         eq_(res[0]['notfound'], True)
         eq_(len(res), 1)
 
-        res = self.json_ok(self.post_ok(self.api + '/query', {"q": self.drugbank_id + '+' + s, 'scopes': 'drugbank.drugbank_id'}))
+        res = self.json_ok(self.post_ok(self.api + '/query', {"q": self.drugbank_id + '+' + s, 'scopes': 'drugbank.id'}))
         eq_(res[1]['notfound'], True)
         eq_(len(res), 2)
 
@@ -225,8 +225,8 @@ class MyChemTest(BiothingTestHelperMixin):
         res2 = self.msgpack_ok(self.get_ok(self.api + '/drug/{}?msgpack=true'.format(self.inchikey_id)))
         ok_(res, res2)
 
-        res = self.json_ok(self.get_ok(self.api + '/query?q=drugbank.drugbank_id:{}&size=1'.format(self.drugbank_id)))
-        res2 = self.msgpack_ok(self.get_ok(self.api + '/query?q=drugbank.drugbank_id:{}&size=1&msgpack=true'.format(self.drugbank_id)))
+        res = self.json_ok(self.get_ok(self.api + '/query?q=drugbank.id:{}&size=1'.format(self.drugbank_id)))
+        res2 = self.msgpack_ok(self.get_ok(self.api + '/query?q=drugbank.id:{}&size=1&msgpack=true'.format(self.drugbank_id)))
         ok_(res, res2)
 
         res = self.json_ok(self.get_ok(self.api + '/metadata'))
