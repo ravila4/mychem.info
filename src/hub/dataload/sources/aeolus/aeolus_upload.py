@@ -8,7 +8,7 @@ class AeolusUploader(uploader.DummySourceUploader):
                 "url" : "http://www.nature.com/articles/sdata201626",
                 "license_url" : "http://datadryad.org/resource/doi:10.5061/dryad.8q0s4",
 		        "license_url_short" : "http://bit.ly/2DIxWwF",
-                "license" : "CC0 1.0",
+                "license" : "CC0 1.0"
                 }
             }
 
