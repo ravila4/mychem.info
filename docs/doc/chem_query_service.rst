@@ -175,7 +175,7 @@ At this point, the first 1000 hits have been returned (of ~11,000 total), and a 
 
 .. Hint:: Your scroll will remain active for 1 minute from the last time you requested results from it.  If your scroll expires before you get the last batch of results, you must re-request the scroll_id by setting **fetch_all** = TRUE as in step 1.
 
-.. Hint:: When you need to use this "scrolling query" feature via "fetch_all" parameter, we recommend you to use our Python client "`biothings_client <doc/packages.html>`_".
+.. Hint:: When you need to use this "scrolling query" feature via "fetch_all" parameter, we recommend you to use our Python client "`biothings_client <packages.html>`_".
 
 Boolean operators and grouping
 """"""""""""""""""""""""""""""
