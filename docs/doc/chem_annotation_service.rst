@@ -111,7 +111,7 @@ piece of code, still trivial of course. Here is a sample python snippe using `ht
 or this example using `requests <http://docs.python-requests.org>`_ module::
 
     import requests
-    params = {'ids': 'SDUQYLNIPVEERB-QPPQHZFASA-N','SESFRYSPDFLNCH-UHFFFAOYSA-N', 'fields': 'drugbank.name'}
+    params = {'ids': 'SDUQYLNIPVEERB-QPPQHZFASA-N,SESFRYSPDFLNCH-UHFFFAOYSA-N', 'fields': 'drugbank.name'}
     res = request.post('http://mychem.info/v1/chem', params)
     con = res.json()
 

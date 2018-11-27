@@ -10,8 +10,8 @@ Introduction
 ------------
 .. image:: _static/mychem.png
     :align: left
-    :height: 123pt
-    :width: 95pt
+    :height: 95pt
+    :width: 123pt
     :alt: mychem.info
 
 .. cssclass:: head-paragraph
