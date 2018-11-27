@@ -19,6 +19,7 @@ import sys
 from pymongo import MongoClient
 from tqdm import tqdm
 
+
 def process_df(df):
     gb = df.groupby("drug_mongo_id")
     docs = []
@@ -42,7 +43,7 @@ def process_df(df):
         for doc in dr:
             doc['prr_95_ci'] = [doc.get('prr_95_CI_lower', None), doc.get('prr_95_CI_upper', None)]
             doc['ror_95_ci'] = [doc.get('ror_95_CI_lower', None), doc.get('ror_95_CI_upper', None)]
-            for field in ['prr_95_CI_lower', 'prr_95_CI_upper', 'ror_95_CI_lower',  'ror_95_CI_upper']:
+            for field in ['prr_95_CI_lower', 'prr_95_CI_upper', 'ror_95_CI_lower', 'ror_95_CI_upper']:
                 if field in doc:
                     del doc[field]
 
@@ -50,6 +51,7 @@ def process_df(df):
         docs.append({'_id': main_id, 'aeolus': top_level})
 
     return docs
+
 
 """
 def merge_with_ginas(aeolus, ginas):
@@ -59,6 +61,7 @@ def merge_with_ginas(aeolus, ginas):
         right_on="drug_concept_code")
     return df
 """
+
 
 def load_indications():
     ind = pd.read_csv("aeolus_indications.tsv", sep='\t', dtype=str)
@@ -141,6 +144,3 @@ if __name__ == "__main__":
 
     if len(sys.argv) == 2 and sys.argv[1] == "mongo":
         insert_mongo()
-
-
-
