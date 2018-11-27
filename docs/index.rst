@@ -10,13 +10,13 @@ Introduction
 ------------
 .. image:: _static/mychem.png
     :align: left
-    :height: 100pt
-    :width: 100pt
+    :height: 123pt
+    :width: 95pt
     :alt: mychem.info
 
 .. cssclass:: head-paragraph
 
-  `MyChem.info <http://mychem.info>`_ provides simple-to-use REST web services to query/retrieve variant annotation data. It's designed with an emphasis on **simplicity** and **performance**. 
+  `MyChem.info <http://mychem.info>`_ provides simple-to-use REST web services to query/retrieve chemical and drug annotation data. It's designed with an emphasis on **simplicity** and **performance**.
 
 .. include:: doc/quick_start.rst
 

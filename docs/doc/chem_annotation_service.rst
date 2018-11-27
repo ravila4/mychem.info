@@ -2,7 +2,7 @@ Chemical annotation service
 *************************************
 
 This page describes the reference for the MyChem.info chemical annotation web
-service.  It's also recommended to try it live on our `interactive API page <http://mychem.info/tryapi/>`_.
+service.  It's also recommended to try it live on our `interactive API page <http://mychem.info/v1/api>`_.
 
 
 Service endpoint
@@ -100,13 +100,21 @@ Example code
 ------------
 
 Unlike GET requests, you can easily test them from browser, make a POST request is often done via a
-piece of code, still trivial of course. Here is a sample python snippet::
+piece of code, still trivial of course. Here is a sample python snippe using `httplib2 <https://pypi.org/project/httplib2/>`_ modulet::
 
     import httplib2
     h = httplib2.Http()
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     params = 'ids=SDUQYLNIPVEERB-QPPQHZFASA-N,SESFRYSPDFLNCH-UHFFFAOYSA-N&fields=drugbank.name'
     res, con = h.request('http://mychem.info/v1/chem', 'POST', params, headers=headers)
+
+or this example using `requests <http://docs.python-requests.org>`_ module::
+
+    import requests
+    params = {'ids': 'SDUQYLNIPVEERB-QPPQHZFASA-N','SESFRYSPDFLNCH-UHFFFAOYSA-N', 'fields': 'drugbank.name'}
+    res = request.post('http://mychem.info/v1/chem', params)
+    con = res.json()
+
 
 Returned object
 ---------------

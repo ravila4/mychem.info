@@ -7,7 +7,7 @@ Chemical query service
              :alt: information!
 
 
-This page describes the reference for MyChem.info chemical query web service. It's also recommended to try it live on our `interactive API page <http://mychem.info/tryapi/>`_.
+This page describes the reference for MyChem.info chemical query web service. It's also recommended to try it live on our `interactive API page <http://mychem.info/v1/api>`_.
 
 
 Service endpoint
@@ -29,7 +29,7 @@ q
 
 fields
 """"""
-    Optional, a comma-separated string to limit the fields returned from the matching chemical hits. The supported field names can be found from any chemical object (e.g. `here <http://mychem.info/v1/chem/MNJVRJDLRVPLFE-UHFFFAOYSA-N>`_). Note that it supports dot notation, and wildcards as well, e.g., you can pass "drugbank", "drugbank.name", or "dbnsfp.products.*". If "fields=all", all available fields will be returned. Default: "all".
+    Optional, a comma-separated string to limit the fields returned from the matching chemical/drug hits. The supported field names can be found from any chemical object (e.g. `here <http://mychem.info/v1/chem/MNJVRJDLRVPLFE-UHFFFAOYSA-N>`_). Note that it supports dot notation, and wildcards as well, e.g., you can pass "drugbank", "drugbank.name", or "dbnsfp.products.*". If "fields=all", all available fields will be returned. Default: "all".
 
 size
 """"
@@ -174,6 +174,8 @@ At this point, the first 1000 hits have been returned (of ~11,000 total), and a 
     http://mychem.info/v1/query?scroll_id=cXVlcnlUaGVuRmV0Y2g7MTA7Njg4ODAwOTI6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDA5MTpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDkzOkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTQ6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDEwMDpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDk2OkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTg6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDA5NzpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDk5OkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTU6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzswOw==
 
 .. Hint:: Your scroll will remain active for 1 minute from the last time you requested results from it.  If your scroll expires before you get the last batch of results, you must re-request the scroll_id by setting **fetch_all** = TRUE as in step 1.
+
+.. Hint:: When you need to use this "scrolling query" feature via "fetch_all" parameter, we recommend you to use our Python client "`biothings_client <doc/packages.html>`_".
 
 Boolean operators and grouping
 """"""""""""""""""""""""""""""
@@ -401,14 +403,20 @@ Example code
 ------------
 
 Unlike GET requests, you can easily test them from browser, make a POST request is often done via a
-piece of code. Here is a sample python snippet::
+piece of code. Here is a sample python snippet using `httplib2 <https://pypi.org/project/httplib2/>`_ module::
 
     import httplib2
     h = httplib2.Http()
     headers = {'content-type': 'application/x-www-form-urlencoded'}
-    params = 'q=CHEBI:175901,CHEBI:41237&scopes=drugbank.chebi&fields=drugbank.name'
+    params = 'q=CHEBI:175901,CHEBI:41237&scopes=chebi.id&fields=drugbank.name'
     res, con = h.request('http://mychem.info/v1/query', 'POST', params, headers=headers)
 
+or this example using `requests <http://docs.python-requests.org>`_ module::
+
+    import requests
+    params = {'q': 'CHEBI:175901,CHEBI:41237', 'scopes': 'chebi.id', 'fields': 'drugbank.name'}
+    res = request.post('http://mychem.info/v1/query', params)
+    con = res.json()
 
 Returned object
 ---------------

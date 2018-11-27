@@ -1,9 +1,9 @@
 Quick start
 -----------
 
-`MyChem.info <http://mychem.info>`_ provides two simple web services: one for querying chemical compounds and the other for chemical annotation retrieval by ID. Both return results in `JSON <http://json.org>`_ format.
+`MyChem.info <http://mychem.info>`_ provides two simple web services: one for querying chemical compound or drug objects and the other for chemical/drug annotation retrieval by common IDs (e.g. inchikey, chebiID, drugbankID etc.). Both return results in `JSON <http://json.org>`_ format.
 
-Chemical query service
+Chemical/drug query service
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 URL
@@ -19,7 +19,7 @@ Examples
     http://mychem.info/v1/query?q=imatinib
     http://mychem.info/v1/query?q=_exists_:drugbank
     http://mychem.info/v1/query?q=drugbank.targets.uniprot:A9UF02&fields=drugbank
-    
+
 
 .. Hint:: View nicely formatted JSON result in your browser with this handy add-on: `JSON formatter <https://chrome.google.com/webstore/detail/bcjindcccaagfpapjjmafapmmgkkhgoa>`_ for Chrome or `JSONView <https://addons.mozilla.org/en-US/firefox/addon/jsonview/>`_ for Firefox.
 
@@ -32,7 +32,7 @@ To learn more
 * Batch queries? Yes, you can. do it with `a POST request <doc/chem_query_service.html#batch-queries-via-post>`__.
 
 
-Chemical annotation service
+Chemical/drug annotation service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 URL
@@ -41,13 +41,13 @@ URL
 
     http://mychem.info/v1/chem/<chem_id>
 
-``<chem_id>`` can be any one of several common chemical identifiers:
- 
+``<chem_id>`` can be any one of the following common chemical/drug identifiers:
+
     * `InChIKey <https://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey>`_,
-    * `DrugBank accession number <https://www.drugbank.ca/documentation>`_, 
+    * `DrugBank accession number <https://www.drugbank.ca/documentation>`_,
     * `ChEMBLID <https://www.ebi.ac.uk/chembl/faq#faq40>`_,
-    * `ChEBI identifier <http://www.ebi.ac.uk/chebi/aboutChebiForward.do>`_, 
-    * `PubChem CID <https://pubchem.ncbi.nlm.nih.gov/search/help_search.html#Cid>`_, 
+    * `ChEBI identifier <http://www.ebi.ac.uk/chebi/aboutChebiForward.do>`_,
+    * `PubChem CID <https://pubchem.ncbi.nlm.nih.gov/search/help_search.html#Cid>`_,
     * `UNII <https://www.fda.gov/ForIndustry/DataStandards/SubstanceRegistrationSystem-UniqueIngredientIdentifierUNII/>`_.
 
 Examples

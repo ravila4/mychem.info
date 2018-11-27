@@ -82,7 +82,7 @@ is essentially a collection of fields (attributes) and their values:
     {
       "_id": "KTUFNOKKBVMGRW-UHFFFAOYSA-N",
       "unii": {
-        "_license": "?",
+        "_license": "http://bit.ly/2Pg8Oo9",
         "inchikey": "KTUFNOKKBVMGRW-UHFFFAOYSA-N",
         "ingredient_type": "INGREDIENT SUBSTANCE",
         "inn_id": "8031",
