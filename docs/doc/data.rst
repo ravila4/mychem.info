@@ -116,7 +116,7 @@ Each individual chemical object contains an "**_id**" field as the primary key. 
 _score field
 ------------
 
-You will often see a “_score” field in the returned chemical object, which is the internal score representing how well the query matches the returned chemical object. It probably does not mean much in `chemical annotation service <doc/data.html>`_ when only one chemical object is returned. In `chemical query service <doc/chem_query_service.html>`_, by default, the returned chemical hits are sorted by the scores in descending order.
+You will often see a “_score” field in the returned chemical object, which is the internal score representing how well the query matches the returned chemical object. It probably does not mean much in `chemical annotation service <data.html>`_ when only one chemical object is returned. In `chemical query service <chem_query_service.html>`_, by default, the returned chemical hits are sorted by the scores in descending order.
 
 
 .. _available_fields:
