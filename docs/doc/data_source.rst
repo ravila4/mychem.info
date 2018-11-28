@@ -9,6 +9,11 @@ This page records the notes specific to each data source, regarding the ETL proc
 AEOLUS
 ------
 
+The value of `aeolus.outcomes` field is a list of outcome objects. The list is sorted by the `aeolus.outcomes.case_count` field in the descending order. In some rare cases, the list can be a large list (up to ~10K). The large list is often associated with common chemicals (e.g. asprin, omeprazole). For the purpose of reducing the total size of a single chemical object, we truncated the `aeolus.outcomes` list up to 5000 items.
+
+This truncation affects only 165 objects (as of 2018-11-28, `full list here <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/aeolus/truncated_docs.tsv>`_), comparing to total 3,044 objects containing `aeolus` data (~5%).
+
+
 ChEBI
 ------
 
