@@ -72,7 +72,7 @@ The value of `sider` field is a list of side-effect objects. The list of side-ef
 
 In some rare cases, the list can be very large (up to ~5K). We then truncated the list up to 2000.
 
-This truncation affects only 25 objects (as of 2018-11-28, `full list here <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/sider/truncated_docs.tsv>`_), comparing to total 1,507 objects containing `sider` data (~1.6%).
+This truncation affects only 26 objects (as of 2018-11-28, `full list here <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/sider/truncated_docs.tsv>`_), comparing to total 1,507 objects containing `sider` data (~1.7%).
 
 .. UNII
 .. ----
