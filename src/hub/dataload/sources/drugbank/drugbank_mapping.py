@@ -69,10 +69,6 @@ drugbank_mapping = {
                                 }
                             }
                         },
-                "drugbank_id": {
-                        "normalizer": "keyword_lowercase_normalizer",
-                        "type": "keyword"
-                        },
                 "enzymes": {
                         "properties": {
                             "actions": {
