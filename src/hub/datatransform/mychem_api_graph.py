@@ -1,4 +1,5 @@
 from biothings.hub.datatransform import DataTransformMDB
+from biothings.hub.datatransform import RegExEdge
 from biothings.hub.datatransform.datatransform_api import MyChemInfoEdge
 import networkx as nx
 
@@ -64,6 +65,14 @@ graph_mychem.add_edge('chembl', 'inchikey',
 # self-loops to check looked-up values exist in official collection
 graph_mychem.add_edge('drugbank', 'drugbank',
                       object=MyChemInfoEdge('drugbank.drugbank_id', 'drugbank.drugbank_id'))
+
+####################
+# Sider
+####################
+graph_mychem.add_node('pubchem-long')
+
+graph_mychem.add_edge('pubchem-long', 'pubchem',
+                      object=RegExEdge('CID10*', ''))
 
 
 class MyChemKeyLookup(DataTransformMDB):
