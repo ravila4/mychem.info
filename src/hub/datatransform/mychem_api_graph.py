@@ -69,9 +69,9 @@ graph_mychem.add_edge('drugbank', 'drugbank',
 ####################
 # Sider
 ####################
-graph_mychem.add_node('pubchem-long')
+graph_mychem.add_node('stitch')
 
-graph_mychem.add_edge('pubchem-long', 'pubchem',
+graph_mychem.add_edge('stitch', 'pubchem',
                       object=RegExEdge('CID10*', ''))
 
 
