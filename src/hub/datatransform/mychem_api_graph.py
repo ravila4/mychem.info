@@ -66,14 +66,6 @@ graph_mychem.add_edge('chembl', 'inchikey',
 graph_mychem.add_edge('drugbank', 'drugbank',
                       object=MyChemInfoEdge('drugbank.drugbank_id', 'drugbank.drugbank_id'))
 
-####################
-# Sider
-####################
-graph_mychem.add_node('pubchem-long')
-
-graph_mychem.add_edge('pubchem-long', 'pubchem',
-                      object=RegExEdge('CID10*', ''))
-
 
 class MyChemKeyLookup(DataTransformMDB):
 
