@@ -9,6 +9,7 @@ from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.mongo import get_src_db
 from biothings.hub.datatransform import IDStruct
+from biothings.hub.datatransform import nested_lookup
 
 from hub.datatransform.keylookup import MyChemKeyLookup
 
@@ -32,9 +33,16 @@ class SiderIDStruct(IDStruct):
     """Custom IDStruct to preprocess _id from sider"""
 
     def preprocess_id(self,_id):
-        assert _id.startswith('CID')
-        assert len(_id) == 12
-        return int(_id[4:])
+        if isinstance(_id, str) and _id.startswith('CID') and len(_id) == 12:
+            return int(_id[4:])
+        return _id
+
+    def _init_strct(self, field, doc_lst):
+        """initialze _id_tuple_lst"""
+        for doc in doc_lst:
+            value = nested_lookup(doc, field)
+            if value:
+                self.add(value, self.preprocess_id(value))
 
     @property
     def id_lst(self):
