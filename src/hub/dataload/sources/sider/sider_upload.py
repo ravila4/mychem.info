@@ -38,7 +38,12 @@ class SiderIDStruct(IDStruct):
         return _id
 
     def _init_strct(self, field, doc_lst):
-        """initialze _id_tuple_lst"""
+        """
+        initialze _id_tuple_lst
+
+        In this class, stitch identifiers are converted to pubchem identifiers for keylookup.
+        This is done internally by this class which performs a preprocessing conversion to an identifier.
+        """
         for doc in doc_lst:
             value = nested_lookup(doc, field)
             if value:
