@@ -75,6 +75,7 @@ SLACK_WEBHOOK = None
 # SSH port for hub console
 HUB_SSH_PORT = 7022
 HUB_API_PORT = 7080
+HUB_ICON = "http://biothings.io/static/img/mychem-logo-shiny.svg"
 
 ################################################################################
 # HUB_PASSWD
