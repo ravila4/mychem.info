@@ -53,6 +53,17 @@ inchikey_fields = [
     'chembl.inchi_key'
 ]
 
+# inchi to inchikey (direct route)
+graph_mychem.add_edge('inchi', 'inchikey',
+                      object=MyChemInfoEdge('pubchem.inchi', inchikey_fields, weight=0.5))
+
+graph_mychem.add_edge('inchi', 'inchikey',
+                      object=MyChemInfoEdge('drugbank.inchi', inchikey_fields, weight=0.6))
+
+graph_mychem.add_edge('inchi', 'inchikey',
+                      object=MyChemInfoEdge('chembl.inchi', inchikey_fields, weight=0.7))
+
+# indirect route
 graph_mychem.add_edge('pubchem', 'inchikey',
                       object=MyChemInfoEdge('pubchem.cid', inchikey_fields))
 
