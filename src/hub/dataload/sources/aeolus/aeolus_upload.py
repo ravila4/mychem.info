@@ -24,6 +24,7 @@ class AeolusUploader(uploader.DummySourceUploader):
                     },
                     "drug_name": {
                         "type": "text",
+                        "copy_to": ["all"]
                     },
                     "inchikey": {
                         "normalizer": "keyword_lowercase_normalizer",
