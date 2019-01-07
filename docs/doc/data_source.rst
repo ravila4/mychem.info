@@ -1,52 +1,82 @@
 Data Sources
-============
+************
 
 This page records the notes specific to each data source, regarding the ETL process when their data were integrated into `MyChem.info <http://mychem.info>`_:
 
 .. note:: The structured metadata about all data sources can be accessed from `the metadata endpoint <http://mychem.info/v1/metadata>`_. The detailed information about the integrated data is described in this `data page <data.html>`_.
 
+
 AEOLUS
 ------
+
+The value of `aeolus.outcomes` field is a list of outcome objects. The list is sorted by the `aeolus.outcomes.case_count` field in the descending order. In some rare cases, the list can be a large list (up to ~10K). The large list is often associated with common chemicals (e.g. asprin, omeprazole). For the purpose of reducing the total size of a single chemical object, we truncated the `aeolus.outcomes` list up to 5000 items.
+
+This truncation affects only 165 objects (as of 2018-11-28, `full list here <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/aeolus/truncated_docs.tsv>`_), comparing to total 3,044 objects containing `aeolus` data (~5%).
+
 
 ChEBI
 ------
 
-This data source uses the ExcludeFieldsById class with the "chebi.xrefs.intenz", "chebi.xrefs.rhea", "chebi.xrefs.uniprot", "chebi.xrefs.sabio_rk", and "chebi.xrefs.patent" fields.  Please see the ExcludeFieldsById section below.  The `exclusion_ids.py <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/chebi/exclusion_ids.py>`_ file affects 142 documents.
+The following `chebi.xrefs` fields are subject to truncation::
 
-ChEMBL
-------
+    chebi.xrefs.intenz
+    chebi.xrefs.rhea
+    chebi.xrefs.uniprot
+    chebi.xrefs.sabio_rk
+    chebi.xrefs.patent
+
+The value of each fields above is a list. In some cases, the list can be very large (up to ~90K items). The large list is often associated with common chemicals (e.g. water, ATP). For the purpose of reducing the total size of a single chemical object, we removed the above fields if their values contain more than 1000 items.
+
+This truncation affects only 143 objects (as of 2018-11-28, `full list here <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/chebi/exclusion_ids.py>`_), comparing to total 98,511 objects containing `chebi` data (<0.15%).
+
+.. ChEMBL
+.. ------
 
 DrugBank
 --------
 
-This data source uses the ExcludeFieldsById class with the "drugbank.drug_interactions", "drugbank.products", "drugbank.mixtures" fields.  Please see the ExcludeFieldsById section below.  The `exclusion_ids.py <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/drugbank/exclusion_ids.py>`_ file affects 7 documents.
+The following `drugbank` fields are subject to truncation::
 
-DrugCentral
------------
+    drugbank.products
+    drugbank.mixtures
+    drugbank.drug_interactions
 
-ginas
------
+
+The value of each fields above can be a large list (up to ~10K items). For the purpose of reducing the total size of a single chemical/drug object, we removed the above fields if their values contain more than 1000 items.
+
+This truncation affects only 7 objects (as of 2018-11-28, `full list here <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/drugbank/exclusion_ids.py>`_), comparing to total 11,290 objects containing `drugbank` data (~0.06%).
+
+.. DrugCentral
+.. -----------
+
+.. ginas
+.. -----
 
 NDC
 ---
 
-This data source uses the ExcludeFieldsById class with the "ndc" and "ndc.productndc" fields.  Please see the ExcludeFieldsById section below.  The `exclusion_ids.py <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/ndc/exclusion_ids.py>`_ file affects 4 documents.
+The value of `ndc` field is a list. In some rare cases, the list can be a large list (up to ~4K). The entire `ndc` field will be removed if the list contains more than 1000 items.
 
-PharmGKB
---------
+This truncation affects only 4 objects (as of 2018-11-28, `full list here <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/ndc/exclusion_ids.py>`_), comparing to total 36,893 objects containing `ndc` data (~0.01%).
 
-PubChem
--------
+.. PharmGKB
+.. --------
+
+.. PubChem
+.. -------
 
 SIDER
 ------
 
-Sider elements (doc['sider']) which are natively represented as a list are sorted by the field 'sider.side_effect.frequency'.  From that sorted list, only the top 2000 elements are kept in the document.  The sorting function is defined in 'sider_parser.py'.  Documents that do not have a 'sider.side_effect.frequency' field are placed at the top of the list.
+The value of `sider` field is a list of side-effect objects. The list of side-effect objects are already sorted by the value of the `sider.side_effect.frequency` field in the descending order (e.g. "92.6%", "65%"). In the case of no `sider.side_effect.frequency` value or non-numeric values (e.g. "common", "rare", "post-marketing"), these side-effect objects are kept at the top of the list.
 
-UNII
-----
+In some rare cases, the list can be very large (up to ~5K). We then truncated the list up to 2000.
 
-ExcludeFieldsById
------------------
+This truncation affects only 26 objects (as of 2018-11-28, `full list here <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/sider/truncated_docs.tsv>`_), comparing to total 1,507 objects containing `sider` data (~1.7%).
 
-This class is being used by several data sources to exclude large fields for common chemicals.  Identifiers for these common chemicals are recorded in the 'exclusion_ids.py' file within the data source.  For these documents, fields were excluded if their lists were of size 1000 or greater; this size can be modified as a parameter.
+.. UNII
+.. ----
+
+.. raw:: html
+
+    <div id="spacer" style="height:300px"></div>

@@ -47,8 +47,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'MyChem.info'
-copyright = '2018, Su and Wu Labs'
-author = 'Su and Wu Labs'
+copyright = '2018, The Su and Wu Labs at Scripps Research'
+author = 'The Su and Wu Labs'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

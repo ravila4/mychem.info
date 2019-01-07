@@ -158,7 +158,8 @@ drugbank_mapping = {
                         },
                 "id": {
                         "normalizer": "keyword_lowercase_normalizer",
-                        "type": "keyword"
+                        "type": "keyword",
+                        "copy_to": ["all"]
                         },
                 "inchi": {
                         "normalizer": "keyword_lowercase_normalizer",
@@ -195,7 +196,8 @@ drugbank_mapping = {
                             }
                         },
                 "name": {
-                        "type": "text"
+                        "type": "text",
+                        "copy_to": ["all"]
                         },
                 "packagers": {
                         "type": "text"
