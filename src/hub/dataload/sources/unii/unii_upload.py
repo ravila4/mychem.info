@@ -5,6 +5,9 @@ from .unii_parser import load_data
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 
+from biothings.hub.datatransform import DataTransformMDB
+from hub.datatransform.keylookup import graph_mychem
+
 
 SRC_META = {
         "url": 'https://fdasis.nlm.nih.gov/srs/',
@@ -14,11 +17,25 @@ SRC_META = {
         }
 
 
+class UniiKeyLookup(DataTransformMDB):
+
+    def __init__(self, input_types, *args, **kwargs):
+        super(UniiKeyLookup, self).__init__(graph_mychem,
+                input_types,
+                output_types=['inchikey', 'unii'],
+                copy_from_doc=True,
+                *args, **kwargs)
+
+
 class UniiUploader(BaseDrugUploader):
 
     name = "unii"
     storage_class = storage.IgnoreDuplicatedStorage
     __metadata__ = {"src_meta" : SRC_META}
+
+    keylookup = UniiKeyLookup([('inchikey', 'unii.inchikey'),
+                               ('pubchem', 'unii.pubchem'),
+                               ('unii', 'unii.unii')])
 
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)
@@ -26,7 +43,7 @@ class UniiUploader(BaseDrugUploader):
         assert len(record_files) == 1, "Expecting one record.txt file, got %s" % repr(record_files)
         input_file = record_files.pop()
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        return load_data(input_file)
+        return self.keylookup(load_data)(input_file)
 
     @classmethod
     def get_mapping(klass):
