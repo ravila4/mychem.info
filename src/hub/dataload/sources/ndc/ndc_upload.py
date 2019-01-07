@@ -103,6 +103,7 @@ class NDCUploader(BaseDrugUploader):
                         "substancename" : {
                                 "normalizer": "keyword_lowercase_normalizer",
                                 "type": "keyword",
+                                "copy_to": ["all"]
                                 },
                         "active_numerator_strength" : {
                                 "type" : "text"

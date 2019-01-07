@@ -40,6 +40,7 @@ class UniiUploader(BaseDrugUploader):
                             },
                         "preferred_term": {
                             "type": "text",
+                            "copy_to": ["all"]
                             },
                         "registry_number": {
                             "normalizer": "keyword_lowercase_normalizer",
