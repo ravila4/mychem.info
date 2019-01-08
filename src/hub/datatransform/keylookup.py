@@ -68,6 +68,14 @@ graph_mychem.add_node('chebi')
 #graph_mychem.add_edge('chebi-short', 'chembl',
 #                      object=MongoDBEdge('chembl', 'chembl.chebi_par_id', 'chembl.molecule_chembl_id'))
 
+###############################################################################
+# Unii Edges
+###############################################################################
+graph_mychem.add_edge('unii', 'inchikey',
+                      object=MongoDBEdge('unii', 'unii.unii', 'unii.inchikey'))
+graph_mychem.add_edge('unii', 'pubchem',
+                      object=MongoDBEdge('unii', 'unii.unii', 'unii.pubchem'))
+
 
 class MyChemKeyLookup(DataTransformMDB):
 
