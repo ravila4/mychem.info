@@ -2,9 +2,10 @@ import xmltodict
 import json, math
 import collections
 import logging
-from biothings.utils.dataload import dict_sweep
+from biothings.utils.dataload import dict_sweep, boolean_convert
 from biothings.utils.dataload import boolean_convert
-from mychem_utils.dotstring import float_convert, int_convert, unlist
+from biothings.utils.dataload import float_convert, int_convert
+from biothings.utils.dataload import unlist_incexcl as unlist
 
 
 def load_data(xml_file):
