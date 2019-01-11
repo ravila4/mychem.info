@@ -9,6 +9,7 @@ from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.common import unzipall
 from mychem_utils import ExcludeFieldsById
+from hub.datatransform.keylookup import MyChemKeyLookup
 
 
 SRC_META = {
@@ -30,6 +31,9 @@ class DrugBankUploader(BaseDrugUploader):
         "drugbank.products",
         "drugbank.mixtures"
     ])
+    keylookup = MyChemKeyLookup([
+        ("drugname", "drugbank.name")],
+        debug=["DB09036"])
 
     def load_data(self,data_folder):
         xmlfiles = glob.glob(os.path.join(data_folder,"*.xml"))
@@ -41,7 +45,8 @@ class DrugBankUploader(BaseDrugUploader):
         assert len(xmlfiles) == 1, "Expecting one xml file, got %s" % repr(xmlfiles)
         input_file = xmlfiles.pop()
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        return self.exclude_fields(load_data)(input_file)
+        # return self.exclude_fields(load_data)(input_file)
+        return self.keylookup(load_data)(input_file)
 
     def post_update_data(self, *args, **kwargs):
         for idxname in ["drugbank.id","drugbank.chebi","drugbank.inchi"]:

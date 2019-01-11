@@ -1,4 +1,5 @@
 from biothings.hub.datatransform import MongoDBEdge, RegExEdge, DataTransformMDB
+from biothings.hub.datatransform.datatransform_api import MyChemInfoEdge
 import networkx as nx
 
 graph_mychem = nx.DiGraph()
@@ -75,6 +76,12 @@ graph_mychem.add_edge('unii', 'inchikey',
                       object=MongoDBEdge('unii', 'unii.unii', 'unii.inchikey'))
 graph_mychem.add_edge('unii', 'pubchem',
                       object=MongoDBEdge('unii', 'unii.unii', 'unii.pubchem'))
+
+###############################################################################
+# Drug name Unii lookup
+###############################################################################
+graph_mychem.add_edge('drugname', 'unii',
+                      object=MyChemInfoEdge('unii.preferred_term', 'unii.unii'))
 
 
 class MyChemKeyLookup(DataTransformMDB):

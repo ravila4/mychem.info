@@ -6,6 +6,7 @@ import pymongo
 from .chembl_parser import load_data
 from hub.dataload.uploader import BaseDrugUploader
 from biothings.hub.dataload.uploader import ParallelizedSourceUploader
+from hub.datatransform.keylookup import MyChemKeyLookup
 
 
 SRC_META = {
@@ -21,6 +22,9 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
     __metadata__ = {"src_meta" : SRC_META}
 
     MOLECULE_PATTERN = "molecule.*.json"
+    keylookup = MyChemKeyLookup([
+        ("drugname", "chembl.pref_name")],
+        debug=["CHEMBL1743070"])
 
     def jobs(self):
         # this will generate arguments for self.load.data() method, allowing parallelization
@@ -29,7 +33,7 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     def load_data(self,input_file):
         self.logger.info("Load data from file '%s'" % input_file)
-        return load_data(input_file)
+        return self.keylookup(load_data)(input_file)
 
     def post_update_data(self, *args, **kwargs):
         for idxname in ["chembl.chebi_par_id","chembl.inchi","chembl.molecule_chembl_id"]:

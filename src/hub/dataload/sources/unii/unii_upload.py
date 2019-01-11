@@ -35,7 +35,8 @@ class UniiUploader(BaseDrugUploader):
 
     keylookup = UniiKeyLookup([('inchikey', 'unii.inchikey'),
                                ('pubchem', 'unii.pubchem'),
-                               ('unii', 'unii.unii')])
+                               ('unii', 'unii.unii')],
+                               debug=["T4H8FMA7IM"])
 
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)
