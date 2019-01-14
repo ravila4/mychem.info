@@ -27,7 +27,7 @@ class NDCUploader(BaseDrugUploader):
     keylookup = MyChemKeyLookup([
         ("ndc","ndc.productndc"),
         ("drugname", "ndc.nonproprietaryname")],
-        debug=["57894-420"])
+        debug=["57894-420", "57894-421"])
     # See the comment on the ExcludeFieldsById for use of this class.
     exclude_fields = ExcludeFieldsById(exclusion_ids, ["ndc"])
 
