@@ -276,3 +276,22 @@ class MyChemTest(BiothingTestHelperMixin):
         # (testing failing status would require actually loading tornado app from there
         #  and deal with config params...)
 
+    def test_all_fields(self):
+        alls = [{"q":"DB01076","fields":"drugbank.id"},
+                {"q":"Siltuximab","fields":"drugbank.name"},
+                {"q":"IBUPROFEN","fields":"ndc.substancename"},
+                {"q":"IBUPROFEN","fields":"ndc.substancename"},
+                {"q":"fospropofol","fields":"aeolus.drug_name"},
+                {"q":"TOOSENDANIN","fields":"chembl.pref_name"},
+                {"q":"FLUPROPADINE","fields":"ginas.preferred_name"},
+                {"q":"DIMETHYNUR","fields":"unii.preferred_term"},
+                ]
+        for d in alls:
+            res = self.json_ok(self.get_ok(self.api + '/query?q=%(q)s&fields=%(fields)s&dotfield=true' % d))
+            foundone = False
+            for e in res["hits"]:
+                if d["fields"] in e and e[d["fields"]] == d["q"]:
+                    foundone = True
+                    break
+            assert foundone, "Expecting at least one result with q=%(q)s&fields=%(fields)s" % d
+
