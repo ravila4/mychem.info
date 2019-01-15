@@ -280,7 +280,6 @@ class MyChemTest(BiothingTestHelperMixin):
         alls = [{"q":"DB01076","fields":"drugbank.id"},
                 {"q":"Siltuximab","fields":"drugbank.name"},
                 {"q":"IBUPROFEN","fields":"ndc.substancename"},
-                {"q":"IBUPROFEN","fields":"ndc.substancename"},
                 {"q":"fospropofol","fields":"aeolus.drug_name"},
                 {"q":"TOOSENDANIN","fields":"chembl.pref_name"},
                 {"q":"FLUPROPADINE","fields":"ginas.preferred_name"},
