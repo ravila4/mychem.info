@@ -28,8 +28,8 @@ class ChebiUploader(BaseDrugUploader):
     __metadata__ = {"src_meta" : SRC_META}
     keylookup = MyChemKeyLookup(
             [('inchikey','chebi.inchikey'),
-             ('chebi','chebi.id'),
              ('drugbank','chebi.xrefs.drugbank'),
+             ('chebi','chebi.id'),
              ],
             copy_from_doc=True)
     # See the comment on the ExcludeFieldsById for use of this class.

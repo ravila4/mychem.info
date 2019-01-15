@@ -20,10 +20,17 @@ class DrugCentralUploader(BaseDrugUploader):
 
     keylookup = MyChemKeyLookup(
             [('inchikey', 'drugcentral.structures.inchikey'),
-             ('unii', 'drugcentral.xref.unii')],
+             ('unii', 'drugcentral.xref.unii'),
+             # other keys are present but not currently used by keylookup
+             ('inchi', 'drugcentral.structures.inchi'),
+             ('drugbank', 'drugcentral.xrefs.drugbank_id'),
+             ('chebi', 'drugcentral.xrefs.chebi'),
+             ('chembl', 'drugcentral.xrefs.chembl_id'),
+             ('pubchem', 'drugcentral.xrefs.pubchem_cid')],
              # ('drugname', 'drugcentral.synonyms')], # unhashable type - list
             copy_from_doc=True,
-            debug=["CHEMBL1743070"])
+            #debug=["CHEMBL1743070"])
+            )
 
     def load_data(self, data_folder):
         # read data from the source collection

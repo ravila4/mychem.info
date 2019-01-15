@@ -32,8 +32,16 @@ class DrugBankUploader(BaseDrugUploader):
         "drugbank.mixtures"
     ])
     keylookup = MyChemKeyLookup([
-        ("drugname", "drugbank.name")],
-        debug=["DB09036"])
+        ("inchikey", "drugbank.inchi_key"),
+        ("drugbank", "drugbank.drugbank_id"),
+        # the following keys could possible be used to lookup 'inchikey' or 'unii'
+        ("chebi", "drugbank.xrefs.chebi"),
+        ("chembl", "drugbank.xrefs.chembl"),
+        ("pubchem", "drugbank.xrefs.pubchem.cid"),
+        ("drugname", "drugbank.name"), # can be used to lookup unii
+        ("inchi", "drugbank.inchi")],
+        debug=["DB09036"],
+        copy_from_doc=True)
 
     def load_data(self,data_folder):
         xmlfiles = glob.glob(os.path.join(data_folder,"*.xml"))

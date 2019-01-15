@@ -23,8 +23,15 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     MOLECULE_PATTERN = "molecule.*.json"
     keylookup = MyChemKeyLookup([
+        ("inchikey", "chembl.inchi_key"),
+        ("inchi", "chembl.inchi"),
+        ("chembl", "chembl.molecule_chembl_id"),
+        ("chebi", "chembl.chebi_par_id"),
+        ("drugcentral", "chembl.xrefs.drugcentral.id"),
+        ("pubchem", "chembl.xrefs.pubchem.sid"),
         ("drugname", "chembl.pref_name")],
-        debug=["CHEMBL1743070"])
+        debug=["CHEMBL1743070"],
+        copy_from_doc=True)
 
     def jobs(self):
         # this will generate arguments for self.load.data() method, allowing parallelization
