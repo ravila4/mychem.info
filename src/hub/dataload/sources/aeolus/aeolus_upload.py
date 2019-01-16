@@ -73,7 +73,7 @@ class AeolusUploader(uploader.DummySourceUploader):
                     },
                     "outcomes": {
                         "properties": {
-                            "code": {
+                            "meddra_code": {
                                 "normalizer": "keyword_lowercase_normalizer",
                                 "type": "keyword",
                             },
