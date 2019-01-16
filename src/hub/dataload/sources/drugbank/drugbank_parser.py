@@ -55,9 +55,9 @@ def restr_protein_dict(dictionary):
                 articles = []
             if isinstance(articles, list):
                 for article in articles:
-                    pubmed_lst.append(article['pubmed-id'])
+                    pubmed_lst.append(int(article['pubmed-id']))
             else:
-                pubmed_lst.append(articles['pubmed-id'])
+                pubmed_lst.append(int(articles['pubmed-id']))
             _dict.update({'pmids':pubmed_lst})
     return _dict
 
