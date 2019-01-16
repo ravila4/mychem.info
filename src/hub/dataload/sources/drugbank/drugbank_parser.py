@@ -37,7 +37,7 @@ def restr_protein_dict(dictionary):
             x = x.replace('-','_')
             _dict.update({x:dictionary['known-action']})
         elif x == 'polypeptide':
-            _li2 = ['general-function','specific-function']
+            _li2 = ['general-function','specific-function', 'gene-name']
             for i in y:
                 if i ==  "@id":
                     _dict.update({'uniprot':y[i]})
@@ -46,6 +46,19 @@ def restr_protein_dict(dictionary):
                 elif i in _li2:
                     j = i.replace('-','_')
                     _dict.update({j:y[i]})
+        elif x == 'references' and y:
+            # extract a list of pubmed-ids
+            pubmed_lst = []
+            try:
+                articles = y['articles']['article']
+            except (KeyError, TypeError):
+                articles = []
+            if isinstance(articles, list):
+                for article in articles:
+                    pubmed_lst.append(article['pubmed-id'])
+            else:
+                pubmed_lst.append(articles['pubmed-id'])
+            _dict.update({'pmids':pubmed_lst})
     return _dict
 
 def restructure_dict(dictionary):
