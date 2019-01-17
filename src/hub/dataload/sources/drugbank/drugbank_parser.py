@@ -81,6 +81,8 @@ def restructure_dict(dictionary):
             d1[key] = value
 
         elif key == 'drugbank-id' and value:
+            # NOTE: 'drugbank.drugbank_id' has been moved to 'drugbank.id'
+            key = 'id'
             id_list = []
             if isinstance(value,list):
                 for ele in value:
@@ -88,19 +90,17 @@ def restructure_dict(dictionary):
                         assert "@primary" in ele
                         for x,y in iter(ele.items()):
                             if x == '#text':
-                                # make sure we always have DB ID as drugbank_id
-                                d1.update({'id' : y})
+                                # make sure we always have DB ID as drugbank_id (now 'id')
+                                d1.update({key : y})
                                 restr_dict['_id'] = y
 
                     if isinstance(ele,str):
-                        key = key.replace('-','_')
                         id_list.append(ele)
                         d1.update({'accession_number':id_list})
 
             elif isinstance(value,dict) or isinstance(value,collections.OrderedDict):
                 for x,y in iter(value.items()):
                     if x == '#text':
-                        key = key.replace('-','_')
                         id_list.append(y)
                         d1.update({key:id_list})
                         restr_dict['_id'] = y
@@ -542,7 +542,7 @@ def restructure_dict(dictionary):
     restr_dict['drugbank'] = d1
     restr_dict = unlist(restr_dict, [
         "drugbank.accession_number",
-        "drugbank.drugbank_id",
+        "drugbank.id",
         "drugbank.chebi",
         "drugbank.inchi"
     ], [])
