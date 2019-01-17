@@ -2,8 +2,9 @@ import xmltodict
 import json, math
 import collections
 import logging
+
 from biothings.utils.dataload import dict_sweep, boolean_convert
-from biothings.utils.dataload import boolean_convert
+from biothings.utils.dataload import boolean_convert, to_int
 from biothings.utils.dataload import float_convert, int_convert
 from biothings.utils.dataload import unlist_incexcl as unlist
 
@@ -56,9 +57,9 @@ def restr_protein_dict(dictionary):
                 articles = []
             if isinstance(articles, list):
                 for article in articles:
-                    pubmed_lst.append(int(article['pubmed-id']))
+                    pubmed_lst.append(to_int(article['pubmed-id']))
             else:
-                pubmed_lst.append(int(articles['pubmed-id']))
+                pubmed_lst.append(to_int(articles['pubmed-id']))
             _dict.update({'pmids':pubmed_lst})
     return _dict
 
