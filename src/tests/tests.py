@@ -22,6 +22,8 @@ class MyChemTest(BiothingTestHelperMixin):
     chembl_id = 'CHEMBL1308'
     chebi_id = 'CHEBI:6431'
     unii_id = '7AXV542LZ4'
+    pubchem_id = '60823'
+    prefixed_pubchem_id = 'CID:60823'
 
     def has_hits(self, q, morethan=0):
         d = self.json_ok(self.get_ok(self.api + '/query?q='+q))
@@ -116,25 +118,33 @@ class MyChemTest(BiothingTestHelperMixin):
         assert chem == compound
 
         # test different drug identifiers
-        drugbank = self.json_ok(self.get_ok(self.api + '/drug/' + self.drugbank_id))
+        drugbank = self.json_ok(self.get_ok(self.api + '/drug/' + self.drugbank_id + '?fields=drugbank'))
         assert 'drugbank' in drugbank
         assert 'id' in drugbank['drugbank']
         assert drugbank['drugbank']['id'] == self.drugbank_id
 
-        chembl = self.json_ok(self.get_ok(self.api + '/drug/' + self.chembl_id))
+        chembl = self.json_ok(self.get_ok(self.api + '/drug/' + self.chembl_id + '?fields=chembl'))
         assert 'chembl' in chembl
         assert 'molecule_chembl_id' in chembl['chembl']
         assert chembl['chembl']['molecule_chembl_id'] == self.chembl_id
 
-        unii = self.json_ok(self.get_ok(self.api + '/drug/' + self.unii_id))
+        unii = self.json_ok(self.get_ok(self.api + '/drug/' + self.unii_id + '?fields=unii'))
         assert 'unii' in unii
         assert 'unii' in unii['unii']
         assert unii['unii']['unii'] == self.unii_id
 
-        chebi = self.json_ok(self.get_ok(self.api + '/drug/' + self.chebi_id))
+        chebi = self.json_ok(self.get_ok(self.api + '/drug/' + self.chebi_id + '?fields=chebi'))
         assert 'chebi' in chebi
         assert 'id' in chebi['chebi']
         assert chebi['chebi']['id'] == self.chebi_id
+
+        pubchem = self.json_ok(self.get_ok(self.api + '/drug/' + self.pubchem_id + '?fields=pubchem'))
+        assert 'pubchem' in pubchem
+        assert 'cid' in pubchem['pubchem']
+        assert pubchem['pubchem']['cid'] == int(self.pubchem_id)
+
+        prefixed_pubchem = self.json_ok(self.get_ok(self.api + '/drug/' + self.prefixed_pubchem_id + '?fields=pubchem'))
+        assert prefixed_pubchem == pubchem
 
         res = self.json_ok(self.get_ok(self.api + '/drug/' + self.inchikey_id))
         eq_(res['_id'], self.inchikey_id)
