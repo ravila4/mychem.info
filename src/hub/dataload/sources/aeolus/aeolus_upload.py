@@ -77,9 +77,6 @@ class AeolusUploader(uploader.DummySourceUploader):
                                 "normalizer": "keyword_lowercase_normalizer",
                                 "type": "keyword",
                             },
-                            "vocab": {
-                                "type": "text"
-                            },
                             "case_count": {
                                 "type": "long"
                             },
