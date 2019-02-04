@@ -1,12 +1,12 @@
-import httplib2
-import sys
 import os
-from nose.tools import ok_, eq_
+import sys
 
+from nose.tools import eq_, ok_
 from tornado.testing import AsyncHTTPTestCase
 from tornado.web import Application
 
 from biothings.tests.test_helper import BiothingTestHelperMixin
+
 
 class MyChemTest(BiothingTestHelperMixin):
     host = os.getenv("MC_HOST", "")
@@ -16,7 +16,6 @@ class MyChemTest(BiothingTestHelperMixin):
         sys.stderr.write("Testing on host: {}...\n".format(api))
     else:
         sys.stderr.write("Testing on build-in server: {}...\n".format(api))
-    h = httplib2.Http()
     inchikey_id = 'ZRALSGWEFCBTJO-UHFFFAOYSA-N'
     drugbank_id = 'DB00551'
     chembl_id = 'CHEMBL1308'
@@ -293,4 +292,3 @@ class MyChemTest(BiothingTestHelperMixin):
                     foundone = True
                     break
             assert foundone, "Expecting at least one result with q=%(q)s&fields=%(fields)s" % d
-
