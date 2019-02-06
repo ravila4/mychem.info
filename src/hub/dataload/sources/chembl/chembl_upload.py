@@ -30,7 +30,6 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
         ("drugcentral", "chembl.xrefs.drugcentral.id"),
         ("pubchem", "chembl.xrefs.pubchem.sid"),
         ("drugname", "chembl.pref_name")],
-        debug=["CHEMBL1743070"],
         copy_from_doc=True)
 
     def jobs(self):
@@ -40,6 +39,7 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     def load_data(self,input_file):
         self.logger.info("Load data from file '%s'" % input_file)
+        # return self.keylookup(load_data, debug=["CHEMBL1743070"])(input_file)
         return self.keylookup(load_data)(input_file)
 
     def post_update_data(self, *args, **kwargs):
