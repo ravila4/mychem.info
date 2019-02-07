@@ -26,8 +26,8 @@ class NDCUploader(BaseDrugUploader):
     __metadata__ = {"src_meta" : SRC_META}
     keylookup = MyChemKeyLookup([
         ("ndc","ndc.productndc"),
-        ("drugname", "ndc.nonproprietaryname")],
-        debug=["57894-420", "57894-421"])
+        ("drugname", "ndc.nonproprietaryname")]
+        )
     # See the comment on the ExcludeFieldsById for use of this class.
     exclude_fields = ExcludeFieldsById(exclusion_ids, ["ndc"])
 

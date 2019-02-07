@@ -39,7 +39,6 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     def load_data(self,input_file):
         self.logger.info("Load data from file '%s'" % input_file)
-        # return self.keylookup(load_data, debug=["CHEMBL1743070"])(input_file)
         return self.keylookup(load_data)(input_file)
 
     def post_update_data(self, *args, **kwargs):
