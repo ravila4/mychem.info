@@ -27,7 +27,7 @@ class UniiUploader(BaseDrugUploader):
                                ('pubchem', 'unii.pubchem'),
                                ('unii', 'unii.unii')],
                                copy_from_doc=True,
-                               debug=["T4H8FMA7IM"])
+                               )
 
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)
@@ -48,6 +48,7 @@ class UniiUploader(BaseDrugUploader):
                             'copy_to': ['all'],
                             },
                         "preferred_term": {
+                            "normalizer": "keyword_lowercase_normalizer",
                             "type": "text",
                             },
                         "registry_number": {

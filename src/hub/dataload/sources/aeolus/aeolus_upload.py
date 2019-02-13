@@ -21,7 +21,8 @@ class AeolusUploader(BaseDrugUploader):
             [('inchikey', 'aeolus.inchikey'),
              ('unii', 'aeolus.unii'),
              ('drugname', 'aeolus.drug_name')],
-            debug=["T4H8FMA7IM"])
+            copy_from_doc=True
+            )
 
     def load_data(self, data_folder):
         # read data from the source collection

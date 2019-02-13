@@ -29,7 +29,6 @@ class DrugCentralUploader(BaseDrugUploader):
              ('pubchem', 'drugcentral.xrefs.pubchem_cid')],
              # ('drugname', 'drugcentral.synonyms')], # unhashable type - list
             copy_from_doc=True,
-            debug=["CHEMBL1743070"]
             )
 
     def load_data(self, data_folder):

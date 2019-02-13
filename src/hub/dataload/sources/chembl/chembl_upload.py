@@ -30,7 +30,6 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
         ("drugcentral", "chembl.xrefs.drugcentral.id"),
         ("pubchem", "chembl.xrefs.pubchem.sid"),
         ("drugname", "chembl.pref_name")],
-        debug=["CHEMBL1743070"],
         copy_from_doc=True)
 
     def jobs(self):

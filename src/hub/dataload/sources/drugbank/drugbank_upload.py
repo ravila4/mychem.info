@@ -40,7 +40,6 @@ class DrugBankUploader(BaseDrugUploader):
         ("pubchem", "drugbank.xrefs.pubchem.cid"),
         ("drugname", "drugbank.name"), # can be used to lookup unii
         ("inchi", "drugbank.inchi")],
-        debug=["DB09036"],
         copy_from_doc=True)
 
     def load_data(self,data_folder):
@@ -53,8 +52,7 @@ class DrugBankUploader(BaseDrugUploader):
         assert len(xmlfiles) == 1, "Expecting one xml file, got %s" % repr(xmlfiles)
         input_file = xmlfiles.pop()
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        # return self.exclude_fields(load_data)(input_file)
-        return self.keylookup(load_data)(input_file)
+        return self.exclude_fields(self.keylookup(load_data))(input_file)
 
     def post_update_data(self, *args, **kwargs):
         for idxname in ["drugbank.id","drugbank.chebi","drugbank.inchi"]:
