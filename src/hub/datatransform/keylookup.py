@@ -18,23 +18,29 @@ graph_mychem.add_node('unii')
 graph_mychem.add_node('inchikey')
 graph_mychem.add_node('pharmgkb')
 
-graph_mychem.add_edge('inchi', 'drugbank',
-                      object=MongoDBEdge('drugbank', 'drugbank.inchi', 'drugbank.drugbank_id'))
-
 graph_mychem.add_edge('inchi', 'chembl',
-                      object=MongoDBEdge('chembl', 'chembl.inchi', 'chembl.molecule_chembl_id'))
+                      object=MongoDBEdge('chembl', 'chembl.inchi', 'chembl.molecule_chembl_id'),
+                      weight=1.0)
+
+graph_mychem.add_edge('inchi', 'drugbank',
+                      object=MongoDBEdge('drugbank', 'drugbank.inchi', 'drugbank.drugbank_id'),
+                      weight=1.1)
 
 graph_mychem.add_edge('inchi', 'pubchem',
-                      object=MongoDBEdge('pubchem', 'pubchem.inchi', 'pubchem.cid'))
+                      object=MongoDBEdge('pubchem', 'pubchem.inchi', 'pubchem.cid'),
+                      weight=1.2)
 
 graph_mychem.add_edge('chembl', 'inchikey',
-                      object=MongoDBEdge('chembl', 'chembl.molecule_chembl_id', 'chembl.inchi_key'))
+                      object=MongoDBEdge('chembl', 'chembl.molecule_chembl_id', 'chembl.inchi_key'),
+                      weight=1.0)
 
 graph_mychem.add_edge('drugbank', 'inchikey',
-                      object=MongoDBEdge('drugbank', 'drugbank.drugbank_id', 'drugbank.inchi_key'))
+                      object=MongoDBEdge('drugbank', 'drugbank.drugbank_id', 'drugbank.inchi_key'),
+                      weight=1.1)
 
 graph_mychem.add_edge('pubchem', 'inchikey',
-                      object=MongoDBEdge('pubchem', 'pubchem.cid', 'pubchem.inchi_key'))
+                      object=MongoDBEdge('pubchem', 'pubchem.cid', 'pubchem.inchi_key'),
+                      weight=1.2)
 
 graph_mychem.add_edge('pharmgkb', 'drugbank',
                       object=MongoDBEdge('pharmgkb', 'pharmgkb.id', 'pharmgkb.xrefs.drugbank'))
