@@ -76,6 +76,12 @@ graph_mychem.add_edge('chembl', 'inchikey',
 graph_mychem.add_edge('drugbank', 'drugbank',
                       object=MyChemInfoEdge('drugbank.drugbank_id', 'drugbank.drugbank_id'))
 
+###############################################################################
+# Drug name Unii lookup
+###############################################################################
+graph_mychem.add_edge('drugname', 'unii',
+                      object=MyChemInfoEdge('unii.preferred_term', 'unii.unii'))
+
 
 class MyChemKeyLookup(DataTransformMDB):
 
