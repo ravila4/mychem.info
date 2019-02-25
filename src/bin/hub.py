@@ -62,6 +62,11 @@ import hub.dataload
 # pass explicit list of datasources (no auto-discovery)
 server = MyChemHubServer(hub.dataload.__sources_dict__,name="MyChem.info")
 
+# disable logging for verbose utilties
+logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger('tornado.access').setLevel(logging.WARNING)
+
 if __name__ == "__main__":
     server.start()
 
