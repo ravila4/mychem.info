@@ -80,7 +80,7 @@ graph_mychem.add_edge('drugbank', 'drugbank',
 # Drug name Unii lookup
 ###############################################################################
 graph_mychem.add_edge('drugname', 'unii',
-                      object=MyChemInfoEdge('unii.preferred_term', 'unii.unii'))
+        object=MyChemInfoEdge('unii.preferred_term', 'unii.unii', url="http://localhost:8000"))
 
 
 class MyChemKeyLookup(DataTransformMDB):
