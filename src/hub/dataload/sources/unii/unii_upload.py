@@ -35,7 +35,10 @@ class UniiUploader(BaseDrugUploader):
         assert len(record_files) == 1, "Expecting one record.txt file, got %s" % repr(record_files)
         input_file = record_files.pop()
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        return self.keylookup(load_data)(input_file)
+        # disable keylookup - unii is a base collection used for drugname lookup
+        # and should be loaded first, (keylookup commented out)
+        # return self.keylookup(load_data)(input_file)
+        return load_data(input_file)
 
     @classmethod
     def get_mapping(klass):
@@ -49,7 +52,7 @@ class UniiUploader(BaseDrugUploader):
                             },
                         "preferred_term": {
                             "normalizer": "keyword_lowercase_normalizer",
-                            "type": "text",
+                            "type": "keyword",
                             },
                         "registry_number": {
                             "normalizer": "keyword_lowercase_normalizer",
