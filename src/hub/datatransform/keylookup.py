@@ -94,13 +94,13 @@ graph_mychem.add_edge('drugname', 'unii',
 
 
 class MyChemKeyLookup(DataTransformMDB):
-    id_priority_list = ['inchikey', 'unii', 'rxnorm', 'drugbank',
-                        'chebi', 'chembl', 'pubchem', 'drugname']
 
     def __init__(self, input_types, *args, **kwargs):
         super(MyChemKeyLookup, self).__init__(graph_mychem,
                 input_types,
                 output_types=['inchikey', 'unii', 'rxnorm', 'drugbank',
                               'chebi', 'chembl', 'pubchem', 'drugname'],
+                id_priority_list=['inchikey', 'unii', 'rxnorm', 'drugbank',
+                                  'chebi', 'chembl', 'pubchem', 'drugname'],
                 *args, **kwargs)
 
