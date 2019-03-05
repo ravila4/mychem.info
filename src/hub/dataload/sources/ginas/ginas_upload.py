@@ -54,7 +54,8 @@ class GinasUploader(uploader.DummySourceUploader):
                             "type": "text"
                             },
                         "preferred_name": {
-                            "type": "text"
+                            "type": "text",
+                            "copy_to": ["all"]
                             },
                         "properties": {
                             "type": "text",

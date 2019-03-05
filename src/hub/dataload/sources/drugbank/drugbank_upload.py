@@ -8,6 +8,7 @@ from .drugbank_mapping import drugbank_mapping
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.common import unzipall
+from biothings.utils.exclude_ids import ExcludeFieldsById
 from mychem_utils import ExcludeFieldsById
 from hub.datatransform.keylookup import MyChemKeyLookup
 from biothings.hub.datatransform import CIIDStruct

@@ -2,9 +2,11 @@ import xmltodict
 import json, math
 import collections
 import logging
-from biothings.utils.dataload import dict_sweep
-from biothings.utils.dataload import boolean_convert
-from mychem_utils.dotstring import float_convert, int_convert, unlist
+
+from biothings.utils.dataload import dict_sweep, boolean_convert
+from biothings.utils.dataload import boolean_convert, to_int
+from biothings.utils.dataload import float_convert, int_convert
+from biothings.utils.dataload import unlist_incexcl as unlist
 
 
 def load_data(xml_file):
@@ -37,7 +39,7 @@ def restr_protein_dict(dictionary):
             x = x.replace('-','_')
             _dict.update({x:dictionary['known-action']})
         elif x == 'polypeptide':
-            _li2 = ['general-function','specific-function']
+            _li2 = ['general-function','specific-function', 'gene-name']
             for i in y:
                 if i ==  "@id":
                     _dict.update({'uniprot':y[i]})
@@ -46,6 +48,19 @@ def restr_protein_dict(dictionary):
                 elif i in _li2:
                     j = i.replace('-','_')
                     _dict.update({j:y[i]})
+        elif x == 'references' and y:
+            # extract a list of pubmed-ids
+            pubmed_lst = []
+            try:
+                articles = y['articles']['article']
+            except (KeyError, TypeError):
+                articles = []
+            if isinstance(articles, list):
+                for article in articles:
+                    pubmed_lst.append(to_int(article['pubmed-id']))
+            else:
+                pubmed_lst.append(to_int(articles['pubmed-id']))
+            _dict.update({'pmids':pubmed_lst})
     return _dict
 
 def restructure_dict(dictionary):
@@ -68,6 +83,8 @@ def restructure_dict(dictionary):
             d1[key] = value
 
         elif key == 'drugbank-id' and value:
+            # NOTE: 'drugbank.drugbank_id' has been moved to 'drugbank.id'
+            key = 'id'
             id_list = []
             if isinstance(value,list):
                 for ele in value:
@@ -75,19 +92,17 @@ def restructure_dict(dictionary):
                         assert "@primary" in ele
                         for x,y in iter(ele.items()):
                             if x == '#text':
-                                # make sure we always have DB ID as drugbank_id
-                                d1.update({'id' : y})
+                                # make sure we always have DB ID as drugbank_id (now 'id')
+                                d1.update({key : y})
                                 restr_dict['_id'] = y
 
                     if isinstance(ele,str):
-                        key = key.replace('-','_')
                         id_list.append(ele)
                         d1.update({'accession_number':id_list})
 
             elif isinstance(value,dict) or isinstance(value,collections.OrderedDict):
                 for x,y in iter(value.items()):
                     if x == '#text':
-                        key = key.replace('-','_')
                         id_list.append(y)
                         d1.update({key:id_list})
                         restr_dict['_id'] = y
@@ -421,7 +436,18 @@ def restructure_dict(dictionary):
                         mixture['ingredients'] = ingredient_lst
                         mixture_lst.append(mixture)
             if mixture_lst:
-                d1.update({key:mixture_lst})
+                ### remove duplicates from the mixture_lst
+                # convert 'ingredients' to tuples
+                for m in mixture_lst:
+                    m['ingredients'] = tuple(m['ingredients'])
+                # remove duplicates by converting each dict to key-value tuple
+                unique_mix_lst = [dict(t) for t in {tuple(d.items()) for d in mixture_lst}]
+                # convert 'ingredients' back to list
+                for m in unique_mix_lst:
+                    m['ingredients'] = list(m['ingredients'])
+
+                # save results
+                d1.update({key:unique_mix_lst})
 
         elif key == 'pathways' and value:
             _li = []
@@ -518,7 +544,7 @@ def restructure_dict(dictionary):
     restr_dict['drugbank'] = d1
     restr_dict = unlist(restr_dict, [
         "drugbank.accession_number",
-        "drugbank.drugbank_id",
+        "drugbank.id",
         "drugbank.chebi",
         "drugbank.inchi"
     ], [])

@@ -27,7 +27,7 @@ def process_df(df):
     for main_id, subdf in tqdm(gb):
         subdf_records = subdf[['ror', 'prr', 'prr_95_CI_lower', 'prr_95_CI_upper', 'ror_95_CI_lower', 'ror_95_CI_upper',
                                'case_count', 'meddra_code', 'id', 'name']]
-        top_level_df = subdf[['unii', 'drug_rxcui', 'drug_name', 'inchikey', 'drug_id', 'rxcui', 'pt']].drop_duplicates()
+        top_level_df = subdf[['unii', 'drug_name', 'inchikey', 'drug_id', 'rxcui', 'pt']].drop_duplicates()
         if len(top_level_df) != 1:
             raise ValueError(top_level_df)
 

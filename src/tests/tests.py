@@ -1,27 +1,34 @@
-import httplib2
-import sys
+''' MyChem Data-Aware Tests
+    nosetests tests
+    nosetests tests:MyChemTest
+'''
+
 import os
-from nose.tools import ok_, eq_
 
-from tornado.testing import AsyncHTTPTestCase
-from tornado.web import Application
+from nose.tools import eq_, ok_
 
-from biothings.tests.test_helper import BiothingTestHelperMixin
+from biothings.tests.test_helper import BiothingsTestCase
 
-class MyChemTest(BiothingTestHelperMixin):
-    host = os.getenv("MC_HOST", "")
+
+class MyChemTest(BiothingsTestCase):
+    '''
+        Test against server specified in environment variable MC_HOST
+        or MyChem.info production server if MC_HOST is not specified
+        MC_HOST must start with its protocol like http://mychem.info
+    '''
+    __test__ = True
+
+    host = os.getenv("MC_HOST", "http://mychem.info")
     host = host.rstrip('/')
     api = host + '/v1'
-    if host:
-        sys.stderr.write("Testing on host: {}...\n".format(api))
-    else:
-        sys.stderr.write("Testing on build-in server: {}...\n".format(api))
-    h = httplib2.Http()
+
     inchikey_id = 'ZRALSGWEFCBTJO-UHFFFAOYSA-N'
     drugbank_id = 'DB00551'
     chembl_id = 'CHEMBL1308'
     chebi_id = 'CHEBI:6431'
     unii_id = '7AXV542LZ4'
+    pubchem_id = '60823'
+    prefixed_pubchem_id = 'CID:60823'
 
     def has_hits(self, q, morethan=0):
         d = self.json_ok(self.get_ok(self.api + '/query?q='+q))
@@ -34,23 +41,25 @@ class MyChemTest(BiothingTestHelperMixin):
         self.has_hits('drugbank.name:imatinib')
 
     def test_chem_object(self):
-        #test all fields are loaded in drug objects
+        # test all fields are loaded in drug objects
         res = self.json_ok(self.get_ok(self.api + '/drug/' + self.inchikey_id))
         attr_li = ['_id']
         for attr in attr_li:
-            assert res.get(attr, None) is not None, 'Missing field "{}" in chem "{}"'.format(attr, self.inchikey_id)
+            assert res.get(attr, None) is not None, 'Missing field "{}" in chem "{}"'.format(
+                attr, self.inchikey_id)
 
         # test for specific databases
 
     def test_query(self):
         # test query by drug name
-        monobenzone = self.query_has_hits(q='drugbank.name:monobenzone')
+        monobenzone = self.query_has_hits(param_q='drugbank.name:monobenzone')
         assert 'drugbank' in monobenzone['hits'][0]
         assert 'name' in monobenzone['hits'][0]['drugbank']
-        assert monobenzone['hits'][0]['drugbank']['name'].lower() == 'monobenzone'
+        assert monobenzone['hits'][0]['drugbank']['name'].lower(
+        ) == 'monobenzone'
 
         # test query by drug target
-        P34981 = self.query_has_hits(q='drugbank.targets.uniprot:P34981')
+        P34981 = self.query_has_hits(param_q='drugbank.targets.uniprot:P34981')
         assert 'drugbank' in P34981['hits'][0]
         assert 'targets' in P34981['hits'][0]['drugbank']
         assert 'uniprot' in P34981['hits'][0]['drugbank']['targets'][0]
@@ -61,19 +70,22 @@ class MyChemTest(BiothingTestHelperMixin):
         #assert 'drug_use' in C0242339['drugcentral']
         #assert 'indication' in C0242339['drugcentral']['drug_use']
         #assert 'umls_cui' in C0242339['drugcentral']['drug_use']['indication']
-        #public query self.api at /query via get
-        con = self.get_ok(self.api + '/query?q=monobenzone&callback=mycallback')
+        # public query self.api at /query via get
+        con = self.get_ok(
+            self.api + '/query?q=monobenzone&callback=mycallback')
         ok_(con.startswith('mycallback('.encode('utf-8')))
 
         # testing non-ascii character
-        res = self.json_ok(self.get_ok(self.api + '/query?q=\xef\xbf\xbd\xef\xbf\xbd'))
+        res = self.json_ok(self.get_ok(
+            self.api + '/query?q=\xef\xbf\xbd\xef\xbf\xbd'))
         eq_(res['hits'], [])
 
-        self.get_status_code(self.api + '/query', status_code=400)        
+        self.get_status_match(self.api + '/query', status_code=400)
 
     def test_query_post(self):
-        #/query via post
-        self.json_ok(self.post_ok(self.api + '/query', {'q': self.inchikey_id}))
+        # /query via post
+        self.json_ok(self.post_ok(
+            self.api + '/query', {'q': self.inchikey_id}))
 
         res = self.json_ok(self.post_ok(self.api + '/query', {'q': self.drugbank_id,
                                                               'scopes': 'drugbank.id'}))
@@ -92,73 +104,99 @@ class MyChemTest(BiothingTestHelperMixin):
         assert len(res) == 1
         assert 'query' in res[0]
         assert 'drugbank' in res[0] and 'id' in res[0]['drugbank']
-        assert res[0]['query'] == res[0]['drugbank']['id'] 
-        
-        self.post_status_code(self.api + '/query', {}, status_code=400)
+        assert res[0]['query'] == res[0]['drugbank']['id']
+
+        self.post_status_match(self.api + '/query', {}, status_code=400)
 
     def test_query_size(self):
-        res = self.json_ok(self.get_ok(self.api + '/query?q=drugbank.name:acid&fields=drugbank.name'))
+        res = self.json_ok(self.get_ok(
+            self.api + '/query?q=drugbank.name:acid&fields=drugbank.name'))
         eq_(len(res['hits']), 10)    # default
-        res = self.json_ok(self.get_ok(self.api + '/query?q=drugbank.name:acid&fields=drugbank.name&size=1000'))
+        res = self.json_ok(self.get_ok(
+            self.api + '/query?q=drugbank.name:acid&fields=drugbank.name&size=1000'))
         eq_(len(res['hits']), 1000)
-        res = self.json_ok(self.get_ok(self.api + '/query?q=drugbank.name:acid&fields=drugbank.name&size=1001'))
+        res = self.json_ok(self.get_ok(
+            self.api + '/query?q=drugbank.name:acid&fields=drugbank.name&size=1001'))
         eq_(len(res['hits']), 1000)
-        res = self.json_ok(self.get_ok(self.api + '/query?q=drugbank.name:acid&fields=drugbank.name&size=2000'))
+        res = self.json_ok(self.get_ok(
+            self.api + '/query?q=drugbank.name:acid&fields=drugbank.name&size=2000'))
         eq_(len(res['hits']), 1000)
 
     def test_chem(self):
         # test different endpoint aliases
-        drug = self.json_ok(self.get_ok(self.api + '/drug/' + self.inchikey_id))
-        chem = self.json_ok(self.get_ok(self.api + '/chem/' + self.inchikey_id))
-        compound = self.json_ok(self.get_ok(self.api + '/compound/' + self.inchikey_id))
+        drug = self.json_ok(self.get_ok(
+            self.api + '/drug/' + self.inchikey_id))
+        chem = self.json_ok(self.get_ok(
+            self.api + '/chem/' + self.inchikey_id))
+        compound = self.json_ok(self.get_ok(
+            self.api + '/compound/' + self.inchikey_id))
 
         assert drug == chem
         assert chem == compound
 
         # test different drug identifiers
-        drugbank = self.json_ok(self.get_ok(self.api + '/drug/' + self.drugbank_id))
+        drugbank = self.json_ok(self.get_ok(
+            self.api + '/drug/' + self.drugbank_id + '?fields=drugbank'))
         assert 'drugbank' in drugbank
         assert 'id' in drugbank['drugbank']
         assert drugbank['drugbank']['id'] == self.drugbank_id
 
-        chembl = self.json_ok(self.get_ok(self.api + '/drug/' + self.chembl_id))
+        chembl = self.json_ok(self.get_ok(
+            self.api + '/drug/' + self.chembl_id + '?fields=chembl'))
         assert 'chembl' in chembl
         assert 'molecule_chembl_id' in chembl['chembl']
         assert chembl['chembl']['molecule_chembl_id'] == self.chembl_id
 
-        unii = self.json_ok(self.get_ok(self.api + '/drug/' + self.unii_id))
+        unii = self.json_ok(self.get_ok(
+            self.api + '/drug/' + self.unii_id + '?fields=unii'))
         assert 'unii' in unii
         assert 'unii' in unii['unii']
         assert unii['unii']['unii'] == self.unii_id
 
-        chebi = self.json_ok(self.get_ok(self.api + '/drug/' + self.chebi_id))
+        chebi = self.json_ok(self.get_ok(
+            self.api + '/drug/' + self.chebi_id + '?fields=chebi'))
         assert 'chebi' in chebi
         assert 'id' in chebi['chebi']
         assert chebi['chebi']['id'] == self.chebi_id
+
+        pubchem = self.json_ok(self.get_ok(
+            self.api + '/drug/' + self.pubchem_id + '?fields=pubchem'))
+        assert 'pubchem' in pubchem
+        assert 'cid' in pubchem['pubchem']
+        assert pubchem['pubchem']['cid'] == int(self.pubchem_id)
+
+        prefixed_pubchem = self.json_ok(self.get_ok(
+            self.api + '/drug/' + self.prefixed_pubchem_id + '?fields=pubchem'))
+        assert prefixed_pubchem == pubchem
 
         res = self.json_ok(self.get_ok(self.api + '/drug/' + self.inchikey_id))
         eq_(res['_id'], self.inchikey_id)
 
         # testing non-ascii character
-        self.get_404(self.api + '/drug/' + self.inchikey_id + '\xef\xbf\xbd\xef\xbf\xbdmouse')
+        self.get_404(self.api + '/drug/' + self.inchikey_id +
+                     '\xef\xbf\xbd\xef\xbf\xbdmouse')
         ##*************************************************##
         # testing filtering parameters
-        res = self.json_ok(self.get_ok(self.api + '/drug/{}?fields=pubchem'.format(self.inchikey_id)))
+        res = self.json_ok(self.get_ok(
+            self.api + '/drug/{}?fields=pubchem'.format(self.inchikey_id)))
         eq_(set(res), set(['_id', '_version', 'pubchem']))
         self.get_404(self.api + '/drug')
         self.get_404(self.api + '/drug/')
 
     def test_drug_post(self):
-        res = self.json_ok(self.post_ok(self.api + '/drug', {'ids': self.inchikey_id}))
+        res = self.json_ok(self.post_ok(
+            self.api + '/drug', {'ids': self.inchikey_id}))
         eq_(len(res), 1)
         eq_(res[0]['_id'], self.inchikey_id)
 
-        res = self.json_ok(self.post_ok(self.api + '/drug', {'ids': self.inchikey_id + ',RRUDCFGSUDOHDG-UHFFFAOYSA-N'}))
+        res = self.json_ok(self.post_ok(
+            self.api + '/drug', {'ids': self.inchikey_id + ',RRUDCFGSUDOHDG-UHFFFAOYSA-N'}))
         eq_(len(res), 2)
         eq_(res[0]['_id'], self.inchikey_id)
         eq_(res[1]['_id'], 'RRUDCFGSUDOHDG-UHFFFAOYSA-N')
 
-        res = self.json_ok(self.post_ok(self.api + '/drug', {'ids': self.inchikey_id + ',RRUDCFGSUDOHDG-UHFFFAOYSA-N', 'fields': 'pubchem'}))
+        res = self.json_ok(self.post_ok(
+            self.api + '/drug', {'ids': self.inchikey_id + ',RRUDCFGSUDOHDG-UHFFFAOYSA-N', 'fields': 'pubchem'}))
         eq_(len(res), 2)
         for _g in res:
             eq_(set(_g), set(['_id', 'query', 'pubchem']))
@@ -172,7 +210,8 @@ class MyChemTest(BiothingTestHelperMixin):
         self.get_ok(self.api + '/metadata')
 
     def test_query_facets(self):
-        res = self.json_ok(self.get_ok(self.api + '/query?q=drugbank.name:acid&size=0&facets=drugbank.weight.average'))
+        res = self.json_ok(self.get_ok(
+            self.api + '/query?q=drugbank.name:acid&size=0&facets=drugbank.weight.average'))
         assert 'facets' in res and 'drugbank.weight.average' in res['facets']
 
     def test_unicode(self):
@@ -183,18 +222,21 @@ class MyChemTest(BiothingTestHelperMixin):
         res = self.json_ok(self.post_ok(self.api + '/drug', {'ids': s}))
         eq_(res[0]['notfound'], True)
         eq_(len(res), 1)
-        res = self.json_ok(self.post_ok(self.api + '/drug', {'ids': self.inchikey_id + ',' + s}))
+        res = self.json_ok(self.post_ok(self.api + '/drug',
+                                        {'ids': self.inchikey_id + ',' + s}))
         eq_(res[1]['notfound'], True)
         eq_(len(res), 2)
 
         res = self.json_ok(self.get_ok(self.api + '/query?q=' + s))
         eq_(res['hits'], [])
 
-        res = self.json_ok(self.post_ok(self.api + '/query', {"q": s, "scopes": 'drugbank.id'}))
+        res = self.json_ok(self.post_ok(self.api + '/query',
+                                        {"q": s, "scopes": 'drugbank.id'}))
         eq_(res[0]['notfound'], True)
         eq_(len(res), 1)
 
-        res = self.json_ok(self.post_ok(self.api + '/query', {"q": self.drugbank_id + '+' + s, 'scopes': 'drugbank.id'}))
+        res = self.json_ok(self.post_ok(
+            self.api + '/query', {"q": self.drugbank_id + '+' + s, 'scopes': 'drugbank.id'}))
         eq_(res[1]['notfound'], True)
         eq_(len(res), 2)
 
@@ -217,20 +259,25 @@ class MyChemTest(BiothingTestHelperMixin):
         assert 'hits' in res
 
         # get one set of results
-        res2 = self.json_ok(self.get_ok(self.api + '/query?scroll_id=' + res['_scroll_id']))
+        res2 = self.json_ok(self.get_ok(
+            self.api + '/query?scroll_id=' + res['_scroll_id']))
         assert 'hits' in res2
 
     def test_msgpack(self):
         res = self.json_ok(self.get_ok(self.api + '/drug/' + self.inchikey_id))
-        res2 = self.msgpack_ok(self.get_ok(self.api + '/drug/{}?msgpack=true'.format(self.inchikey_id)))
+        res2 = self.msgpack_ok(self.get_ok(
+            self.api + '/drug/{}?msgpack=true'.format(self.inchikey_id)))
         ok_(res, res2)
 
-        res = self.json_ok(self.get_ok(self.api + '/query?q=drugbank.id:{}&size=1'.format(self.drugbank_id)))
-        res2 = self.msgpack_ok(self.get_ok(self.api + '/query?q=drugbank.id:{}&size=1&msgpack=true'.format(self.drugbank_id)))
+        res = self.json_ok(self.get_ok(
+            self.api + '/query?q=drugbank.id:{}&size=1'.format(self.drugbank_id)))
+        res2 = self.msgpack_ok(self.get_ok(
+            self.api + '/query?q=drugbank.id:{}&size=1&msgpack=true'.format(self.drugbank_id)))
         ok_(res, res2)
 
         res = self.json_ok(self.get_ok(self.api + '/metadata'))
-        res2 = self.msgpack_ok(self.get_ok(self.api + '/metadata?msgpack=true'))
+        res2 = self.msgpack_ok(self.get_ok(
+            self.api + '/metadata?msgpack=true'))
         ok_(res, res2)
 
     def test_licenses(self):
@@ -266,3 +313,21 @@ class MyChemTest(BiothingTestHelperMixin):
         # (testing failing status would require actually loading tornado app from there
         #  and deal with config params...)
 
+    def test_all_fields(self):
+        alls = [{"q": "DB01076", "fields": "drugbank.id"},
+                {"q": "Siltuximab", "fields": "drugbank.name"},
+                {"q": "IBUPROFEN", "fields": "ndc.substancename"},
+                {"q": "fospropofol", "fields": "aeolus.drug_name"},
+                {"q": "TOOSENDANIN", "fields": "chembl.pref_name"},
+                {"q": "FLUPROPADINE", "fields": "ginas.preferred_name"},
+                {"q": "DIMETHYNUR", "fields": "unii.preferred_term"},
+                ]
+        for d in alls:
+            res = self.json_ok(self.get_ok(
+                self.api + '/query?q=%(q)s&fields=%(fields)s&dotfield=true' % d))
+            foundone = False
+            for e in res["hits"]:
+                if d["fields"] in e and e[d["fields"]] == d["q"]:
+                    foundone = True
+                    break
+            assert foundone, "Expecting at least one result with q=%(q)s&fields=%(fields)s" % d

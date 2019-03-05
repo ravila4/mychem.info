@@ -68,8 +68,8 @@ GA_TRACKER_URL = 'c.biothings.io'
 ANNOTATION_ID_REGEX_LIST = [(re.compile(r'db[0-9]+', re.I), 'drugbank.id'),
                             (re.compile(r'chembl[0-9]+', re.I), 'chembl.molecule_chembl_id'),
                             (re.compile(r'chebi\:[0-9]+', re.I), ['chebi.id', 'chebi.secondary_chebi_id']),
-                            (re.compile(r'cid[0-9]+', re.I), 'pubchem.cid'),
-                            (re.compile(r'[A-Z0-9]{10}'), 'unii.unii')]
+                            (re.compile(r'[A-Z0-9]{10}'), 'unii.unii'),
+                            (re.compile(r'((cid\:(?P<search_term>[0-9]+))|([0-9]+))', re.I), 'pubchem.cid')]
 # make max sizes smaller
 #QUERY_GET_ES_KWARGS['size']['default'] = 10
 #ANNOTATION_POST_CONTROL_KWARGS['ids']['max'] = 10

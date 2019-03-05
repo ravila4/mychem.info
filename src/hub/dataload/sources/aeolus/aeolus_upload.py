@@ -44,6 +44,7 @@ class AeolusUploader(BaseDrugUploader):
                     },
                     "drug_name": {
                         "type": "text",
+                        "copy_to": ["all"]
                     },
                     "inchikey": {
                         "normalizer": "keyword_lowercase_normalizer",
@@ -92,12 +93,9 @@ class AeolusUploader(BaseDrugUploader):
                     },
                     "outcomes": {
                         "properties": {
-                            "code": {
+                            "meddra_code": {
                                 "normalizer": "keyword_lowercase_normalizer",
                                 "type": "keyword",
-                            },
-                            "vocab": {
-                                "type": "text"
                             },
                             "case_count": {
                                 "type": "long"

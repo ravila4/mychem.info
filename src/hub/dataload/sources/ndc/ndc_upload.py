@@ -7,7 +7,7 @@ from .exclusion_ids import exclusion_ids
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.common import unzipall
-from mychem_utils import ExcludeFieldsById
+from biothings.utils.exclude_ids import ExcludeFieldsById
 
 from hub.datatransform.keylookup import MyChemKeyLookup
 
@@ -106,6 +106,7 @@ class NDCUploader(BaseDrugUploader):
                         "substancename" : {
                                 "normalizer": "keyword_lowercase_normalizer",
                                 "type": "keyword",
+                                "copy_to": ["all"]
                                 },
                         "active_numerator_strength" : {
                                 "type" : "text"

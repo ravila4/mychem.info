@@ -41,8 +41,14 @@ drugbank_mapping = {
                         "uniprot": {
                             "normalizer": "keyword_lowercase_normalizer",
                             "type": "keyword"
+                            },
+                        "pmids": {
+                            "type": "integer"
+                            },
+                        "gene_name": {
+                            "type": "text"
                             }
-                        }
+                        },
                     },
                 "categories": {
                     "properties": {
@@ -102,8 +108,14 @@ drugbank_mapping = {
                             "uniprot": {
                                 "normalizer": "keyword_lowercase_normalizer",
                                 "type": "keyword"
+                                },
+                            "pmids": {
+                                "type": "integer"
+                                },
+                            "gene_name": {
+                                "type": "text"
                                 }
-                            }
+                            },
                         },
                 "experimental_properties": {
                         "properties": {
@@ -139,7 +151,11 @@ drugbank_mapping = {
                                 },
                             "water_solubility": {
                                 "type": "text"
-                                }
+                                },
+                            "radioactivity": {
+                                "normalizer": "keyword_lowercase_normalizer",
+                                "type": "keyword"
+                                },
                             }
                         },
                 "food-interactions": {
@@ -158,7 +174,8 @@ drugbank_mapping = {
                         },
                 "id": {
                         "normalizer": "keyword_lowercase_normalizer",
-                        "type": "keyword"
+                        "type": "keyword",
+                        "copy_to": ["all"]
                         },
                 "inchi": {
                         "normalizer": "keyword_lowercase_normalizer",
@@ -195,7 +212,8 @@ drugbank_mapping = {
                             }
                         },
                 "name": {
-                        "type": "text"
+                        "type": "text",
+                        "copy_to": ["all"]
                         },
                 "packagers": {
                         "type": "text"
@@ -490,6 +508,12 @@ drugbank_mapping = {
                             "uniprot": {
                                 "normalizer": "keyword_lowercase_normalizer",
                                 "type": "keyword"
+                                },
+                            "pmids": {
+                                "type": "integer"
+                                },
+                            "gene_name": {
+                                "type": "text"
                                 }
                             }
                         },
@@ -556,6 +580,12 @@ drugbank_mapping = {
                             "uniprot": {
                                 "normalizer": "keyword_lowercase_normalizer",
                                 "type": "keyword"
+                                },
+                            "pmids": {
+                                "type": "integer"
+                                },
+                            "gene_name": {
+                                "type": "text"
                                 }
                             }
                         },

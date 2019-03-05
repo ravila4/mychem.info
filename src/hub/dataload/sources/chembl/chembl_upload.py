@@ -343,7 +343,8 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                                 "type": "integer"
                                 },
                         "pref_name": {
-                                "type": "text"
+                                "type": "text",
+                                "copy_to": ["all"]
                                 },
                         "first_approval": {
                                 "type": "integer"

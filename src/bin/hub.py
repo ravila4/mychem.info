@@ -11,6 +11,8 @@ biothings.config_for_app(config)
 
 from biothings.hub import HubServer
 
+import biothings.hub.databuild.differ as differ
+
 
 class MyChemHubServer(HubServer):
 
@@ -40,6 +42,7 @@ class MyChemHubServer(HubServer):
     def configure_commands(self):
         super().configure_commands() # keep all originals...
         # ... and enrich
+        self.commands["diff"] = partial(self.managers["diff_manager"].diff,differ.SelfContainedJsonDiffer.diff_type)
         self.commands["merge_demo"] = partial(self.managers["build_manager"].merge,"demo_drug")
         self.commands["es_sync_test"] = partial(self.managers["sync_manager_test"].sync,"es",
                                                 target_backend=(config.ES_CONFIG["env"]["test"]["host"],

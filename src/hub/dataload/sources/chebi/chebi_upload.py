@@ -8,7 +8,7 @@ from .exclusion_ids import exclusion_ids
 from hub.dataload.uploader import BaseDrugUploader
 from biothings.utils.mongo import get_src_db
 import biothings.hub.dataload.storage as storage
-from mychem_utils import ExcludeFieldsById
+from biothings.utils.exclude_ids import ExcludeFieldsById
 
 from hub.datatransform.keylookup import MyChemKeyLookup
 
