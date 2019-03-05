@@ -79,8 +79,9 @@ graph_mychem.add_edge('drugbank', 'drugbank',
 ###############################################################################
 # Drug name Unii lookup
 ###############################################################################
-graph_mychem.add_edge('drugname', 'unii',
-        object=MyChemInfoEdge('unii.preferred_term', 'unii.unii', url="http://localhost:8000"))
+# Drugname key lookup is currently skipped.  This edge lead to duplicate key errors.
+#graph_mychem.add_edge('drugname', 'unii',
+#        object=MyChemInfoEdge('unii.preferred_term', 'unii.unii', url="http://localhost:8000"))
 
 
 class MyChemKeyLookup(DataTransformMDB):
@@ -91,3 +92,4 @@ class MyChemKeyLookup(DataTransformMDB):
                 output_types=['inchikey', 'unii', 'rxnorm', 'drugbank',
                               'chebi', 'chembl', 'pubchem', 'drugname'],
                 *args, **kwargs)
+

@@ -10,6 +10,7 @@ import biothings.hub.dataload.storage as storage
 from biothings.utils.common import unzipall
 from mychem_utils import ExcludeFieldsById
 from hub.datatransform.keylookup import MyChemKeyLookup
+from biothings.hub.datatransform import CIIDStruct
 
 
 SRC_META = {
@@ -33,13 +34,14 @@ class DrugBankUploader(BaseDrugUploader):
     ])
     keylookup = MyChemKeyLookup([
         ("inchikey", "drugbank.inchi_key"),
-        ("drugbank", "drugbank.drugbank_id"),
+        ("drugbank", "drugbank.id"),
         # the following keys could possible be used to lookup 'inchikey' or 'unii'
         ("chebi", "drugbank.xrefs.chebi"),
         ("chembl", "drugbank.xrefs.chembl"),
         ("pubchem", "drugbank.xrefs.pubchem.cid"),
-        ("drugname", "drugbank.name"), # can be used to lookup unii
-        ("inchi", "drugbank.inchi")],
+        ("inchi", "drugbank.inchi"),
+        # ("drugname", "drugbank.name"), # can be used to lookup unii, disabled for now
+        ],
         copy_from_doc=True)
 
     def load_data(self,data_folder):
@@ -52,7 +54,7 @@ class DrugBankUploader(BaseDrugUploader):
         assert len(xmlfiles) == 1, "Expecting one xml file, got %s" % repr(xmlfiles)
         input_file = xmlfiles.pop()
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        return self.exclude_fields(self.keylookup(load_data))(input_file)
+        return self.exclude_fields(self.keylookup(load_data, debug=True))(input_file)
 
     def post_update_data(self, *args, **kwargs):
         for idxname in ["drugbank.id","drugbank.chebi","drugbank.inchi"]:
