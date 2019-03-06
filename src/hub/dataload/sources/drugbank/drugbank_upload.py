@@ -9,7 +9,6 @@ from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 from biothings.utils.common import unzipall
 from biothings.utils.exclude_ids import ExcludeFieldsById
-from mychem_utils import ExcludeFieldsById
 from hub.datatransform.keylookup import MyChemKeyLookup
 from biothings.hub.datatransform import CIIDStruct
 
@@ -41,7 +40,7 @@ class DrugBankUploader(BaseDrugUploader):
         ("chembl", "drugbank.xrefs.chembl"),
         ("pubchem", "drugbank.xrefs.pubchem.cid"),
         ("inchi", "drugbank.inchi"),
-        # ("drugname", "drugbank.name"), # can be used to lookup unii, disabled for now
+        ("drugname", "drugbank.name"), # can be used to lookup unii, disabled for now
         ],
         copy_from_doc=True)
 

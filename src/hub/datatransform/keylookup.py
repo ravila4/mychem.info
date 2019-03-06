@@ -23,7 +23,7 @@ graph_mychem.add_edge('inchi', 'chembl',
                       weight=1.0)
 
 graph_mychem.add_edge('inchi', 'drugbank',
-                      object=MongoDBEdge('drugbank', 'drugbank.inchi', 'drugbank.drugbank_id'),
+                      object=MongoDBEdge('drugbank', 'drugbank.inchi', 'drugbank.id'),
                       weight=1.1)
 
 graph_mychem.add_edge('inchi', 'pubchem',
@@ -35,7 +35,7 @@ graph_mychem.add_edge('chembl', 'inchikey',
                       weight=1.0)
 
 graph_mychem.add_edge('drugbank', 'inchikey',
-                      object=MongoDBEdge('drugbank', 'drugbank.drugbank_id', 'drugbank.inchi_key'),
+                      object=MongoDBEdge('drugbank', 'drugbank.id', 'drugbank.inchi_key'),
                       weight=1.1)
 
 graph_mychem.add_edge('pubchem', 'inchikey',
@@ -47,7 +47,7 @@ graph_mychem.add_edge('pharmgkb', 'drugbank',
 
 # self-loops to check looked-up values exist in official collection
 graph_mychem.add_edge('drugbank', 'drugbank',
-                      object=MongoDBEdge('drugbank', 'drugbank.drugbank_id', 'drugbank.drugbank_id'))
+                      object=MongoDBEdge('drugbank', 'drugbank.id', 'drugbank.id'))
 
 ###############################################################################
 # NDC Nodes and Edges
