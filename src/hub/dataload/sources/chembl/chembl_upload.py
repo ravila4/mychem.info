@@ -28,8 +28,10 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
         ("chembl", "chembl.molecule_chembl_id"),
         ("chebi", "chembl.chebi_par_id"),
         ("drugcentral", "chembl.xrefs.drugcentral.id"),
-        ("pubchem", "chembl.xrefs.pubchem.sid"),
-        ("drugname", "chembl.pref_name")],
+        # TODO:  handle duplicate keys from pubchem, drugname
+        # ("pubchem", "chembl.xrefs.pubchem.sid"),
+        # ("drugname", "chembl.pref_name")
+        ],
         copy_from_doc=True)
 
     def jobs(self):
@@ -39,7 +41,7 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     def load_data(self,input_file):
         self.logger.info("Load data from file '%s'" % input_file)
-        return self.keylookup(load_data)(input_file)
+        return self.keylookup(load_data, debug=True)(input_file)
 
     def post_update_data(self, *args, **kwargs):
         for idxname in ["chembl.chebi_par_id","chembl.inchi","chembl.molecule_chembl_id"]:
