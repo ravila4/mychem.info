@@ -6,6 +6,7 @@ import pymongo
 from .chembl_parser import load_data
 from hub.dataload.uploader import BaseDrugUploader
 from biothings.hub.dataload.uploader import ParallelizedSourceUploader
+import biothings.hub.dataload.storage as storage
 from hub.datatransform.keylookup import MyChemKeyLookup
 
 
@@ -19,6 +20,7 @@ SRC_META = {
 class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
 
     name = "chembl"
+    storage_class = storage.RootKeyMergerStorage
     __metadata__ = {"src_meta" : SRC_META}
 
     MOLECULE_PATTERN = "molecule.*.json"
@@ -29,8 +31,10 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
         ("chebi", "chembl.chebi_par_id"),
         ("drugcentral", "chembl.xrefs.drugcentral.id"),
         # TODO:  handle duplicate keys from pubchem, drugname
+        # - we use RootKeyMergerStorage, but the num. duplicates
+        # - is too high (>10000)
         # ("pubchem", "chembl.xrefs.pubchem.sid"),
-        # ("drugname", "chembl.pref_name")
+        ("drugname", "chembl.pref_name")
         ],
         copy_from_doc=True)
 
