@@ -1,12 +1,14 @@
 from hub.dataload.uploader import BaseDrugUploader
 from biothings.utils.mongo import get_src_conn
 
+import biothings.hub.dataload.storage as storage
 from hub.datatransform.keylookup import MyChemKeyLookup
 
 
 class AeolusUploader(BaseDrugUploader):
 
     src_col_name = "aeolus"
+    storage_class = storage.RootKeyMergerStorage
     name = "aeolus_dt"
     __metadata__ = {
         "src_meta": {
@@ -31,7 +33,7 @@ class AeolusUploader(BaseDrugUploader):
             yield from src_col.find()
 
         # perform keylookup on source collection
-        return self.keylookup(load_data)()
+        return self.keylookup(load_data, debug=True)()
 
     @classmethod
     def get_mapping(klass):
