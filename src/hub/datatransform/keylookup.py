@@ -87,10 +87,11 @@ graph_mychem.add_edge('unii', 'pubchem',
 ###############################################################################
 # Drug name Unii lookup
 ###############################################################################
-#graph_mychem.add_edge('drugname', 'unii',
-#                      object=MyChemInfoEdge('unii.preferred_term', 'unii.unii'))
+# Converting to unii (and possibily Inchikey) should be done as a last resort,
+# so we increase the weight of this edge
 graph_mychem.add_edge('drugname', 'unii',
-                      object=CIMongoDBEdge('unii', 'unii.preferred_term', 'unii.unii'))
+                      object=CIMongoDBEdge('unii', 'unii.preferred_term', 'unii.unii'),
+                      weight=3.0)
 
 
 class MyChemKeyLookup(DataTransformMDB):
@@ -102,5 +103,7 @@ class MyChemKeyLookup(DataTransformMDB):
                               'chebi', 'chembl', 'pubchem', 'drugname'],
                 id_priority_list=['inchikey', 'unii', 'rxnorm', 'drugbank',
                                   'chebi', 'chembl', 'pubchem', 'drugname'],
+                # skip keylookup for InchiKeys
+                skip_w_regex='^[A-Z]{14}-[A-Z]{10}-[A-Z]',
                 *args, **kwargs)
 
