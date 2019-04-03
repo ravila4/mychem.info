@@ -81,6 +81,4 @@ STATUS_CHECK = {
     'doc_type': 'drug'
 }
 
-HIPCHAT_MESSAGE_COLOR = 'gray'
-
 JSONLD_CONTEXT_PATH = 'web/context/context.json'
