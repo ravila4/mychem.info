@@ -1,4 +1,4 @@
-from biothings.hub.datatransform import MongoDBEdge, RegExEdge, DataTransformNetworkX
+from biothings.hub.datatransform import MongoDBEdge, RegExEdge, DataTransformMDB, CIMongoDBEdge
 import networkx as nx
 
 graph_mychem = nx.DiGraph()
@@ -93,7 +93,7 @@ graph_mychem.add_edge('drugname', 'unii',
                       weight=3.0)
 
 
-class MyChemKeyLookup(DataTransformNetworkX):
+class MyChemKeyLookup(DataTransformMDB):
 
     def __init__(self, input_types, *args, **kwargs):
         super(MyChemKeyLookup, self).__init__(graph_mychem,
