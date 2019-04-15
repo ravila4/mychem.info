@@ -1,4 +1,4 @@
-from biothings.hub.datatransform import MongoDBEdge, RegExEdge, DataTransformMDB
+from biothings.hub.datatransform import MongoDBEdge, RegExEdge, DataTransformNetworkX
 import networkx as nx
 
 graph_mychem = nx.DiGraph()
@@ -75,7 +75,7 @@ graph_mychem.add_node('chebi')
 #                      object=MongoDBEdge('chembl', 'chembl.chebi_par_id', 'chembl.molecule_chembl_id'))
 
 
-class MyChemKeyLookup(DataTransformMDB):
+class MyChemKeyLookup(DataTransformNetworkX):
 
     def __init__(self, input_types, *args, **kwargs):
         super(MyChemKeyLookup, self).__init__(graph_mychem,
