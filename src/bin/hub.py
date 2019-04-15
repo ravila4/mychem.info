@@ -54,6 +54,7 @@ class MyChemHubServer(HubServer):
                                                                 config.ES_CONFIG["env"]["prod"]["index"][0]["doc_type"]))
         self.commands["es_test"] = config.ES_CONFIG["env"]["test"]
         self.commands["es_prod"] = config.ES_CONFIG["env"]["prod"]
+        self.commands["publish_diff"] = partial(self.managers["diff_manager"].publish_diff,config.S3_APP_FOLDER,s3_bucket=config.S3_DIFF_BUCKET)
         self.commands["publish_diff_demo"] = partial(self.managers["diff_manager"].publish_diff,config.S3_APP_FOLDER + "-demo",
                                                 s3_bucket=config.S3_DIFF_BUCKET + "-demo")
         self.commands["publish_snapshot"] = partial(self.managers["index_manager"].publish_snapshot,s3_folder=config.S3_APP_FOLDER)
