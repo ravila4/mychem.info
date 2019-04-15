@@ -7,9 +7,8 @@ from hub.datatransform.keylookup import MyChemKeyLookup
 
 class AeolusUploader(BaseDrugUploader):
 
-    src_col_name = "aeolus"
     storage_class = storage.RootKeyMergerStorage
-    name = "aeolus_dt"
+    name = "aeolus"
     __metadata__ = {
         "src_meta": {
             "url": "http://www.nature.com/articles/sdata201626",

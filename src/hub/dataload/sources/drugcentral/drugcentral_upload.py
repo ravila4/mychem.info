@@ -6,8 +6,7 @@ from hub.datatransform.keylookup import MyChemKeyLookup
 
 class DrugCentralUploader(BaseDrugUploader):
 
-    src_col_name = "drugcentral"
-    name = "drugcentral_dt"
+    name = "drugcentral"
 
     __metadata__ = {
             "src_meta" : {
