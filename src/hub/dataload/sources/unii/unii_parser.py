@@ -1,6 +1,8 @@
 import pandas as pd
 import json
 
+from mychem_utils.dotstring import int_convert
+
 
 def load_data(input_file):
 
@@ -29,5 +31,9 @@ def load_data(input_file):
         else:
             for subr in record['unii']:
                 del subr['_id']
+
+        # convert fields to integer
+        record = int_convert(record, include_keys=['unii.pubchem'])
+
         yield record
 

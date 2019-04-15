@@ -28,8 +28,8 @@ class ChebiUploader(BaseDrugUploader):
     __metadata__ = {"src_meta" : SRC_META}
     keylookup = MyChemKeyLookup(
             [('inchikey','chebi.inchikey'),
-             ('chebi','chebi.id'),
              ('drugbank','chebi.xrefs.drugbank'),
+             ('chebi','chebi.id'),
              ],
             copy_from_doc=True)
     # See the comment on the ExcludeFieldsById for use of this class.
@@ -52,7 +52,9 @@ class ChebiUploader(BaseDrugUploader):
         assert chembl_col.count() > 0, "'chembl' collection is empty (required for inchikey " + \
                 "conversion). Please run 'chembl' uploader first"
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
-        return self.exclude_fields(self.keylookup(load_data))(input_file)
+        # KeyLookup is disabled due to duplicate key errors
+        # return self.exclude_fields(self.keylookup(load_data, debug=True))(input_file)
+        return self.exclude_fields(load_data)(input_file)
 
     def post_update_data(self, *args, **kwargs):
         for idxname in ["chebi.id"]:

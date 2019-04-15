@@ -93,3 +93,4 @@ class MyChemKeyLookup(DataTransformMDB):
                 output_types=['inchikey', 'unii', 'rxnorm', 'drugbank',
                               'chebi', 'chembl', 'pubchem', 'drugname'],
                 *args, **kwargs)
+

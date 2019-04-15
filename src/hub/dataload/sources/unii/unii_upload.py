@@ -5,6 +5,9 @@ from .unii_parser import load_data
 from hub.dataload.uploader import BaseDrugUploader
 import biothings.hub.dataload.storage as storage
 
+from biothings.hub.datatransform import DataTransformMDB
+from hub.datatransform.keylookup import MyChemKeyLookup
+
 
 SRC_META = {
         "url": 'https://fdasis.nlm.nih.gov/srs/',
@@ -20,12 +23,21 @@ class UniiUploader(BaseDrugUploader):
     storage_class = storage.IgnoreDuplicatedStorage
     __metadata__ = {"src_meta" : SRC_META}
 
+    keylookup = MyChemKeyLookup([('inchikey', 'unii.inchikey'),
+                               ('pubchem', 'unii.pubchem'),
+                               ('unii', 'unii.unii')],
+                               copy_from_doc=True,
+                               )
+
     def load_data(self,data_folder):
         self.logger.info("Load data from '%s'" % data_folder)
         record_files = glob.glob(os.path.join(data_folder,"*Records*.txt"))
         assert len(record_files) == 1, "Expecting one record.txt file, got %s" % repr(record_files)
         input_file = record_files.pop()
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
+        # disable keylookup - unii is a base collection used for drugname lookup
+        # and should be loaded first, (keylookup commented out)
+        # return self.keylookup(load_data)(input_file)
         return load_data(input_file)
 
     @classmethod
@@ -39,8 +51,8 @@ class UniiUploader(BaseDrugUploader):
                             'copy_to': ['all'],
                             },
                         "preferred_term": {
-                            "type": "text",
-                            "copy_to": ["all"]
+                            "normalizer": "keyword_lowercase_normalizer",
+                            "type": "keyword",
                             },
                         "registry_number": {
                             "normalizer": "keyword_lowercase_normalizer",
