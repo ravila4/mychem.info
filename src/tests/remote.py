@@ -12,13 +12,13 @@ from biothings.tests import BiothingsTestCase
 
 class MyChemTest(BiothingsTestCase):
     '''
-        Test against server specified in environment variable MC_HOST
-        or MyChem.info production server if MC_HOST is not specified
-        MC_HOST must start with its protocol like http://mychem.info
+        Test against server specified in environment variable BT_HOST
+        or MyChem.info production server if BT_HOST is not specified
+        BT_HOST must start with its protocol like http://mychem.info
     '''
     __test__ = True
 
-    host = os.getenv("MC_HOST", "http://mychem.info")
+    host = os.getenv("BT_HOST", "http://mychem.info")
     host = host.rstrip('/')
     api = '/v1'
 
