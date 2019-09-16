@@ -77,7 +77,7 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                                 "molecule_chembl_id": {
                                     "normalizer": "keyword_lowercase_normalizer",
                                     "type": "keyword",
-                                    'copy_to': ['all'],
+                                    'copy_to': ['all']
                                     }
                                 }
                             },
@@ -90,6 +90,7 @@ class ChemblUploader(BaseDrugUploader,ParallelizedSourceUploader):
                         "molecule_chembl_id": {
                             "normalizer": "keyword_lowercase_normalizer",
                             "type": "keyword",
+                            "copy_to": ["all"]
                             },
                         "molecule_properties": {
                             "properties": {
