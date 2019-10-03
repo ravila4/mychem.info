@@ -1,15 +1,4 @@
-# Required python modules for running a web node of MyVariant.info
-# To install all requirement, run
-#    pip install -r requirements_web.txt
-
-# biothings
-git+https://github.com/biothings/biothings.api.git@ee20963b06b7c8953211e3e9c6553fa710f541ed#egg=biothings
-
-# optional
-msgpack-python==0.4.6
-
-# for nosetests
-nose>=1.3.7
+biothings[web]
 
 # for dotstring utilities
 git+https://github.com/greg-k-taylor/dotstring.git@v0.1.2#egg=dotstring
