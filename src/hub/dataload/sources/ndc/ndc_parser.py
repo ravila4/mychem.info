@@ -61,8 +61,8 @@ def load_packages(_file):
         yield _dict
 
 def load_data(data_folder):
-    package_file = os.path.join(data_folder,"Package.txt")
-    product_file = os.path.join(data_folder,"Product.txt")
+    package_file = os.path.join(data_folder,"package.txt")
+    product_file = os.path.join(data_folder,"product.txt")
     assert os.path.exists(package_file), "Package file doesn't exist..."
     assert os.path.exists(product_file), "Product file doesn't exist..."
     package_ndc = {}
