@@ -70,7 +70,7 @@ class SiderDumper(FTPDumper):
         df4.columns =['stitch_id(flat)','umls_id(label)','method_of_detection','concept_name',
                 'meddra_type','umls_id(meddra)','concept_name(meddra)']
         s2 = pd.merge(s1,df4,how='outer',on=['stitch_id(flat)','umls_id(label)','meddra_type','umls_id(meddra)'])
-        s3 = s2.sort('stitch_id(flat)')
+        s3 = s2.sort_values('stitch_id(flat)')
         s3.to_csv(MERGED)
         self.logger.info("Files successfully merged, ready to be uploaded")
 
