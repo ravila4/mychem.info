@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-from mychem_utils.dotstring import int_convert
+from biothings.utils.dataload import int_convert
 
 
 def load_data(input_file):

@@ -95,7 +95,7 @@ SNAPSHOT_CONFIG = {
                     "secret_key" : None,
                     },
                 "repository" : {
-                    "name" : "drug_repository",
+                    "name" : "drug_repository-$(Y)",
                     "type" : "s3",
                     "settings" : {
                         "bucket" : "<SNAPSHOT_BUCKET_NAME>",
@@ -119,7 +119,7 @@ SNAPSHOT_CONFIG = {
                     "secret_key" : None,
                     },
                 "repository" : {
-                    "name" : "drug_repository-demo",
+                    "name" : "drug_repository-demo-$(Y)",
                     "type" : "s3",
                     "settings" : {
                         "bucket" : "<SNAPSHOT_DEMO_BUCKET_NAME>",

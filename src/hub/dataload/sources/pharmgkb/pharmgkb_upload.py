@@ -38,6 +38,11 @@ class PharmGkbUploader(BaseDrugUploader):
         assert os.path.exists(input_file), "Can't find input file '%s'" % input_file
         return self.keylookup(load_data)(input_file)
 
+    def post_update_data(self,*args,**kwargs):
+        field = "pharmgkb.id"
+        self.logger.info("Indexing '%s'" % field)
+        self.collection.create_index(field,background=True) 
+
     @classmethod
     def get_mapping(cls):
         """get mapping information"""

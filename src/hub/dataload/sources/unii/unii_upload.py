@@ -40,6 +40,11 @@ class UniiUploader(BaseDrugUploader):
         # return self.keylookup(load_data)(input_file)
         return load_data(input_file)
 
+    def post_update_data(self,*args,**kwargs):
+        for field in ("unii.unii","unii.preferred_term"):
+            self.logger.info("Indexing '%s'" % field)
+            self.collection.create_index(field,background=True) 
+
     @classmethod
     def get_mapping(klass):
         mapping = {
