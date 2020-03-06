@@ -42,29 +42,33 @@ class MyChemHubServer(HubServer):
     def configure_commands(self):
         super().configure_commands() # keep all originals...
         # ... and enrich
-        self.commands["diff"] = partial(self.managers["diff_manager"].diff,differ.SelfContainedJsonDiffer.diff_type)
         self.commands["merge_demo"] = partial(self.managers["build_manager"].merge,"demo_drug")
         self.commands["es_sync_test"] = partial(self.managers["sync_manager_test"].sync,"es",
-                                                target_backend=(config.ES_CONFIG["env"]["test"]["host"],
-                                                                config.ES_CONFIG["env"]["test"]["index"][0]["index"],
-                                                                config.ES_CONFIG["env"]["test"]["index"][0]["doc_type"]))
+                                                target_backend=(config.INDEX_CONFIG["env"]["test"]["host"],
+                                                                config.INDEX_CONFIG["env"]["test"]["index"][0]["index"],
+                                                                config.INDEX_CONFIG["env"]["test"]["index"][0]["doc_type"]))
         self.commands["es_sync_prod"] = partial(self.managers["sync_manager"].sync,"es",
-                                                target_backend=(config.ES_CONFIG["env"]["prod"]["host"],
-                                                                config.ES_CONFIG["env"]["prod"]["index"][0]["index"],
-                                                                config.ES_CONFIG["env"]["prod"]["index"][0]["doc_type"]))
-        self.commands["es_test"] = config.ES_CONFIG["env"]["test"]
-        self.commands["es_prod"] = config.ES_CONFIG["env"]["prod"]
-        self.commands["publish_diff"] = partial(self.managers["diff_manager"].publish_diff,config.S3_APP_FOLDER,s3_bucket=config.S3_DIFF_BUCKET)
-        self.commands["publish_diff_demo"] = partial(self.managers["diff_manager"].publish_diff,config.S3_APP_FOLDER + "-demo",
-                                                s3_bucket=config.S3_DIFF_BUCKET + "-demo")
-        self.commands["publish_snapshot"] = partial(self.managers["index_manager"].publish_snapshot,s3_folder=config.S3_APP_FOLDER)
-        self.commands["publish_snapshot_demo"] = partial(self.managers["index_manager"].publish_snapshot,s3_folder=config.S3_APP_FOLDER + "-demo")
+                                                target_backend=(config.INDEX_CONFIG["env"]["prod"]["host"],
+                                                                config.INDEX_CONFIG["env"]["prod"]["index"][0]["index"],
+                                                                config.INDEX_CONFIG["env"]["prod"]["index"][0]["doc_type"]))
+        #self.commands["es_test"] = config.INDEX_CONFIG["env"]["test"]
+        #self.commands["es_prod"] = config.INDEX_CONFIG["env"]["prod"]
+        #self.commands["publish_diff"] = partial(self.managers["diff_manager"].publish_diff,config.S3_APP_FOLDER,s3_bucket=config.S3_DIFF_BUCKET)
+        #self.commands["publish_diff_demo"] = partial(self.managers["diff_manager"].publish_diff,config.S3_APP_FOLDER + "-demo",
+        #                                        s3_bucket=config.S3_DIFF_BUCKET + "-demo")
+        #self.commands["publish_snapshot"] = partial(self.managers["index_manager"].publish_snapshot,s3_folder=config.S3_APP_FOLDER)
+        #self.commands["publish_snapshot_demo"] = partial(self.managers["index_manager"].publish_snapshot,s3_folder=config.S3_APP_FOLDER + "-demo")
 
 
 
 import hub.dataload
 # pass explicit list of datasources (no auto-discovery)
 server = MyChemHubServer(hub.dataload.__sources_dict__,name="MyChem.info")
+
+# disable logging for verbose utilties
+logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger('tornado.access').setLevel(logging.WARNING)
 
 if __name__ == "__main__":
     server.start()

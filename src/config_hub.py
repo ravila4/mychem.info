@@ -13,8 +13,6 @@ API_COLLECTION = 'api'                                # for api information (run
 EVENT_COLLECTION = "event"
 CMD_COLLECTION = "cmd"
 
-DATA_TARGET_MASTER_COLLECTION = 'db_master'
-
 # reporting diff results, number of IDs to consider (to avoid too much mem usage)
 MAX_REPORTED_IDS = 1000
 # for diff updates, number of IDs randomly picked as examples when rendering the report
@@ -40,10 +38,6 @@ MAX_SYNC_WORKERS = HUB_MAX_WORKERS
 # will recycle the process queue in order to limit the memory usage
 HUB_MAX_MEM_USAGE = None
 
-# when creating a snapshot, how long should we wait before querying ES
-# to check snapshot status/completion ? (in seconds)
-MONITOR_SNAPSHOT_DELAY = 10
-
 # compressed cache files
 CACHE_FORMAT = "xz"
 
@@ -54,45 +48,19 @@ CACHE_FORMAT = "xz"
 # "" means production
 HUB_ENV = ""
 
-# ES snapshot name used for sending snapshot data
-# (access controlled, uses key/secret)
-SNAPSHOT_REPOSITORY = "drug_repository"
-# ES snapshot name accessible (usually using a URL)
-# These two snapshot configs should point to
-# the same location in a way. The different is the first
-# used access controller to write data, and the second is read-only
-READONLY_SNAPSHOT_REPOSITORY ="drug_url"
-
-# S3 bucket, root of all biothings releases information
-S3_RELEASE_BUCKET = "biothings-releases"
-# bucket/folder containing releases
-S3_DIFF_BUCKET = "biothings-diffs"
-# what sub-folder should be used within diff bucket to upload diff files
-S3_APP_FOLDER = "mychem.info"
-
-SLACK_WEBHOOK = None
-
-# SSH port for hub console
-HUB_SSH_PORT = 7022
-HUB_API_PORT = 7080
+# Hub name/icon url/version, for display purpose
+HUB_NAME = "MyChem"
 HUB_ICON = "http://biothings.io/static/img/mychem-logo-shiny.svg"
 
-################################################################################
-# HUB_PASSWD
-################################################################################
-# The format is a dictionary of 'username': 'cryptedpassword'
-# Generate crypted passwords with 'openssl passwd -crypt'
-HUB_PASSWD = {"guest":"9RKfd8gDuNf0Q"}
-
 # Pre-prod/test ES definitions
-ES_CONFIG = {
+INDEX_CONFIG = {
         "indexer_select": {
             # default
             None : "hub.dataindex.indexer.DrugIndexer",
             },
         "env" : {
             "prod" : {
-                "host" : "prodserver:9200",
+                "host" : "<PRODSERVER>:9200",
                 "indexer" : {
                     "args" : {
                         "timeout" : 300,
@@ -116,9 +84,125 @@ ES_CONFIG = {
             },
         }
 
-# Role, when master, hub will publish data (updates, snapshot, etc...) that
-# other instances can use (production, standalones)
-BIOTHINGS_ROLE = "slave"
+
+# Snapshot environment configuration
+SNAPSHOT_CONFIG = {
+        "env" : {
+            "prod" : {
+                "cloud" : {
+                    "type" : "aws", # default, only one supported by now
+                    "access_key" : None,
+                    "secret_key" : None,
+                    },
+                "repository" : {
+                    "name" : "drug_repository",
+                    "type" : "s3",
+                    "settings" : {
+                        "bucket" : "<SNAPSHOT_BUCKET_NAME>",
+                        "base_path" : "mychem.info/$(Y)", # per year
+                        "region" : "us-west-2",
+                        },
+                    "acl" : "private",
+                    },
+                "indexer" : {
+                    # reference to INDEX_CONFIG
+                    "env" : "prod",
+                    },
+                # when creating a snapshot, how long should we wait before querying ES
+                # to check snapshot status/completion ? (in seconds)
+                "monitor_delay" : 60 * 5,
+                },
+            "demo" : {
+                "cloud" : {
+                    "type" : "aws", # default, only one supported by now
+                    "access_key" : None,
+                    "secret_key" : None,
+                    },
+                "repository" : {
+                    "name" : "drug_repository-demo",
+                    "type" : "s3",
+                    "settings" : {
+                        "bucket" : "<SNAPSHOT_DEMO_BUCKET_NAME>",
+                        "base_path" : "mydrug.info/$(Y)", # per year
+                        "region" : "us-west-2",
+                        },
+                    "acl" : "public",
+                    },
+                "indexer" : {
+                    # reference to INDEX_CONFIG
+                    "env" : "test",
+                    },
+                # when creating a snapshot, how long should we wait before querying ES
+                # to check snapshot status/completion ? (in seconds)
+                "monitor_delay" : 10,
+                }
+            }
+        }
+
+# Release configuration
+# Each root keys define a release environment (test, prod, ...)
+RELEASE_CONFIG = {
+        "env" : {
+            "prod" : {
+                "cloud" : {
+                    "type" : "aws", # default, only one supported by now
+                    "access_key" : None,
+                    "secret_key" : None,
+                    },
+                "release" : {
+                    "bucket" : "<RELEASES_BUCKET_NAME>",
+                    "region" : "us-west-2",
+                    "folder" : "mychem.info",
+                    "auto" : True, # automatically generate release-note ?
+                    },
+                "diff" : {
+                    "bucket" : "<DIFFS_BUCKET_NAME>",
+                    "folder" : "mychem.info",
+                    "region" : "us-west-2",
+                    "auto" : True, # automatically generate diff ? Careful if lots of changes
+                    },
+                },
+            "demo": {
+                "cloud" : {
+                    "type" : "aws", # default, only one supported by now
+                    "access_key" : None,
+                    "secret_key" : None,
+                    },
+                "release" : {
+                    "bucket" : "<RELEASES_BUCKET_NAME>",
+                    "region" : "us-west-2",
+                    "folder" : "mychem.info-demo",
+                    "auto" : True, # automatically generate release-note ?
+                    },
+                "diff" : {
+                    "bucket" : "<DIFFS_BUCKET_NAME>",
+                    "folder" : "mychem.info",
+                    "region" : "us-west-2",
+                    "auto" : True, # automatically generate diff ? Careful if lots of changes
+                    },
+                }
+            }
+        }
+
+
+SLACK_WEBHOOK = None
+
+# SSH port for hub console
+HUB_SSH_PORT = 7022
+HUB_API_PORT = 7080
+
+################################################################################
+# HUB_PASSWD
+################################################################################
+# The format is a dictionary of 'username': 'cryptedpassword'
+# Generate crypted passwords with 'openssl passwd -crypt'
+HUB_PASSWD = {"guest":"9RKfd8gDuNf0Q"}
+
+# cached data (it None, caches won't be used at all)
+CACHE_FOLDER = None
+
+# when publishing releases, specify the targetted (ie. required) standalone version
+STANDALONE_VERSION = "standalone_v3"
 
 # don't bother with elements order in a list when diffing,
 # mygene optmized uploaders can't produce different results
@@ -127,14 +211,6 @@ import importlib
 import biothings.utils.jsondiff
 importlib.reload(biothings.utils.jsondiff)
 biothings.utils.jsondiff.UNORDERED_LIST = True
-
-# key/secret to access AWS S3 (only used when publishing releases, role=master)
-AWS_KEY = ''
-AWS_SECRET = ''
-
-ES_TIMEOUT = 300
-ES_RETRY = True
-ES_MAX_RETRY = 10
 
 ########################################
 # APP-SPECIFIC CONFIGURATION VARIABLES #
@@ -195,8 +271,6 @@ DATA_PLUGIN_FOLDER = ConfigurationDefault(
 LOG_FOLDER = ConfigurationError("Define path to folder which will contain log files")
 # Usually inside DATA_ARCHIVE_ROOT
 #LOG_FOLDER = os.path.join(DATA_ARCHIVE_ROOT,'logs')
-
-STANDALONE_VERSION = ConfigurationError("Define standalone version targetted by this Hub") 
 
 # Path to folder containing diff files
 DIFF_PATH = ConfigurationError("Define path to folder which will contain output files from diff")                                                                                                                                       
