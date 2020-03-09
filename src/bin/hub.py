@@ -44,9 +44,9 @@ class MyChemHubServer(HubServer):
         # ... and enrich
         self.commands["merge_demo"] = partial(self.managers["build_manager"].merge,"demo_drug")
         self.commands["es_sync_test"] = partial(self.managers["sync_manager_test"].sync,"es",
-                                                target_backend=(config.INDEX_CONFIG["env"]["test"]["host"],
-                                                                config.INDEX_CONFIG["env"]["test"]["index"][0]["index"],
-                                                                config.INDEX_CONFIG["env"]["test"]["index"][0]["doc_type"]))
+                                                target_backend=(config.INDEX_CONFIG["env"]["local"]["host"],
+                                                                config.INDEX_CONFIG["env"]["local"]["index"][0]["index"],
+                                                                config.INDEX_CONFIG["env"]["local"]["index"][0]["doc_type"]))
         self.commands["es_sync_prod"] = partial(self.managers["sync_manager"].sync,"es",
                                                 target_backend=(config.INDEX_CONFIG["env"]["prod"]["host"],
                                                                 config.INDEX_CONFIG["env"]["prod"]["index"][0]["index"],
