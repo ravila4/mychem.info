@@ -70,7 +70,7 @@ INDEX_CONFIG = {
                     },
                 "index" : [{"index": "mydrugs_current", "doc_type": "drug"}],
                 },
-            "test" : {
+            "local" : {
                 "host" : "localhost:9200",
                 "indexer" : {
                     "args" : {
@@ -106,7 +106,7 @@ SNAPSHOT_CONFIG = {
                     },
                 "indexer" : {
                     # reference to INDEX_CONFIG
-                    "env" : "prod",
+                    "env" : "local",
                     },
                 # when creating a snapshot, how long should we wait before querying ES
                 # to check snapshot status/completion ? (in seconds)
@@ -123,14 +123,14 @@ SNAPSHOT_CONFIG = {
                     "type" : "s3",
                     "settings" : {
                         "bucket" : "<SNAPSHOT_DEMO_BUCKET_NAME>",
-                        "base_path" : "mydrug.info/$(Y)", # per year
+                        "base_path" : "mychem.info/$(Y)", # per year
                         "region" : "us-west-2",
                         },
                     "acl" : "public",
                     },
                 "indexer" : {
                     # reference to INDEX_CONFIG
-                    "env" : "test",
+                    "env" : "local",
                     },
                 # when creating a snapshot, how long should we wait before querying ES
                 # to check snapshot status/completion ? (in seconds)
