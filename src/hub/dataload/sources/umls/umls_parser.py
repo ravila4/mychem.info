@@ -69,7 +69,7 @@ def query_drug_name(names: list) -> dict:
             continue
         for item in res:
             if not item.get("notfound"):
-                new_res[item['query']].append(new_res['_id'])
+                new_res[item['query']].append(item['_id'])
     return new_res
 
 def parse_umls(rrf_file, chem_umls):
