@@ -58,11 +58,18 @@ def query_drug_name(names: list) -> dict:
     
     :param: names: list of drug names
     """
-    res = CHEM_CLIENT.querymany(names, scopes='ginas.preferred_name, pharmgkb.name, chebi.name, chembl.pref_name, drugbank.name', fields='_id')
     new_res = defaultdict(list)
-    for item in res:
-        if not item.get("notfound"):
-            new_res[item['query']].append(new_res['_id'])
+    n = 500
+    for i in range((len(names) + n - 1) // n ):
+        print(i)
+        try:
+            res = CHEM_CLIENT.querymany(names[i * n:(i + 1) * n], scopes='ginas.preferred_name, pharmgkb.name, chebi.name, chembl.pref_name, drugbank.name', fields='_id')
+        except:
+            print("failed at {}".format(i))
+            continue
+        for item in res:
+            if not item.get("notfound"):
+                new_res[item['query']].append(new_res['_id'])
     return new_res
 
 def parse_umls(rrf_file, chem_umls):
