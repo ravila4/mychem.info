@@ -99,6 +99,13 @@ def parse_umls(rrf_file, chem_umls):
                             names.add('"' + vals[-5] + '"')
     return (res, list(mesh_ids), list(names))
 
+
+def unlist(l):
+    l = list(l)
+    if len(l) == 1:
+        return l[0]
+    return l
+
 def load_data(data_folder):
     mrsat_file = os.path.join(data_folder, 'MRSTY.RRF')
     mrconso_file = os.path.join(data_folder, 'MRCONSO.RRF') 
@@ -108,26 +115,42 @@ def load_data(data_folder):
     time.sleep(200)
     mesh_id_mapping = query_mesh(mesh_ids)
     res = []
+    id_set = set()
     for cui, info in cui_map.items():
+        found = False
         for rec in info:
             mesh = rec.get('mesh')
             if mesh_id_mapping.get(mesh):
                 for _id in mesh_id_mapping.get(mesh):
-                    res.append({
-                        "_id": _id,
-                        "umls": rec
-                    })
+                    if  _id not in id_set:
+                        res.append({
+                            "_id": _id,
+                            "umls": rec
+                        })
+                        id_set.add(_id)
+                        found = True
                 continue
             name = rec.get("name")
             if name_mapping.get(name):
                 for _id in name_mapping.get(name):
-                    res.append({
-                        "_id": _id,
-                        "umls": rec
-                    })
+                    if _id not in id_set:
+                        res.append({
+                            "_id": _id,
+                            "umls": rec
+                        })
+                        id_set.add(_id)
+                        found = True
                 continue
-            res.append({
-                "_id": cui,
-                "umls": rec
-            })
+        if found == False:
+            new_info = {
+                "cui": unlist([item['cui'] for item in info]),
+                'mesh': unlist([item['mesh'] for item in info]),
+                'name': unlist([item['name'] for item in info])
+            }
+            if cui not in id_set:
+                res.append({
+                    "_id": cui,
+                    "umls": new_info
+                })
+                id_set.add(cui)
     return res
