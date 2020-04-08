@@ -2,6 +2,7 @@ from collections import defaultdict
 from biothings_client import get_client
 import os
 import copy
+import time
 
 CHEM_CLIENT = get_client('chem')
 # list of UMLS semantic types belonging to chemical is based on
@@ -87,7 +88,8 @@ def parse_umls(rrf_file, chem_umls):
                                         'mesh': mesh_id,
                                         'name': vals[-5]})
                         mesh_ids.add(mesh_id)
-                        names.add('"' + vals[-5] + '"')
+                        if ',' not in vals[-5]:
+                            names.add('"' + vals[-5] + '"')
     return (res, list(mesh_ids), list(names))
 
 def load_data(data_folder):
@@ -95,8 +97,9 @@ def load_data(data_folder):
     mrconso_file = os.path.join(data_folder, 'MRCONSO.RRF') 
     chem_umls = fetch_chemical_umls_cuis(mrsat_file) 
     cui_map, mesh_ids, names = parse_umls(mrconso_file, chem_umls)
-    mesh_id_mapping = query_mesh(mesh_ids)
     name_mapping = query_drug_name(names)
+    time.sleep(200)
+    mesh_id_mapping = query_mesh(mesh_ids)
     res = []
     for cui, info in cui_map.items():
         for rec in info:
