@@ -11,7 +11,7 @@ import re
 # *****************************************************************************
 ES_HOST = 'localhost:9200'
 ES_INDICES = {
-    "durg": "mydrugs_current",
+    "drug": "mydrugs_current",
     "compound": "mydrugs_current",
     "chem": "mydrugs_current"
 }
