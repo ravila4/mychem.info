@@ -10,6 +10,8 @@ import re
 # Elasticsearch variables
 # *****************************************************************************
 ES_HOST = 'localhost:9200'
+ES_INDEX = 'mydrugs_current'
+ES_DOC_TYPE = 'chem'
 ES_INDICES = {
     "drug": "mydrugs_current",
     "compound": "mydrugs_current",
