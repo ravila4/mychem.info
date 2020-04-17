@@ -74,8 +74,8 @@ class TestMyChem(BiothingsTestCase):
         # assert 'indication' in C0242339['drugcentral']['drug_use']
         # assert 'umls_cui' in C0242339['drugcentral']['drug_use']['indication']
         # public query self.api at /query via get
-        con = self.request('query?q=monobenzone&callback=mycallback').text
-        assert con.startswith('mycallback(')
+        pass # TODO
+
 
     def test_033_query(self):
         # testing non-ascii character
@@ -89,19 +89,21 @@ class TestMyChem(BiothingsTestCase):
         # /query via post
         self.request("query", method='POST', data={'q': self.inchikey_id}).json()
 
+    def test_041_post(self):
+
         res = self.request("query", method='POST', data={'q': self.drugbank_id,
                                                          'scopes': 'drugbank.id'}).json()
         assert len(res) == 1
         assert res[0]['_id'] == 'RRUDCFGSUDOHDG-UHFFFAOYSA-N'
 
-    def test_041_post(self):
+    def test_042_post(self):
         res = self.request("query", method='POST', data={'q': self.drugbank_id + ',DB00441',
                                                          'scopes': 'drugbank.id'}).json()
         assert len(res) == 2
         assert res[0]['_id'] == 'RRUDCFGSUDOHDG-UHFFFAOYSA-N'
         assert res[1]['_id'] == 'SDUQYLNIPVEERB-QPPQHZFASA-N'
 
-    def test_042_post(self):
+    def test_043_post(self):
         res = self.request("query", method='POST', data={'q': self.drugbank_id,
                                                          'scopes': 'drugbank.id',
                                                          'fields': 'drugbank.id'}).json()
@@ -189,10 +191,10 @@ class TestMyChem(BiothingsTestCase):
         assert set(res) == set(['_id', '_version', 'pubchem'])
 
     def test_070_chem(self):
-        self.request('drug', expect=404)
+        self.request('drug', expect=400)
 
     def test_071_chem(self):
-        self.request('drug/', expect=404)
+        self.request('drug/', expect=400)
 
     def test_080_drug_post(self):
         res = self.request("drug", method='POST', data={'ids': self.inchikey_id}).json()
@@ -212,7 +214,7 @@ class TestMyChem(BiothingsTestCase):
                                  'fields': 'pubchem'}).json()
         assert len(res) == 2
         for _g in res:
-            assert set(_g) == set(['_id', 'query', 'pubchem'])
+            assert set(_g) == set(['_id','_version', 'query', 'pubchem'])
 
         # Test a large drug post
         # # too slow
@@ -279,20 +281,20 @@ class TestMyChem(BiothingsTestCase):
     def test_140_msgpack(self):
         res = self.request('drug/' + self.inchikey_id).json()
         res2 = self.msgpack_ok(self.request(
-            'drug/{}?msgpack=true'.format(self.inchikey_id)).content)
+            'drug/{}?format=msgpack'.format(self.inchikey_id)).content)
         assert res
         assert res2
 
     def test_141_msgpack(self):
         res = self.request('query?q=drugbank.id:{}&size=1'.format(self.drugbank_id)).json()
         res2 = self.msgpack_ok(self.request(
-            'query?q=drugbank.id:{}&size=1&msgpack=true'.format(self.drugbank_id)).content)
+            'query?q=drugbank.id:{}&size=1&format=msgpack'.format(self.drugbank_id)).content)
         assert res
         assert res2
 
     def test_142_msgpack(self):
         res = self.request('metadata').json()
-        res2 = self.msgpack_ok(self.request('metadata?msgpack=true').content)
+        res2 = self.msgpack_ok(self.request('metadata?format=msgpack').content)
         assert res
         assert res2
 
@@ -322,7 +324,9 @@ class TestMyChem(BiothingsTestCase):
             assert res['pubchem']['_license']
 
     def test_160_jsonld(self):
-        pass
+        con = self.request('query?q=monobenzone&callback=mycallback').text
+        assert con.startswith('mycallback(')
+        # TODO
 
     def test_170_status_endpoint(self):
         self.request(self.host + '/status')
@@ -336,7 +340,7 @@ class TestMyChem(BiothingsTestCase):
                 {"q": "fospropofol", "fields": "aeolus.drug_name"},
                 {"q": "TOOSENDANIN", "fields": "chembl.pref_name"},
                 {"q": "FLUPROPADINE", "fields": "ginas.preferred_name"},
-                {"q": "DIMETHYNUR", "fields": "unii.preferred_term"},
+                {"q": "DIMETHYNUR", "fields": "unii.preferred_term"}, # TODO CANNOT PASS ON 4/17
                 ]
         for d in alls:
             res = self.request('query?q=%(q)s&fields=%(fields)s&dotfield=true' % d).json()
