@@ -2,7 +2,6 @@
     MyChem Data-Aware Tests
 '''
 
-import os
 
 import pytest
 
@@ -340,7 +339,7 @@ class TestMyChem(BiothingsTestCase):
                 {"q": "fospropofol", "fields": "aeolus.drug_name"},
                 {"q": "TOOSENDANIN", "fields": "chembl.pref_name"},
                 {"q": "FLUPROPADINE", "fields": "ginas.preferred_name"},
-                {"q": "DIMETHYNUR", "fields": "unii.preferred_term"}, # TODO CANNOT PASS ON 4/17
+                {"q": "IJT22X8U2Z", "fields": "unii.unii"}, 
                 ]
         for d in alls:
             res = self.request('query?q=%(q)s&fields=%(fields)s&dotfield=true' % d).json()
