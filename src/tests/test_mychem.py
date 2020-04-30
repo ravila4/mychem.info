@@ -82,7 +82,7 @@ class TestMyChem(BiothingsTestCase):
         assert res['hits'] == []
 
     def test_034_query(self):
-        self.request("query", expect=400)
+        self.request("query")
 
     def test_040_post(self):
         # /query via post
@@ -323,9 +323,9 @@ class TestMyChem(BiothingsTestCase):
             assert res['pubchem']['_license']
 
     def test_160_jsonld(self):
-        con = self.request('query?q=monobenzone&callback=mycallback').text
-        assert con.startswith('mycallback(')
-        # TODO
+        pass # Feature removed in biothings 0.7.0
+        # con = self.request('query?q=monobenzone&callback=mycallback').text
+        # assert con.startswith('mycallback(')
 
     def test_170_status_endpoint(self):
         self.request(self.host + '/status')
