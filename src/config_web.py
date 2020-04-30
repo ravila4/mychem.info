@@ -47,4 +47,3 @@ STATUS_CHECK = {
     'doc_type': 'drug'
 }
 
-JSONLD_CONTEXT_PATH = 'web/context/context.json'
