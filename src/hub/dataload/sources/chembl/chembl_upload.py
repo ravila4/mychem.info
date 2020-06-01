@@ -57,10 +57,12 @@ class ChemblUploader(BaseDrugUploader, ParallelizedSourceUploader):
     def post_update_data(self, *args, **kwargs):
         """create indexes following an update"""
         # pylint: disable=W0613
-        for idxname in ["chembl.chebi_par_id", "chembl.inchi", "chembl.molecule_chembl_id"]:
+        for idxname in ["chembl.inchi", "chembl.molecule_chembl_id"]:
             self.logger.info("Indexing '%s'" % idxname)
             # background=true or it'll lock the whole database...
             self.collection.create_index([(idxname, pymongo.HASHED)], background=True)
+        # hashed index won"t support arrays, values are small enough to standard
+        self.collection.create_index("chembl.chebi_par_id")
 
     @classmethod
     def get_mapping(cls):
