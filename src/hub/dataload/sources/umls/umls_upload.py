@@ -1,5 +1,5 @@
 import os.path
-from .parser import load_data
+from .umls_parser import load_data
 import biothings.hub.dataload.uploader as uploader
 
 
