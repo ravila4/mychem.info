@@ -74,6 +74,23 @@ In some rare cases, the list can be very large (up to ~5K). We then truncated th
 
 This truncation affects only 26 objects (as of 2018-11-28, `full list here <https://github.com/biothings/mychem.info/blob/master/src/hub/dataload/sources/sider/truncated_docs.tsv>`_), comparing to total 1,507 objects containing `sider` data (~1.7%).
 
+
+UniChem
+------
+
+Data for `UniChem <https://www.ebi.ac.uk/unichem>`_ is pulled from 3 files, including:
+
+
+- ``UC_SOURCE.txt.gz``, which (once decompressed) supplies matching values for source ids (``src_id``) and source names. 
+- ``UC_STRUCTURE.txt.gz``, which provides the UniChem entry identifies (``uci``) as well as the standardinchikey (``standardinchikey``)
+- ``UC_XREF.txt.gz``, which provides a source id (``src_id``), the name used for the given source (``src_compound_id``), and the ``uci``
+
+Using the above values from each of the 3 files, dictionaries are created for each chemical based on their ``standardinchikey`` in the following format: 
+
+``{_id: "standardinchikey", "unichem": {"<source_name>":"<source_specific_id>", "<source_name>":"<source_specific_id>",..}}``
+
+Directories containing file dumps can be found at: ftp://ftp.ebi.ac.uk/pub/databases/chembl/UniChem/data/oracleDumps/
+
 .. UNII
 .. ----
 

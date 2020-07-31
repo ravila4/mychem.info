@@ -9,6 +9,7 @@ __sources_dict__ = [
         'hub.dataload.sources.pharmgkb',
         'hub.dataload.sources.sider',
         'hub.dataload.sources.ndc',
+        'hub.dataload.sources.unichem',
 
         # manual dumpers
         'hub.dataload.sources.umls',
