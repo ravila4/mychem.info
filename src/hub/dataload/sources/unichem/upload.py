@@ -1,10 +1,11 @@
+import re
+import biothings.hub.dataload.uploader
 import os
 
-import biothings, config
+import biothings
+import config
 biothings.config_for_app(config)
 
-import biothings.hub.dataload.uploader
-import re
 # when code is exported, import becomes relative
 try:
     from UniChem_BioThings_SDK.parser import load_annotations as parser_func
@@ -15,20 +16,20 @@ except ImportError:
 class Unichem_biothings_sdkUploader(
         biothings.hub.dataload.uploader.BaseSourceUploader):
 
-    name = "UniChem_BioThings_SDK"
+    name = "unichem"
 
     __metadata__ = {"src_meta": {
-                        "url": 'https://www.ebi.ac.uk/unichem',
-                        "license_url": ("https://s100.copyright.com/AppDispatchServlet?title=UniChem"
-                            "%3A%20a%20unified%20chemical%20structure%20cross-referencing"
-                            "%20and%20identifier%20tracking%20system&author=Jon%20Chambers"
-                            "%20et%20al&contentID=10.1186%2F1758-2946-5-3&publication=1758"
-                            "-2946&publicationDate=2013-01-14&publisherName=SpringerNature"
-                            "&orderBeanReset=true&oa=CC%20BY"),
-                        "license_url_short": "https://bit.ly/2CCluAB",
-                        "license": "CC BY-SA 4.0"
-                        }
-                    }
+        "url": 'https://www.ebi.ac.uk/unichem',
+        "license_url": ("https://s100.copyright.com/AppDispatchServlet?title=UniChem"
+                        "%3A%20a%20unified%20chemical%20structure%20cross-referencing"
+                        "%20and%20identifier%20tracking%20system&author=Jon%20Chambers"
+                        "%20et%20al&contentID=10.1186%2F1758-2946-5-3&publication=1758"
+                        "-2946&publicationDate=2013-01-14&publisherName=SpringerNature"
+                        "&orderBeanReset=true&oa=CC%20BY"),
+        "license_url_short": "https://bit.ly/2CCluAB",
+        "license": "CC BY-SA 4.0"
+    }
+    }
 
     idconverter = None
     storage_class = biothings.hub.dataload.storage.BasicStorage
@@ -39,7 +40,7 @@ class Unichem_biothings_sdkUploader(
 
     @classmethod
     def get_mapping(klass):
-        return         {
+        return {
             'unichem': {
                 'properties': {
                     'actor': {
@@ -194,5 +195,3 @@ class Unichem_biothings_sdkUploader(
                 }
             }
         }
-
-
