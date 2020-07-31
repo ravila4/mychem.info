@@ -11,6 +11,9 @@ __sources_dict__ = [
         'hub.dataload.sources.ndc',
         'hub.dataload.sources.unichem',
 
+        # manual dumpers
+        'hub.dataload.sources.umls',
+
         # collection-only
         'hub.dataload.sources.ginas',
         'hub.dataload.sources.aeolus',
