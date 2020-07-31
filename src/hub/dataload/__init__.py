@@ -10,6 +10,9 @@ __sources_dict__ = [
         'hub.dataload.sources.sider',
         'hub.dataload.sources.ndc',
 
+        # manual dumpers
+        'hub.dataload.sources.umls',
+
         # collection-only
         'hub.dataload.sources.ginas',
         'hub.dataload.sources.aeolus',
