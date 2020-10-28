@@ -49,10 +49,10 @@ class ChemblUploader(BaseDrugUploader, ParallelizedSourceUploader):
         json_files = glob.glob(os.path.join(self.data_folder, self.__class__.MOLECULE_PATTERN))
         return [(f,) for f in json_files]
 
-    def load_data(self, input_file):
+    def load_data(self, data_folder):
         """load data from an input file"""
-        self.logger.info("Load data from file '%s'" % input_file)
-        return self.keylookup(load_data, debug=True)(input_file)
+        self.logger.info("Load data from '%s'" % data_folder)
+        return self.keylookup(load_data, debug=True)(data_folder)
 
     def post_update_data(self, *args, **kwargs):
         """create indexes following an update"""
